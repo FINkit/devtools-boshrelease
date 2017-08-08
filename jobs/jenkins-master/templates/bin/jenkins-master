@@ -1,0 +1,10 @@
+#!/bin/sh
+
+JAVA=/var/vcap/jobs/jenkins-master/packages/openjdk/bin/java
+JENKINS=/var/vcap/jobs/jenkins-master/packages/jenkins/jenkins_2.46.3.war
+MEMORY_SETTINGS=""
+
+export JENKINS_HOME=/var/vcap/store/jenkins-master
+
+$JAVA $MEMORY_SETTINGS -jar $JENKINS
+

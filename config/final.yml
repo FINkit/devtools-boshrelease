@@ -1,0 +1,8 @@
+---
+name: buildstack
+blobstore:
+  provider: s3
+  options:
+    host: storage.googleapis.com
+    port: 443    
+    bucket_name: buildstack-blobs  

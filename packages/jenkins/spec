@@ -1,0 +1,6 @@
+---
+name: jenkins
+dependencies: 
+- openjdk
+files:
+- jenkins/jenkins_2.46.3.war
