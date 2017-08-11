@@ -2,10 +2,16 @@
 
 export JAVA_HOME=/var/vcap/packages/oraclejdk
 JAVA=${JAVA_HOME}/bin/java
-JENKINS=/var/vcap/jobs/jenkins-master/packages/jenkins/jenkins_2.46.3.war
+
+
+export JAVA_OPTS=""
+export JAVA_TOOL_OPTIONS="-Djava.awt.headless=true"
+
+JENKINS=/var/vcap/jobs/jenkins-master/packages/jenkins/jenkins/jenkins_2.46.3.war
 MEMORY_SETTINGS=""
 
 export JENKINS_HOME=/var/vcap/store/jenkins-master
+JENKINS_ARGS=""
 
-$JAVA $MEMORY_SETTINGS -jar $JENKINS
-
+echo "${JAVA} ${MEMORY_SETTINGS} ${JAVA_OPTS} -jar ${JENKINS} ${JENKINS_ARGS}"
+${JAVA} ${MEMORY_SETTINGS} ${JAVA_OPTS} -jar ${JENKINS} ${JENKINS_ARGS}
