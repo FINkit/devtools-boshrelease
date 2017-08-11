@@ -3,7 +3,6 @@
 export JAVA_HOME=/var/vcap/packages/oraclejdk
 JAVA=${JAVA_HOME}/bin/java
 
-
 export JAVA_OPTS=""
 export JAVA_TOOL_OPTIONS="-Djava.awt.headless=true"
 
@@ -13,5 +12,13 @@ MEMORY_SETTINGS=""
 export JENKINS_HOME=/var/vcap/store/jenkins-master
 JENKINS_ARGS=""
 
+# copy base jenkins config
+mv config/*.xml ${JENKINS_HOME}
+
+# copy grvooy initialisation scripts
+mkdir ${JENKINS_HOME}/init.groovy.d
+mv config/*.groovy ${JENKINS_HOME}/init.groovy.d/
+
+# start jenkins
 echo "${JAVA} ${MEMORY_SETTINGS} ${JAVA_OPTS} -jar ${JENKINS} ${JENKINS_ARGS}"
 ${JAVA} ${MEMORY_SETTINGS} ${JAVA_OPTS} -jar ${JENKINS} ${JENKINS_ARGS}
