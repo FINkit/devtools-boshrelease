@@ -2,10 +2,10 @@ set -e
 
 JAVA_VERSION="1.8.0_144"
 
-archive="oraclejava/jdk${JAVA_VERSION}.tar.gz"
+archive="oraclejava/jdk-8u144-linux-i586.tar.gz"
 
 echo "Extracting archive..."
-tar xzf $archive
+tar xzf ${archive}
 
 mv jdk${JAVA_VERSION}/* ${BOSH_INSTALL_TARGET}
 
