@@ -1,6 +1,6 @@
 ---
 name: jenkins
 dependencies: 
-- openjdk
+- oraclejdk
 files:
 - jenkins/jenkins_2.46.3.war
