@@ -2,10 +2,10 @@ jenkins/jenkins_2.46.3.war:
   size: 70340821
   object_id: 8fa5a140-f271-4703-6ce1-456c5c91121d
   sha: d9aab8d70f6f3fc06ed926d179edbb670a9891fd
-openjdk/openjdk-1.8.0_131.tar.gz:
-  size: 45478834
-  object_id: 10cce4c9-6c4f-42ef-5af6-d67ee9e91693
-  sha: 48134b3287657cacc8e4c5c8dd0af097c2546cfc
+#openjdk/openjdk-1.8.0_131.tar.gz:
+#  size: 45478834
+#  object_id: 10cce4c9-6c4f-42ef-5af6-d67ee9e91693
+#  sha: 48134b3287657cacc8e4c5c8dd0af097c2546cfc
 oraclejava/jdk-8u144-linux-i586.tar.gz:
   size: 188157665
   object_id: 4eac4cea-efe4-4827-713c-a3b4021f757c
