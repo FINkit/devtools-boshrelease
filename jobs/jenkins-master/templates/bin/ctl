@@ -17,7 +17,7 @@ case $1 in
     # store pid in $PIDFILE
     echo $$ > $PIDFILE
 
-    exec chpst -u vcap:vcap jenkins-master \
+    exec chpst -u vcap:vcap /var/vcap/jobs/jenkins-master/bin/jenkins-master \
          >>$LOG_DIR/$JOB_NAME.log 2>&1
 
     ;;
@@ -27,7 +27,7 @@ case $1 in
 
     ;;
   *)
-    echo "Usage: jenkins-master_ctl {start|stop}"
+    echo "Usage: ctl {start|stop}"
 
     ;;
 
