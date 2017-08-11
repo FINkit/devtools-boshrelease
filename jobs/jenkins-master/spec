@@ -28,7 +28,7 @@ templates:
   config/sonar.xml.erb: config/sonar.xml
 
 properties:
-  jenkins.service.address:
+  jenkins.server.address:
     description: "Fully qualified address of Jenkins server"
   jenkins.admin.email:
     description: "Email address to send all emails from"
