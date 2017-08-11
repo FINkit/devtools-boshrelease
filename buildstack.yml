@@ -17,15 +17,15 @@ update:
   update_watch_time: 1000-30000
 
 instance_groups:
-- name: buildstack
+- name: jenkins
   azs:
   - z1
   instances: 1
   jobs:
-  - name: app
+  - name: jenkins-master
     release: buildstack
     properties: {}
-  vm_type: g1-small
+  vm_type: m3.medium
   stemcell: default
   networks:
   - name: default
