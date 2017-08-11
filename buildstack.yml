@@ -24,7 +24,13 @@ instance_groups:
   jobs:
   - name: jenkins-master
     release: buildstack
-    properties: {}
+    properties: 
+      jenkins:
+        server:
+          address: "http://localhost:8080/"
+        admin:
+          email: "admin@localhost"
+          password: "password"   
   vm_type: m3.medium
   stemcell: default
   networks:

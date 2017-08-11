@@ -12,3 +12,25 @@ templates:
   data/properties.sh.erb: data/properties.sh
   helpers/ctl_setup.sh: helpers/ctl_setup.sh
   helpers/ctl_utils.sh: helpers/ctl_utils.sh
+  config/configure-access.groovy.erb: config/configure-access.groovy
+  config/configure-master-access-control.groovy.erb: config/configure-master-access-control.groovy
+  config/configure-maven.groovy.erb: config/configure-maven.groovy
+  config/tcp-slave-agent-port.groovy.erb: config/tcp-slave-agent-port.groovy
+  config/config.xml.erb: config/config.xml
+  config/envinject-plugin-configuration.xml.erb: config/envinject-plugin-configuration.xml
+  config/envInject.xml.erb: config/envInject.xml
+  config/hudson.plugins.build_timeout.operations.BuildStepOperation.xml.erb: config/hudson.plugins.build_timeout.operations.BuildStepOperation.xml
+  config/hudson.plugins.timestamper.TimestamperConfig.xml.erb: config/hudson.plugins.timestamper.TimestamperConfig.xml
+  config/jenkins.CLI.xml.erb: config/jenkins.CLI.xml
+  config/jenkins.model.JenkinsLocationConfiguration.xml.erb: config/jenkins.model.JenkinsLocationConfiguration.xml
+  config/org.codefirst.SimpleThemeDecorator.xml.erb: config/org.codefirst.SimpleThemeDecorator.xml
+  config/scriptApproval.xml.erb: config/scriptApproval.xml
+  config/sonar.xml.erb: config/sonar.xml
+
+ properties:
+   jenkins.service.address:
+     description: "Fully qualified address of Jenkins server"
+   jenkins.admin.email:
+     description: "Email address to send all emails from"
+   jenkins.admin.password:
+     description: "Password for the admin user"

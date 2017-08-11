@@ -1,0 +1,38 @@
+import jenkins.model.*;
+import hudson.util.Secret;
+import hudson.security.*;
+
+println "[SECURITY] Configuring LDAP Security..."
+jenkins = Jenkins.instance
+
+jenkins.securityRealm = new HudsonPrivateSecurityRealm(false,false,null)
+jenkins.securityRealm.createAccount('administrator', '<%= p('jenkins.admin.password')  %>')
+
+println "[SECURITY] Configuring Project Matrix Security..."
+
+class BuildPermission {
+	static buildNewAccessList(userOrGroup, permissions) {
+    	def newPermissionsMap = [:]
+    	permissions.each {
+      		newPermissionsMap.put(Permission.fromId(it), userOrGroup)
+    	}
+    	newPermissionsMap
+	}
+}
+
+strategy = new ProjectMatrixAuthorizationStrategy()
+jenkins.authorizationStrategy = strategy
+
+administratorPermissions = [
+    "hudson.model.Hudson.Administer"
+]
+
+anonymousPermissions = [
+    "hudson.model.Hudson.Read",
+    "hudson.model.Item.Discover"
+]
+
+BuildPermission.buildNewAccessList("administrator", administratorPermissions).each { p, u -> strategy.add(p, u) }
+BuildPermission.buildNewAccessList("anonymous", anonymousPermissions).each { p, u -> strategy.add(p, u) }
+
+println "[SECURITY] Security... Done"
