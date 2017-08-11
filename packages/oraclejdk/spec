@@ -1,0 +1,7 @@
+---
+name: oraclejdk
+
+dependencies: []
+
+files:
+- oraclejava/jdk-8u144-linux-i586.tar.gz

@@ -4,5 +4,5 @@ blobstore:
   provider: s3
   options:
     host: storage.googleapis.com
-    port: 443    
-    bucket_name: buildstack-blobs  
+    port: 443
+    bucket_name: buildstack-blobs
