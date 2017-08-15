@@ -1,0 +1,10 @@
+#!/bin/bash
+
+set -e # exit immediately if a simple command exits with a non-zero status
+set -u # report the usage of uninitialized variables
+
+mkdir -p /var/vcap/store/jenkins-master/init.groovy.d	
+mv /var/vcap/jobs/jenkins-master/config/*.xml /var/vcap/store/jenkins-master
+mv /var/vcap/jobs/jenkins-master/config/*.groovy /var/vcap/store/jenkins-master/init.groovy.d
+
+chown vcap:vcap -R /var/vcap/store/jenkins-master

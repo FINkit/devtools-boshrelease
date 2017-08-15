@@ -32,6 +32,7 @@ instance_groups:
           email: "admin@localhost"
           password: "password"   
   vm_type: m3.medium
+  vm_extensions: [internet-required, jenkins-pool]
   stemcell: default
   networks:
   - name: buildstack
