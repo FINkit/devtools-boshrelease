@@ -15,7 +15,7 @@ fi
 
 if [[ ! -d /var/vcap/store/jenkins-master/plugins ]]; then
     mkdir -p /var/vcap/store/jenkins-master/plugins
-    unzip /var/vcap/jobs/jenkins-master/packages/jenkins/jenkins/plugins-*.zip /var/vcap/store/jenkins-master/plugins
+    unzip /var/vcap/jobs/jenkins-master/packages/jenkins/jenkins/plugins-*.zip -d /var/vcap/store/jenkins-master/plugins
 fi
 
 
