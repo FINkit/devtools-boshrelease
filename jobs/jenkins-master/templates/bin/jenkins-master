@@ -6,7 +6,8 @@ JAVA=${JAVA_HOME}/bin/java
 export JAVA_OPTS=""
 export JAVA_TOOL_OPTIONS="-Djava.awt.headless=true"
 
-JENKINS=/var/vcap/jobs/jenkins-master/packages/jenkins/jenkins/jenkins_2.46.3.war
+JENKINS_VERSION=2.60.2
+JENKINS=/var/vcap/jobs/jenkins-master/packages/jenkins/jenkins/jenkins_${JENKINS_VERSION}.war
 MEMORY_SETTINGS=""
 
 export JENKINS_HOME=/var/vcap/store/jenkins-master

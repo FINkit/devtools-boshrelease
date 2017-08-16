@@ -3,4 +3,5 @@ name: jenkins
 dependencies: 
 - oraclejdk
 files:
-- jenkins/jenkins_2.46.3.war
+- jenkins/jenkins_2.60.2.war
+- jenkins/plugins-20170815.zip

@@ -1,7 +1,15 @@
-jenkins/jenkins_2.46.3.war:
-  size: 70340821
-  object_id: 8fa5a140-f271-4703-6ce1-456c5c91121d
-  sha: d9aab8d70f6f3fc06ed926d179edbb670a9891fd
+#jenkins/jenkins_2.46.3.war:
+#  size: 70340821
+#  object_id: 8fa5a140-f271-4703-6ce1-456c5c91121d
+#  sha: d9aab8d70f6f3fc06ed926d179edbb670a9891fd
+jenkins/jenkins_2.60.2.war:
+  size: 70613578
+  object_id: 4a7619f0-db57-4832-6d98-03aa913aa571
+  sha: aa4a7f341eb0d51623252d0d8e4351d65705356f
+jenkins/plugins-20170815.zip:
+  size: 158068967
+  object_id: 32ef8ed7-ce8c-407c-5a8c-492962d2eeeb
+  sha: 8a9c30bb39e321c5afaab47c97285954afc28573
 oraclejava/jdk-8u144-linux-x64.tar.gz:
   size: 185515842
   object_id: d33d4af1-8f1c-438b-6d4e-b14334ac84a0
