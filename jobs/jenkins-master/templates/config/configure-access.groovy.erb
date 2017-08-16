@@ -11,13 +11,13 @@ jenkins.securityRealm.createAccount('administrator', '<%= p('jenkins.admin.passw
 println "[SECURITY] Configuring Project Matrix Security..."
 
 class BuildPermission {
-	static buildNewAccessList(userOrGroup, permissions) {
-    	def newPermissionsMap = [:]
-    	permissions.each {
-      		newPermissionsMap.put(Permission.fromId(it), userOrGroup)
-    	}
-    	newPermissionsMap
-	}
+    static buildNewAccessList(userOrGroup, permissions) {
+        def newPermissionsMap = [:]
+        permissions.each {
+              newPermissionsMap.put(Permission.fromId(it), userOrGroup)
+        }
+        newPermissionsMap
+    }
 }
 
 strategy = new ProjectMatrixAuthorizationStrategy()
