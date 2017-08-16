@@ -5,6 +5,10 @@ packages:
 - oraclejdk
 - jenkins
 
+provides:
+- name: jenkins_master
+  type: jenkins
+
 templates:
   bin/jenkins-master: bin/jenkins-master
   bin/ctl: bin/ctl
