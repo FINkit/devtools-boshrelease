@@ -28,5 +28,5 @@ properties:
     description: "Username of the user to connect to the master server"
   jenkins.slave.master_password:
     description: "Password of the user to connect to the master server"
-  jenkins:slave.mode:
+  jenkins.slave.mode:
     description: "The mode to run the slave"
