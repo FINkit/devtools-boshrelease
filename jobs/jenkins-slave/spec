@@ -1,0 +1,12 @@
+---
+name: jenkins-slave
+
+packages: 
+- oraclejdk
+- swarm-client
+
+properties:
+  jenkins.server.address:
+    description: "Fully qualified address of Jenkins server"
+  jenkins.admin.password:
+    description: "Password for the admin user"

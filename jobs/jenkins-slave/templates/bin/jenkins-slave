@@ -1,0 +1,15 @@
+#!/bin/sh -e
+
+export JAVA_HOME=/var/vcap/packages/oraclejdk
+JAVA=${JAVA_HOME}/bin/java
+
+export JAVA_OPTS=""
+export JAVA_TOOL_OPTIONS="-Djava.awt.headless=true"
+
+SWARM_VERSION=3.4
+SWARM_CLIENT=/var/vcap/jobs/jenkins-slave/packages/swarm-client/jenkins/swarm-client-${JENKINS_VERSION}.jar
+SWARM_ARGS=""
+MEMORY_SETTINGS=""
+
+echo "${JAVA} ${MEMORY_SETTINGS} ${JAVA_OPTS} -jar ${SWARM_CLIENT} ${SWARM_ARGS}"
+${JAVA} ${MEMORY_SETTINGS} ${JAVA_OPTS} -jar ${SWARM_CLIENT} ${SWARM_ARGS}
