@@ -17,7 +17,7 @@ update:
   update_watch_time: 1000-30000
 
 instance_groups:
-- name: jenkins
+- name: jenkins-master
   azs:
   - z1
   instances: 1
@@ -33,6 +33,24 @@ instance_groups:
           password: (( jenkins_admin_password ))
   vm_type: m3.medium
   vm_extensions: [internet-required, jenkins-pool]
+  stemcell: default
+  networks:
+  - name: buildstack
+- name: jenkins-slave
+  azs:
+  - z1
+  - z2
+  instances: 2
+  jobs:
+  - name: jenkins-slave
+    release: buildstack
+    properties: 
+      jenkins:
+        server:
+          address: "http://localhost:8080/"
+        admin:
+          password: (( jenkins_admin_password ))
+  vm_type: m3.medium
   stemcell: default
   networks:
   - name: buildstack
