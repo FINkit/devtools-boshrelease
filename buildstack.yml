@@ -30,9 +30,13 @@ instance_groups:
           address: "http://localhost:8080/"
         admin:
           email: "admin@localhost"
-          password: "password"   
+          password: (( jenkins_admin_password ))
   vm_type: m3.medium
   vm_extensions: [internet-required, jenkins-pool]
   stemcell: default
   networks:
   - name: buildstack
+
+variables:
+- name: jenkins_admin_password
+  type: password
