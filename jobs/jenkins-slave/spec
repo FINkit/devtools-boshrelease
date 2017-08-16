@@ -5,6 +5,10 @@ packages:
 - oraclejdk
 - swarm-client
 
+consumes:
+- name: jenkins_master
+  type: jenkins
+
 templates:
   bin/jenkins-slave: bin/jenkins-slave
   bin/ctl: bin/ctl
