@@ -4,6 +4,7 @@ name: jenkins-slave
 packages: 
 - oraclejdk
 - swarm-client
+- apache-maven
 
 consumes:
 - name: jenkins_master
