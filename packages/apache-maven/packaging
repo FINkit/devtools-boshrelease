@@ -8,6 +8,8 @@ CPUS=$(grep -c ^processor /proc/cpuinfo)
 # $BOSH_INSTALL_TARGET - where you copy/install files to be included in package
 export HOME=/var/vcap
 
+MAVEN_VERSION=3.5.0
+
 mkdir ${BOSH_COMPILE_TARGET}/maven
-tar xvfz ${BOSH_COMPILE_TARGET}/jenkins/apache-maven-3.5.0-bin.tar.gz -C ${BOSH_COMPILE_TARGET}/maven
-mv ${BOSH_COMPILE_TARGET}/maven/* ${BOSH_INSTALL_TARGET}
+tar xvfz ${BOSH_COMPILE_TARGET}/jenkins/apache-maven-${MAVEN_VERSION}-bin.tar.gz -C ${BOSH_COMPILE_TARGET}/maven
+mv ${BOSH_COMPILE_TARGET}/maven/apache-maven-${MAVEN_VERSION}/* ${BOSH_INSTALL_TARGET}
