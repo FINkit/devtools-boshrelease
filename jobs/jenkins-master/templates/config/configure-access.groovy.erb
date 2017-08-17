@@ -7,6 +7,7 @@ jenkins = Jenkins.instance
 
 jenkins.securityRealm = new HudsonPrivateSecurityRealm(false,false,null)
 jenkins.securityRealm.createAccount('administrator', '<%= p('jenkins.admin.password')  %>')
+jenkins.securityRealm.createAccount('agent', '<%= p('jenkins.agent.password')  %>')
 
 println "[SECURITY] Configuring Project Matrix Security..."
 
@@ -23,16 +24,14 @@ class BuildPermission {
 strategy = new ProjectMatrixAuthorizationStrategy()
 jenkins.authorizationStrategy = strategy
 
-administratorPermissions = [
-    "hudson.model.Hudson.Administer"
-]
+administratorPermissions = ["hudson.model.Hudson.Administer"]
 
-anonymousPermissions = [
-    "hudson.model.Hudson.Read",
-    "hudson.model.Item.Discover"
-]
+agentPermissions = ["hudson.model.Computer.Build", "hudson.model.Computer.Configure", "hudson.model.Computer.Connect", "hudson.model.Computer.Create", "hudson.model.Computer.Delete", "hudson.model.Computer.Disconnect"]
+
+anonymousPermissions = ["hudson.model.Hudson.Read", "hudson.model.Item.Discover"]
 
 BuildPermission.buildNewAccessList("administrator", administratorPermissions).each { p, u -> strategy.add(p, u) }
 BuildPermission.buildNewAccessList("anonymous", anonymousPermissions).each { p, u -> strategy.add(p, u) }
+BuildPermission.buildNewAccessList("agent", agentPermissions).each { p, u -> strategy.add(p, u) }
 
 println "[SECURITY] Security... Done"

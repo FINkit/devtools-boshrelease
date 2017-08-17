@@ -31,6 +31,8 @@ instance_groups:
         admin:
           email: "admin@localhost"
           password: ((jenkins_admin_password))
+        agent:
+          password: ((jenkins_agent_password))  
   vm_type: m3.medium
   vm_extensions: [internet-required, jenkins-pool]
   stemcell: default
@@ -47,8 +49,8 @@ instance_groups:
     properties: 
       jenkins:
         slave:
-          master_password: ((jenkins_admin_password))
-          master_username: administrator
+          master_password: ((jenkins_agent_password))
+          master_username: agent
           executors: 2
           mode: exclusive
           labels: "build"    
@@ -59,4 +61,6 @@ instance_groups:
 
 variables:
 - name: jenkins_admin_password
+  type: password
+- name: jenkins_agent_password
   type: password
