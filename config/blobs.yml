@@ -2,10 +2,10 @@ jenkins/apache-maven-3.5.0-bin.tar.gz:
   size: 8534562
   object_id: 8c967a7d-6490-4538-4e2d-57796790574e
   sha: 878b8b93a8f9685aefba5c21a17b46eb141b1122
-jenkins/jenkins_2.60.2.war:
-  size: 70613578
-  object_id: 4a7619f0-db57-4832-6d98-03aa913aa571
-  sha: aa4a7f341eb0d51623252d0d8e4351d65705356f
+jenkins/jenkins_2.60.3.war:
+  size: 70620203
+  object_id: d4efa487-d0e2-40b1-4043-6baeb64d11c4
+  sha: e62d9ed7eb3d29b08719e639c959cd328776ba50
 jenkins/plugins-20170815.zip:
   size: 158068967
   object_id: 32ef8ed7-ce8c-407c-5a8c-492962d2eeeb
