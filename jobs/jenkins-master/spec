@@ -39,3 +39,5 @@ properties:
     description: "Email address to send all emails from"
   jenkins.admin.password:
     description: "Password for the admin user"
+  jenkins.agent.password:
+    description: "Password for the agent user"
