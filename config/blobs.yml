@@ -1,3 +1,23 @@
+apt/git/git-gui_1%3a2.14.1-1.1~ppa0~ubuntu16.04.1_all.deb:
+  size: 918924
+  object_id: 5c28938a-7b07-4fa5-4692-e551eec5654e
+  sha: 8e6c5c48459bb8e8f3616337faa126769d0fa25d
+apt/git/git-man_1%3a2.14.1-1.1~ppa0~ubuntu16.04.1_all.deb:
+  size: 1491534
+  object_id: 0601a13c-2c18-42f4-6cc0-91d3c75b58aa
+  sha: 645bac9943569f9a61eff86b8384bea91c107595
+apt/git/git_1%3a2.14.1-1.1~ppa0~ubuntu16.04.1_amd64.deb:
+  size: 4789274
+  object_id: 5a5ab4aa-97c2-41fb-472b-c13c319e824b
+  sha: 9f8b482e3f317146c54111cbd0735935760b4ca4
+apt/git/gitk_1%3a2.14.1-1.1~ppa0~ubuntu16.04.1_all.deb:
+  size: 839428
+  object_id: dbab1d40-9e43-4fb9-76b1-b604da371c95
+  sha: ea42533b87b7915f24ad89d4d36f2c8ecb5102c8
+apt/git/libpcre2-8-0_10.21-1_amd64.deb:
+  size: 164942
+  object_id: 51fccd81-1734-480b-566a-f9c788e083a1
+  sha: 7a903943a6eb97d98087e38054c1352eaeff8e9e
 jenkins/apache-maven-3.5.0-bin.tar.gz:
   size: 8534562
   object_id: 8c967a7d-6490-4538-4e2d-57796790574e
