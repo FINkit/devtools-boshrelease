@@ -35,6 +35,7 @@ instance_groups:
           password: ((jenkins_agent_password))  
   vm_type: m3.medium
   vm_extensions: [internet-required, jenkins-pool]
+  persistent_disk_pool: 100GB
   stemcell: default
   networks:
   - name: buildstack
