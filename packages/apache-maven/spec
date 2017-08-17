@@ -1,0 +1,6 @@
+---
+name: apache-maven
+dependencies: 
+- oraclejdk
+files:
+- jenkins/apache-maven-3.5.0-bin.tar.gz

@@ -1,3 +1,7 @@
+jenkins/apache-maven-3.5.0-bin.tar.gz:
+  size: 8534562
+  object_id: 8c967a7d-6490-4538-4e2d-57796790574e
+  sha: 878b8b93a8f9685aefba5c21a17b46eb141b1122
 jenkins/jenkins_2.60.2.war:
   size: 70613578
   object_id: 4a7619f0-db57-4832-6d98-03aa913aa571
