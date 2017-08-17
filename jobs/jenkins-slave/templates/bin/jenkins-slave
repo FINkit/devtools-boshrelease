@@ -8,8 +8,10 @@ export JAVA_TOOL_OPTIONS="-Djava.awt.headless=true"
 
 SWARM_VERSION=3.4
 SWARM_CLIENT=/var/vcap/jobs/jenkins-slave/packages/swarm-client/jenkins/swarm-client-${SWARM_VERSION}.jar
-SWARM_ARGS="-deleteExistingClients -disableSslVerification -executors <%= p('jenkins.slave.executors') %> -labels \"<%= p('jenkins.slave.labels') %>\" -master http://<%= link('jenkins_master').instances[0].address %>:8080 -mode <%= p('jenkins.slave.mode') %> -username <%= p('jenkins.slave.master_username') %> -password <%= p('jenkins.slave.master_password') %>"
+SLAVE_DIR=/var/vcap/data/jenkins-slave
+SWARM_ARGS="-deleteExistingClients -disableSslVerification -fsroot ${SLAVE_DIR} -showHostName -executors <%= p('jenkins.slave.executors') %> -labels \"<%= p('jenkins.slave.labels') %>\" -master http://<%= link('jenkins_master').instances[0].address %>:8080 -mode <%= p('jenkins.slave.mode') %> -username <%= p('jenkins.slave.master_username') %> -password <%= p('jenkins.slave.master_password') %>"
 MEMORY_SETTINGS=""
 
+mkdir -p ${SLAVE_DIR}
 echo "${JAVA} ${MEMORY_SETTINGS} ${JAVA_OPTS} -jar ${SWARM_CLIENT} ${SWARM_ARGS}"
 ${JAVA} ${MEMORY_SETTINGS} ${JAVA_OPTS} -jar ${SWARM_CLIENT} ${SWARM_ARGS}
