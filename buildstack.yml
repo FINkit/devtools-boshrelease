@@ -48,7 +48,6 @@ instance_groups:
       jenkins:
         slave:
           master_password: ((jenkins_admin_password))
-          master_url: http://10.40.0.2:8080/
           master_username: administrator
           executors: 2
           mode: exclusive

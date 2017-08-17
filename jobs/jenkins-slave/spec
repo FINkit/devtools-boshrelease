@@ -26,8 +26,6 @@ properties:
     description: "The number of executors for this slave"
   jenkins.slave.labels:
     description: "Labels to attach to the slave"
-  jenkins.slave.master_url:
-    description: "Url of the master server"
   jenkins.slave.master_username:
     description: "Username of the user to connect to the master server"
   jenkins.slave.master_password:
