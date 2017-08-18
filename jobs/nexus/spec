@@ -5,6 +5,6 @@ templates:
     bin/ctl: bin/ctl
 
 packages:
-    - java
+    - oraclejdk
     - nexus
 
