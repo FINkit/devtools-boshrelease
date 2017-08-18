@@ -4,6 +4,7 @@ name: jenkins-master
 packages: 
 - oraclejdk
 - jenkins
+- git
 
 provides:
 - name: jenkins_master

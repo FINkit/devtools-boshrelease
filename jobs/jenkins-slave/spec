@@ -5,6 +5,7 @@ packages:
 - oraclejdk
 - swarm-client
 - apache-maven
+- git
 
 consumes:
 - name: jenkins_master
@@ -13,6 +14,7 @@ consumes:
 templates:
   bin/jenkins-slave: bin/jenkins-slave
   bin/ctl: bin/ctl
+  bin/pre-start: bin/pre-start
   bin/monit_debugger: bin/monit_debugger
   data/properties.sh.erb: data/properties.sh
   helpers/ctl_setup.sh: helpers/ctl_setup.sh

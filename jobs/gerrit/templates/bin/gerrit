@@ -1,0 +1,26 @@
+#!/bin/sh -e
+
+export JAVA_HOME=/var/vcap/packages/oraclejdk
+JAVA=${JAVA_HOME}/bin/java
+
+export JAVA_OPTS=""
+export JAVA_TOOL_OPTIONS=""
+#export JAVA_TOOL_OPTIONS="-Djava.awt.headless=true"
+
+GERRIT_VERSION=2.12.7
+GERRIT=/var/vcap/jobs/gerrit/packages/gerrit/gerrit/gerrit-${GERRIT_VERSION}.war
+GERRIT_STORE="/var/vcap/store/gerrit"
+GERRIT_INIT_ARGS="init --batch -d ${GERRIT_STORE}"
+MEMORY_SETTINGS=""
+
+# start gerrit
+if [ ! -f ${GERRIT_STORE}/bin/gerrit.sh ]
+then
+  echo "${JAVA} ${MEMORY_SETTINGS} ${JAVA_OPTS} -jar ${GERRIT} ${GERRIT_INIT_ARGS}"
+  ${JAVA} ${MEMORY_SETTINGS} ${JAVA_OPTS} -jar ${GERRIT} ${GERRIT_INIT_ARGS}
+fi
+
+if [ -f ${GERRIT_STORE}/bin/gerrit.sh ]
+then
+  ${GERRIT_STORE}/bin/gerrit.sh restart
+fi
