@@ -1,6 +1,6 @@
 #!/bin/sh -e
 
-export JAVA_HOME=/var/vcap/packages/oracle-java-jdk
+export JAVA_HOME=/var/vcap/packages/oraclejdk
 JAVA=${JAVA_HOME}/bin/java
 
 export JAVA_OPTS=""
@@ -14,10 +14,13 @@ GERRIT_INIT_ARGS="init --batch -d ${GERRIT_STORE}"
 MEMORY_SETTINGS=""
 
 # start gerrit
-echo "${JAVA} ${MEMORY_SETTINGS} ${JAVA_OPTS} -jar ${GERRIT} ${GERRIT_INIT_ARGS}"
-${JAVA} ${MEMORY_SETTINGS} ${JAVA_OPTS} -jar ${GERRIT} ${GERRIT_INIT_ARGS}
+if [ ! -f ${GERRIT_STORE}/bin/gerrit.sh ]
+then
+  echo "${JAVA} ${MEMORY_SETTINGS} ${JAVA_OPTS} -jar ${GERRIT} ${GERRIT_INIT_ARGS}"
+  ${JAVA} ${MEMORY_SETTINGS} ${JAVA_OPTS} -jar ${GERRIT} ${GERRIT_INIT_ARGS}
+fi
 
 if [ -f ${GERRIT_STORE}/bin/gerrit.sh ]
 then
-    ${GERRIT_STORE}/bin/gerrit.sh restart
+  ${GERRIT_STORE}/bin/gerrit.sh restart
 fi
