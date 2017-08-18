@@ -10,11 +10,6 @@ source /var/vcap/jobs/gerrit/packages/git/profile.sh
 case $1 in
 
   start)
-    pid_guard $PIDFILE $JOB_NAME
-
-    # store pid in $PIDFILE
-    echo $$ > $PIDFILE
-
     exec chpst -u vcap:vcap /var/vcap/jobs/gerrit/bin/gerrit \
          >>${LOG_DIR}/${JOB_NAME}.log 2>&1
 
