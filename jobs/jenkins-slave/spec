@@ -5,6 +5,7 @@ packages:
 - oraclejdk
 - swarm-client
 - apache-maven
+- git
 
 consumes:
 - name: jenkins_master
