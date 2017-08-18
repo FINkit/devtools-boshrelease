@@ -18,6 +18,10 @@ apt/git/libpcre2-8-0_10.21-1_amd64.deb:
   size: 164942
   object_id: 51fccd81-1734-480b-566a-f9c788e083a1
   sha: 7a903943a6eb97d98087e38054c1352eaeff8e9e
+gerrit/gerrit-2.12.7.war:
+  size: 48377669
+  object_id: 8ce3ce7f-eac1-4187-560e-9e66d61b3e17
+  sha: 405b3106d291e8e966cf75077c432ed9f9a45fc5
 jenkins/apache-maven-3.5.0-bin.tar.gz:
   size: 8534562
   object_id: 8c967a7d-6490-4538-4e2d-57796790574e
