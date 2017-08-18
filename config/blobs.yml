@@ -30,10 +30,10 @@ jenkins/jenkins_2.60.3.war:
   size: 70620203
   object_id: d4efa487-d0e2-40b1-4043-6baeb64d11c4
   sha: e62d9ed7eb3d29b08719e639c959cd328776ba50
-jenkins/plugins-20170815.zip:
-  size: 158068967
-  object_id: 32ef8ed7-ce8c-407c-5a8c-492962d2eeeb
-  sha: 8a9c30bb39e321c5afaab47c97285954afc28573
+jenkins/plugins-20170818.zip:
+  size: 157379817
+  object_id: 94413313-015b-4be4-5121-93bca3444b86
+  sha: 110ca9e290af788d8b3ffc3160a6cff9d0368626
 jenkins/swarm-client-3.4.jar:
   size: 1577986
   object_id: 0b682084-912f-4914-67e7-05be2e288621
