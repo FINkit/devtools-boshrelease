@@ -1,0 +1,7 @@
+#!/bin/bash
+set -e
+
+tar -xvzf nexus-3.5.0-02-unix.tar.gz
+rm -rf nexus-3.5.0-02-unix.tar.gz
+
+mv nexus-3.5.0-02/ ${BOSH_INSTALL_TARGET}/nexus

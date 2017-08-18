@@ -1,0 +1,10 @@
+---
+name: nexus
+
+templates:
+    bin/ctl: bin/ctl
+
+packages:
+    - java
+    - nexus
+
