@@ -39,7 +39,7 @@ fi
 echo "---------------------------------------------------"
 
 cd temp
-DATE=`date +%Y%m%d`
+DATE=`date +%Y%m%d%H%M`
 PLUGIN_ARCHIVE=plugins-${DATE}.zip
 OUTPUT_DIR=../../../blobs/jenkins
 
@@ -50,8 +50,7 @@ jar cvf ${OUTPUT_DIR}/${PLUGIN_ARCHIVE} *
 cd ..
 rm -fr $REF
 
-cd ../..
-
+echo "cd ../.."
 echo "bosh2 add-blob blobs/jenkins/${PLUGIN_ARCHIVE} jenkins/${PLUGIN_ARCHIVE}"
 echo "bosh2 upload-blobs"
 
