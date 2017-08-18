@@ -3,7 +3,7 @@
 name: gerrit
 
 releases:
-- name: gerrit
+- name: buildstack
   version: latest
 
 stemcells:
@@ -24,7 +24,7 @@ instance_groups:
   instances: 1
   jobs:
   - name: gerrit
-    release: gerrit
+    release: buildstack
     properties: {}
   vm_type: m3.medium
   stemcell: default
