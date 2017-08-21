@@ -1,4 +1,6 @@
-language: go
+language: ruby
+
+dist: trusty
 
 before_install:
 - curl -o /home/travis/bosh https://s3.amazonaws.com/bosh-cli-artifacts/bosh-cli-2.0.28-linux-amd64
