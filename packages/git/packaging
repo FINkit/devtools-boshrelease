@@ -9,7 +9,6 @@ mkdir -p $BOSH_INSTALL_TARGET/apt
 
 for DEB in $(ls -1 apt/git/*.deb); do
   echo "Installing $(basename $DEB)"
-  dpkg -x $DEB $BOSH_INSTALL_TARGET/apt
+  dpkg -x $DEB $BOSH_INSTALL_TARGET
 done
-
-cp -a apt/git/profile.sh $BOSH_INSTALL_TARGET/
+ln -s ${BOSH_INSTALL_TARGET}/usr/bin ${BOSH_INSTALL_TARGET/bin
