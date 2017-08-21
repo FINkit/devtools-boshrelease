@@ -11,8 +11,7 @@ provides:
   type: jenkins
 
 templates:
-  bin/jenkins-master: bin/jenkins-master
-  bin/ctl: bin/ctl
+  bin/jenkins-master_ctl: bin/jenkins-master_ctl
   bin/pre-start: bin/pre-start
   bin/monit_debugger: bin/monit_debugger
   data/properties.sh.erb: data/properties.sh
