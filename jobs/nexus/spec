@@ -1,10 +1,26 @@
 ---
 name: nexus
 
-templates:
-    bin/ctl: bin/ctl
-
 packages:
-    - oraclejdk
-    - nexus
+  - oraclejdk
+  - nexus
+templates:
+  bin/ctl: bin/ctl
+  bin/monit_debugger: bin/monit_debugger
+  helpers/ctl_setup.sh: helpers/ctl_setup.sh
+  helpers/ctl_utils.sh: helpers/ctl_utils.sh
 
+# Documentation https://bosh.io/docs/links.html
+# Tutorial      https://gist.github.com/Amit-PivotalLabs/c39528248b8cdc4ba8e347f8aa68abb6
+consumes: []
+
+provides:
+- name: nexus
+  type: nexus
+  properties:
+  - port
+
+properties:
+  port:
+    description: Bind to this port
+    default: 8080

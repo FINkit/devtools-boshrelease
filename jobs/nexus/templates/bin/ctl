@@ -1,37 +1,36 @@
 #!/bin/bash
 
-set -e
+set -e # exit immediately if a simple command exits with a non-zero status
+set -u # report the usage of uninitialized variables
 
-APP_DIR=/var/vcap/sys/run/bosh-nexus
-LOG_DIR=/var/vcap/sys/log/bosh-nexus
-PIDFILE=${APP_DIR}/pid
-RUN_USER=vcap
-INSTALL4J_JAVA_HOME=/var/vcap/packages/oraclejdk/
+# Setup env vars and folders for the webapp_ctl script
+source /var/vcap/jobs/nexus/helpers/ctl_setup.sh 'nexus'
+
+export PORT=${PORT:-5000}
+export LANG=en_US.UTF-8
 
 case $1 in
 
   start)
-  mkdir -p $APP_DIR $LOG_DIR
-  chown -R $RUN_USER:$RUN_USER $APP_DIR $LOG_DIR
+    pid_guard $PIDFILE $JOB_NAME
 
-  echo "INSTALL4J_JAVA_HOME=/var/vcap/packages/oraclejdk/" >> /etc/environment
+    # store pid in $PIDFILE
+    echo $$ > $PIDFILE
 
-  cd /var/vcap/packages/nexus
 
-  echo $$ > $PIDFILE
+    exec -u vcap:vcap /var/vcap/packages/nexus/nexus/bin/nexus start \
+    >>$LOG_DIR/$JOB_NAME.log 2>&1
 
-  exec /var/vcap/packages/nexus/nexus/bin/nexus start \
-         >>  $LOG_DIR/bosh_nexus-nexus.stdout.log \
-         2>> $LOG_DIR/bosh_nexus-nexus.stderr.log
-
-  ;;
-
-  stop)
-    kill -9 `cat $PIDFILE` && rm -f $PIDFILE
     ;;
 
-  *)
+  stop)
+    kill_and_wait $PIDFILE
 
-    echo "Usage: ctl {start|stop}" ;;
+    ;;
+  *)
+    echo "Usage: ctl {start|stop}"
+
+    ;;
 
 esac
+exit 0
