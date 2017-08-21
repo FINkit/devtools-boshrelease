@@ -14,8 +14,6 @@ case $1 in
   mkdir -p $APP_DIR $LOG_DIR
   chown -R $RUN_USER:$RUN_USER $APP_DIR $LOG_DIR
 
-  echo $$ > $PIDFILE
-
   echo "INSTALL4J_JAVA_HOME=/var/vcap/packages/oraclejdk/" >> /etc/environment
 
   cd /var/vcap/packages/nexus
@@ -23,6 +21,8 @@ case $1 in
   exec /var/vcap/packages/nexus/nexus/bin/nexus start \
          >>  $LOG_DIR/bosh_nexus-nexus.stdout.log \
          2>> $LOG_DIR/bosh_nexus-nexus.stderr.log
+  
+  echo $$ > $PIDFILE
 
   ;;
 
