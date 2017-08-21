@@ -1,9 +1,8 @@
 language: go
 
 before_install:
-- curl -o bosh-cli-2.0.28-linux-amd64 https://s3.amazonaws.com/bosh-cli-artifacts/bosh-cli-2.0.28-linux-amd64
-- chmod +x ~/bosh-cli-*
-- sudo mv ~/bosh-cli-* /usr/local/bin/bosh
+- curl -o /home/travis/bosh https://s3.amazonaws.com/bosh-cli-artifacts/bosh-cli-2.0.28-linux-amd64
+- chmod +x /home/travis/bosh
 
 script: 
-- bosh create-release  
+- /home/travis/bosh create-release  
