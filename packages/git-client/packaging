@@ -8,7 +8,5 @@ set -u # report the usage of uninitialized variables
 GIT_VERSION=2.14.1
 tar -xzvf git/git-${GIT_VERSION}.tar.gz
 cd git-${GIT_VERSION}
-make configure
-./configure --prefix=${BOSH_INSTALL_TARGET}
-make all
-make install
+make --prefix=${BOSH_INSTALL_TARGET} all
+make --prefix=${BOSH_INSTALL_TARGET} install
