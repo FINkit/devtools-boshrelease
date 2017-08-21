@@ -1,6 +1,5 @@
-#!/bin/sh -e
+#!/bin/sh -eu
 
-export JAVA_HOME=/var/vcap/packages/oraclejdk
 JAVA=${JAVA_HOME}/bin/java
 
 export JAVA_OPTS=""
