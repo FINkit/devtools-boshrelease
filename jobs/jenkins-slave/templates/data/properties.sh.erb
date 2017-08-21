@@ -24,3 +24,6 @@ export SWARM_ARGS="-deleteExistingClients -disableSslVerification -fsroot ${SLAV
 export MEMORY_SETTINGS=""
 
 export LD_LIBRARY_PATH=/var/vcap/packages/git/usr/lib/x86_64-linux-gnu:/var/vcap/packages/git/usr/lib/git-core
+export INCLUDE_PATH="/var/vcap/packages/git/apt/usr/include:${INCLUDE_PATH:-}"
+export CPATH="$INCLUDE_PATH"
+export CPPPATH="$INCLUDE_PATH"
