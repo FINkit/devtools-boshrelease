@@ -18,7 +18,7 @@ case $1 in
     echo $$ > $PIDFILE
 
 
-    exec -u vcap:vcap /var/vcap/packages/nexus/nexus/bin/nexus start \
+    exec -u vcap:vcap /var/vcap/packages/nexus/bin/nexus start \
     >>$LOG_DIR/$JOB_NAME.log 2>&1
 
     ;;
