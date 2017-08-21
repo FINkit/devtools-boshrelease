@@ -2,4 +2,5 @@
 name: git
 dependencies:
 files:
-- git/git-2.14.1.tar.gz
+- apt/git/profile.sh
+- apt/git/*.deb

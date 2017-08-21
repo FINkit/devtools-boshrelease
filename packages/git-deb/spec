@@ -1,6 +1,0 @@
----
-name: git
-dependencies:
-files:
-- apt/git/profile.sh
-- apt/git/*.deb

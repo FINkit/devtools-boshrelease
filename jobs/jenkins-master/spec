@@ -4,7 +4,7 @@ name: jenkins-master
 packages: 
 - oraclejdk
 - jenkins
-- git
+- git-client
 
 provides:
 - name: jenkins_master
