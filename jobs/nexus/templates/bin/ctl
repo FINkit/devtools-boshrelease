@@ -6,6 +6,7 @@ APP_DIR=/var/vcap/sys/run/bosh-nexus
 LOG_DIR=/var/vcap/sys/log/bosh-nexus
 PIDFILE=${APP_DIR}/pid
 RUN_USER=vcap
+INSTALL4J_JAVA_HOME=/var/vcap/packages/oraclejdk/
 
 case $1 in
 
@@ -14,6 +15,8 @@ case $1 in
   chown -R $RUN_USER:$RUN_USER $APP_DIR $LOG_DIR
 
   echo $$ > $PIDFILE
+
+  echo "INSTALL4J_JAVA_HOME=/var/vcap/packages/oraclejdk/" >> /etc/environment
 
   cd /var/vcap/packages/nexus
 
