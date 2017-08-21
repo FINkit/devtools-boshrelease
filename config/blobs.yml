@@ -14,6 +14,14 @@ apt/git/gitk_1%3a2.14.1-1.1~ppa0~ubuntu16.04.1_all.deb:
   size: 839428
   object_id: dbab1d40-9e43-4fb9-76b1-b604da371c95
   sha: ea42533b87b7915f24ad89d4d36f2c8ecb5102c8
+apt/git/libcurl3_7.47.0-1ubuntu2.2_amd64.deb:
+  size: 186008
+  object_id: 6e416631-4e08-4c78-6fc6-4005f4d0d079
+  sha: 5d7fc06e9751687a850c495a31cc5d2c98545a56
+apt/git/libcurl4-openssl-dev_7.47.0-1ubuntu2.2_amd64.deb:
+  size: 261652
+  object_id: b6072d64-4d39-43a6-718c-dd88705fea4e
+  sha: b13c10158bd024e24693f21331f979790aa50826
 apt/git/libpcre2-8-0_10.21-1_amd64.deb:
   size: 164942
   object_id: 51fccd81-1734-480b-566a-f9c788e083a1
