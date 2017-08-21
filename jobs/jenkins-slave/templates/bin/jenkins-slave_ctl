@@ -9,6 +9,8 @@ source /var/vcap/jobs/jenkins-slave/helpers/ctl_setup.sh 'jenkins-slave'
 export PORT=${PORT:-5000}
 export LANG=en_US.UTF-8
 
+AUTH="-username <%= p('jenkins.slave.master_username') %> -password <%= p('jenkins.slave.master_password') %>"
+
 case $1 in
 
   start)
@@ -17,9 +19,8 @@ case $1 in
     # store pid in $PIDFILE
     echo $$ > $PIDFILE
 
-    exec chpst -u vcap:vcap /var/vcap/jobs/jenkins-slave/bin/jenkins-slave \
+    exec chpst -u vcap:vcap ${JAVA} ${MEMORY_SETTINGS} ${JAVA_OPTS} -jar ${SWARM_CLIENT} ${SWARM_ARGS} ${AUTH} \
          >>$LOG_DIR/$JOB_NAME.log 2>&1
-
     ;;
 
   stop)
