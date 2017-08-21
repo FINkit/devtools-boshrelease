@@ -11,4 +11,5 @@ for DEB in $(ls -1 apt/git/*.deb); do
   echo "Installing $(basename $DEB)"
   dpkg -x $DEB $BOSH_INSTALL_TARGET
 done
-ln -s ${BOSH_INSTALL_TARGET}/usr/bin ${BOSH_INSTALL_TARGET/bin
+
+ln -s ${BOSH_INSTALL_TARGET}/usr/bin ${BOSH_INSTALL_TARGET}/bin
