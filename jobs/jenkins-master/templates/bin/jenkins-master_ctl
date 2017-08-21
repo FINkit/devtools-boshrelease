@@ -4,7 +4,7 @@ set -e # exit immediately if a simple command exits with a non-zero status
 set -u # report the usage of uninitialized variables
 
 # Setup env vars and folders for the webapp_ctl script
-source /var/vcap/jobs/jenkins-slave/helpers/ctl_setup.sh 'jenkins-slave'
+source /var/vcap/jobs/jenkins-master/helpers/ctl_setup.sh 'jenkins-master'
 
 export PORT=${PORT:-5000}
 export LANG=en_US.UTF-8
@@ -17,9 +17,8 @@ case $1 in
     # store pid in $PIDFILE
     echo $$ > $PIDFILE
 
-    exec chpst -u vcap:vcap /var/vcap/jobs/jenkins-slave/bin/jenkins-slave \
+    exec chpst -u vcap:vcap ${JAVA} ${MEMORY_SETTINGS} ${JAVA_OPTS} -jar ${JENKINS} ${JENKINS_ARGS} \
          >>$LOG_DIR/$JOB_NAME.log 2>&1
-
     ;;
 
   stop)
@@ -27,7 +26,7 @@ case $1 in
 
     ;;
   *)
-    echo "Usage: ctl {start|stop}"
+    echo "Usage: jenkins-master_ctl {start|stop}"
 
     ;;
 

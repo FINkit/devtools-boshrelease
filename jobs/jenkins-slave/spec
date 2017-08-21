@@ -12,8 +12,7 @@ consumes:
   type: jenkins
 
 templates:
-  bin/jenkins-slave: bin/jenkins-slave
-  bin/ctl: bin/ctl
+  bin/jenkins-slave_ctl: bin/jenkins-slave_ctl
   bin/pre-start: bin/pre-start
   bin/monit_debugger: bin/monit_debugger
   data/properties.sh.erb: data/properties.sh
