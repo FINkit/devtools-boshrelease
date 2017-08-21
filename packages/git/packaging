@@ -13,4 +13,3 @@ for DEB in $(ls -1 apt/git/*.deb); do
 done
 
 ln -s ${BOSH_INSTALL_TARGET}/usr/bin ${BOSH_INSTALL_TARGET}/bin
-ln -s ${BOSH_INSTALL_TARGET}/usr/lib/x86_64-linux-gnu ${BOSH_INSTALL_TARGET}/lib
