@@ -5,17 +5,27 @@ set -u # report the usage of uninitialized variables
 
 # Setup env vars and folders for the webapp_ctl script
 source /var/vcap/jobs/gerrit/helpers/ctl_setup.sh 'gerrit'
-source /var/vcap/jobs/gerrit/packages/git/profile.sh
 
 case $1 in
 
   start)
-    exec chpst -u vcap:vcap /var/vcap/jobs/gerrit/bin/gerrit \
+
+    if [ ! -f ${GERRIT_STORE}/bin/gerrit.sh ]
+    then
+      echo "${JAVA} ${MEMORY_SETTINGS} ${JAVA_OPTS} -jar ${GERRIT} ${GERRIT_INIT_ARGS}"
+      ${JAVA} ${MEMORY_SETTINGS} ${JAVA_OPTS} -jar ${GERRIT} ${GERRIT_INIT_ARGS}
+    fi
+
+    if [ -f ${GERRIT_STORE}/bin/gerrit.sh ]
+    then
+      exec chpst -u vcap:vcap ${GERRIT_STORE}/bin/gerrit.sh restart \
          >>${LOG_DIR}/${JOB_NAME}.log 2>&1
+    fi
 
     ;;
 
   stop)
+
     kill_and_wait $PIDFILE
 
     ;;

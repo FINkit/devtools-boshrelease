@@ -2,8 +2,7 @@
 name: gerrit
 
 templates:
-  bin/ctl: bin/ctl
-  bin/gerrit: bin/gerrit
+  bin/gerrit_ctl: bin/gerrit_ctl
   bin/pre-start: bin/pre-start
   bin/monit_debugger: bin/monit_debugger
   data/properties.sh.erb: data/properties.sh
