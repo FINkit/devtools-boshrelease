@@ -30,6 +30,10 @@ gerrit/gerrit-2.12.7.war:
   size: 48377669
   object_id: 8ce3ce7f-eac1-4187-560e-9e66d61b3e17
   sha: 405b3106d291e8e966cf75077c432ed9f9a45fc5
+git/git-2.14.1.tar.gz:
+  size: 6983655
+  object_id: 755d810e-933a-48ff-624f-7aa332f3ea7b
+  sha: d44422945d5dc520ab44ccfec41a89bc90184efd
 jenkins/apache-maven-3.5.0-bin.tar.gz:
   size: 8534562
   object_id: 8c967a7d-6490-4538-4e2d-57796790574e
