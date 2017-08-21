@@ -23,4 +23,4 @@ export SLAVE_DIR=/var/vcap/data/jenkins-slave
 export SWARM_ARGS="-deleteExistingClients -disableSslVerification -fsroot ${SLAVE_DIR} -showHostName -executors <%= p('jenkins.slave.executors') %> -labels \"<%= p('jenkins.slave.labels') %>\" -master http://<%= link('jenkins_master').instances[0].address %>:8080 -mode <%= p('jenkins.slave.mode') %>"
 export MEMORY_SETTINGS=""
 
-export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/var/vcap/packages/git/usr/lib/x86_64-linux-gnu:/var/vcap/packages/git/usr/lib/git-core
+export LD_LIBRARY_PATH=/var/vcap/packages/git/usr/lib/x86_64-linux-gnu:/var/vcap/packages/git/usr/lib/git-core
