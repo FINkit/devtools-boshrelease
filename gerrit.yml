@@ -5,17 +5,25 @@ name: gerrit
 releases:
 - name: buildstack
   version: latest
+- name: cf-mysql
+  url: https://bosh.io/d/github.com/cloudfoundry/cf-mysql-release?v=36
+  version: "36"
+  sha1: 746240c005465ffa105ee89e53e401e311b4fbf8
 
 stemcells:
 - alias: default
   os: ubuntu-trusty
   version: latest
+- alias: mysql
+  os: ubuntu-trusty
+  version: "3445.2"
 
 update:
   canaries: 1
-  max_in_flight: 2
-  canary_watch_time: 1000-30000
-  update_watch_time: 1000-30000
+  canary_watch_time: 10000-600000
+  update_watch_time: 10000-600000
+  max_in_flight: 1
+  serial: true
 
 instance_groups:
 - name: gerrit
@@ -30,5 +38,137 @@ instance_groups:
   stemcell: default
   networks:
   - name: buildstack
+
+- name: mysql
+  instances: 2
+  azs: [z1, z2]
+  networks: [{name: buildstack}]
+  vm_type: t2.small
+  stemcell: mysql
+  persistent_disk: 10000
+  jobs:
+  - name: mysql
+    release: cf-mysql
+    properties:
+      cf_mysql:
+        mysql:
+          admin_password: ((cf_mysql_mysql_admin_password))
+          cluster_health:
+            password: ((cf_mysql_mysql_cluster_health_password))
+          galera_healthcheck:
+            endpoint_password: ((cf_mysql_mysql_galera_healthcheck_endpoint_password))
+            db_password: ((cf_mysql_mysql_galera_healthcheck_db_password))
+  - name: smoke-tests-user
+    release: cf-mysql
+    properties:
+      cf_mysql:
+        smoke_tests:
+          db_password: ((cf_mysql_smoke_tests_db_password))
+
+- name: arbitrator
+  instances: 1
+  azs: [z3]
+  networks: [{name: buildstack}]
+  vm_type: t2.small
+  stemcell: mysql
+  jobs:
+  - release: cf-mysql
+    name: arbitrator
+    properties:
+      cf_mysql:
+        mysql:
+          admin_password: ((cf_mysql_mysql_admin_password))
+          galera_healthcheck:
+            endpoint_password: ((cf_mysql_mysql_galera_healthcheck_endpoint_password))
+
+- name: proxy
+  instances: 2
+  azs: [z1, z2]
+  networks: [{name: buildstack}]
+  vm_type: t2.small
+  stemcell: mysql
+  jobs:
+  - name: proxy
+    release: cf-mysql
+    properties:
+      cf_mysql:
+        proxy:
+          api_password: ((cf_mysql_proxy_api_password))
+    provides:
+      mysql-database:
+        as: mysql-database
+        shared: true
+
+- name: bootstrap
+  instances: 1
+  lifecycle: errand
+  azs: [z1]
+  networks: [{name: buildstack}]
+  vm_type: t2.small
+  stemcell: mysql
+  jobs:
+  - {release: cf-mysql, name: bootstrap}
+
+- name: rejoin-unsafe
+  instances: 1
+  lifecycle: errand
+  azs: [z1]
+  networks: [{name: buildstack}]
+  vm_type: t2.small
+  stemcell: mysql
+  jobs:
+  - {release: cf-mysql, name: rejoin-unsafe}
+
+- name: verify-cluster-schemas
+  instances: 1
+  lifecycle: errand
+  azs: [z1]
+  networks: [{name: buildstack}]
+  vm_type: t2.small
+  stemcell: mysql
+  jobs:
+  - name: verify-cluster-schemas
+    release: cf-mysql
+    properties:
+      cf_mysql:
+        mysql:
+          admin_password: ((cf_mysql_mysql_admin_password))
+          galera_healthcheck:
+            endpoint_password: ((cf_mysql_mysql_galera_healthcheck_endpoint_password))
+
+- name: smoke-tests
+  instances: 1
+  lifecycle: errand
+  azs: [z1]
+  networks: [{name: buildstack}]
+  vm_type: t2.small
+  stemcell: mysql
+  jobs:
+  - name: smoke-tests
+    release: cf-mysql
+    properties:
+      cf_mysql:
+        mysql:
+          admin_password: ((cf_mysql_mysql_admin_password))
+        proxy:
+          api_password: ((cf_mysql_proxy_api_password))
+        smoke_tests:
+          db_password: ((cf_mysql_smoke_tests_db_password))
+          standalone_tests_only: true
+
+variables:
+- name: cf_mysql_mysql_admin_password
+  type: password
+- name: cf_mysql_mysql_cluster_health_password
+  type: password
+- name: cf_mysql_mysql_galera_healthcheck_db_password
+  type: password
+- name: cf_mysql_mysql_galera_healthcheck_endpoint_password
+  type: password
+- name: cf_mysql_proxy_api_password
+  type: password
+- name: cf_mysql_smoke_tests_db_password
+  type: password
+
 tags:
   project: gerrit
