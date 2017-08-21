@@ -4,6 +4,4 @@ set -e
 tar -xvzf nexus-3.5.0-02-unix.tar.gz
 rm -rf nexus-3.5.0-02-unix.tar.gz
 
-mkdir ${BOSH_INSTALL_TARGET}/nexus/
-
-mv nexus-3.5.0-02/nexus/* ${BOSH_INSTALL_TARGET}/nexus/
+mv nexus-3.5.0-02/* ${BOSH_INSTALL_TARGET}
