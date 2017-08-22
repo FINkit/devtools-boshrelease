@@ -3,4 +3,4 @@ name: swarm-client
 dependencies: 
 - oraclejdk
 files:
-- jenkins/swarm-client-3.4.jar
+- jenkins/swarm-client-2.2-jar-with-dependencies.jar
