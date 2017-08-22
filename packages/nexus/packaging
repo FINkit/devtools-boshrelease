@@ -8,4 +8,6 @@ mv nexus-3.5.0-02/* ${BOSH_INSTALL_TARGET}
 
 # Use vcap store as nexus working directory
 sed -i '/-Djava.io.tmpdir/c -Djava.io.tmpdir=\/var\/vcap\/store\/nexus\/' ${BOSH_INSTALL_TARGET}/bin/nexus.vmoptions
-sed -i '/-XX:LogFile/c -DXX:LogFile=\/var\/vcap\/store\/nexus\/nexus.log' ${BOSH_INSTALL_TARGET}/bin/nexus.vmoptions
+sed -i '/-XX:LogFile/c -XX:LogFile=\/var\/vcap\/store\/nexus\/nexus.log' ${BOSH_INSTALL_TARGET}/bin/nexus.vmoptions
+sed -i '/-Dkaraf.data/c -Dkaraf.data=\/var\/vcap\/store\/nexus\/karaf' ${BOSH_INSTALL_TARGET}/bin/nexus.vmoptions
+
