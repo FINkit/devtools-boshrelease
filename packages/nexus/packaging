@@ -7,4 +7,4 @@ rm -rf nexus-3.5.0-02-unix.tar.gz
 mv nexus-3.5.0-02/* ${BOSH_INSTALL_TARGET}
 
 # Use vcap store as nexus working directory
-sed -i '/-Djava.io.tmpdir/c -Djava.io.tmpdir=\/var\/vcap\/store\/nexus\/' /var/vcap/packages/nexus/bin/nexus.vmoptions
+sed -i '/-Djava.io.tmpdir/c -Djava.io.tmpdir=\/var\/vcap\/store\/nexus\/' ${BOSH_INSTALL_TARGET}/bin/nexus.vmoptions
