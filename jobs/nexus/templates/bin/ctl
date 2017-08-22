@@ -17,8 +17,7 @@ case $1 in
     # store pid in $PIDFILE
     echo $$ > $PIDFILE
 
-
-    exec /var/vcap/packages/nexus/bin/nexus start \
+    exec chpst -u vcap:vcap /var/vcap/packages/nexus/bin/nexus start \
     >>$LOG_DIR/$JOB_NAME.log 2>&1
 
     ;;
