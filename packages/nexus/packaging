@@ -12,3 +12,6 @@ sed -i '/-XX:LogFile/c -XX:LogFile=\/var\/vcap\/store\/nexus\/nexus.log' ${BOSH_
 sed -i '/-Dkaraf.data/c -Dkaraf.data=\/var\/vcap\/store\/nexus\/karaf' ${BOSH_INSTALL_TARGET}/bin/nexus.vmoptions
 sed -i '/#run_as_user/c run_as_user=\"vcap\"' ${BOSH_INSTALL_TARGET}/bin/nexus.rc
 
+# Set INSTALL4J override
+sed -i '/# INSTALL4J_JAVA_HOME_OVERRIDE=/c INSTALL4J_JAVA_HOME_OVERRIDE=\"/var/vcap/packages/oraclejdk/\"' ${BOSH_INSTALL_TARGET}/bin/nexus
+
