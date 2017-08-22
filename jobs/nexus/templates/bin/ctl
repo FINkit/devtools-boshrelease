@@ -17,14 +17,7 @@ case $1 in
     # store pid in $PIDFILE
     echo $$ > $PIDFILE
 
-    export JAVA_HOME=/var/vcap/packages/oraclejdk
-    export JAVA=${JAVA_HOME}/bin/java
-    export INSTALL4J_JAVA_HOME=${JAVA_HOME}
-
-    export JAVA_OPTS=""
-    export JAVA_TOOL_OPTIONS="-Djava.awt.headless=true"
-
-    exec chpst -u vcap:vcap /var/vcap/packages/nexus/bin/nexus start \
+    exec chpst -u vcap:vcap /var/vcap/packages/nexus/bin/nexus run \
     >>$LOG_DIR/$JOB_NAME.log 2>&1
 
     ;;
