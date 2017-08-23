@@ -1,8 +1,6 @@
 #!/bin/bash
 set -e
 
-http://download-keycdn.ej-technologies.com/install4j/install4j_unix_7_0_1.tar.gz
-
 tar -xvzf install4j_unix*.tar.gz
 rm -rf install4j_unix*.tar.gz
 
