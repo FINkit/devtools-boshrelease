@@ -6,7 +6,7 @@ NEXUS_VERSION="3.5.0-02"
 tar -xvzf nexus-${NEXUS_VERSION}-unix.tar.gz
 rm -rf nexus-${NEXUS_VERSION}-unix.tar.gz
 
-mv nexus-${NEXUS_VERSION}/* nexus-${NEXUS_VERSION}/.* ${BOSH_INSTALL_TARGET}
+mv nexus-${NEXUS_VERSION}/* nexus-${NEXUS_VERSION}/.install4j ${BOSH_INSTALL_TARGET}
 
 # Use vcap store as nexus working directory
 sed -i '/-Djava.io.tmpdir/c -Djava.io.tmpdir=\/var\/vcap\/store\/nexus\/' ${BOSH_INSTALL_TARGET}/bin/nexus.vmoptions
