@@ -58,6 +58,10 @@ instance_groups:
           galera_healthcheck:
             endpoint_password: ((cf_mysql_mysql_galera_healthcheck_endpoint_password))
             db_password: ((cf_mysql_mysql_galera_healthcheck_db_password))
+      seeded_databases:
+      - name: reviewdb
+        username: gerrit
+        password: pw1
   - name: smoke-tests-user
     release: cf-mysql
     properties:
