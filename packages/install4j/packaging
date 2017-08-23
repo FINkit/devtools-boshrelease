@@ -4,4 +4,4 @@ set -e
 tar -xvzf install4j_unix*.tar.gz
 rm -rf install4j_unix*.tar.gz
 
-mv install_4j*/* install_4j*/.* ${BOSH_INSTALL_TARGET}
+mv install4j*/* install4j*/.* ${BOSH_INSTALL_TARGET}
