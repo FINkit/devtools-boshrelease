@@ -23,6 +23,9 @@ case $1 in
     ;;
 
   stop)
+    exec chpst -u vcap:vcap /var/vcap/packages/nexus/bin/nexus stop \
+    >>$LOG_DIR/$JOB_NAME.log 2>&1
+   
     kill_and_wait $PIDFILE
 
     ;;
