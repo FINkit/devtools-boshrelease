@@ -1,31 +1,3 @@
-apt/git/git-gui_1%3a2.14.1-1.1~ppa0~ubuntu16.04.1_all.deb:
-  size: 918924
-  object_id: 5c28938a-7b07-4fa5-4692-e551eec5654e
-  sha: 8e6c5c48459bb8e8f3616337faa126769d0fa25d
-apt/git/git-man_1%3a2.14.1-1.1~ppa0~ubuntu16.04.1_all.deb:
-  size: 1491534
-  object_id: 0601a13c-2c18-42f4-6cc0-91d3c75b58aa
-  sha: 645bac9943569f9a61eff86b8384bea91c107595
-apt/git/git_1%3a2.14.1-1.1~ppa0~ubuntu16.04.1_amd64.deb:
-  size: 4789274
-  object_id: 5a5ab4aa-97c2-41fb-472b-c13c319e824b
-  sha: 9f8b482e3f317146c54111cbd0735935760b4ca4
-apt/git/gitk_1%3a2.14.1-1.1~ppa0~ubuntu16.04.1_all.deb:
-  size: 839428
-  object_id: dbab1d40-9e43-4fb9-76b1-b604da371c95
-  sha: ea42533b87b7915f24ad89d4d36f2c8ecb5102c8
-apt/git/libcurl3_7.47.0-1ubuntu2.2_amd64.deb:
-  size: 186008
-  object_id: 6e416631-4e08-4c78-6fc6-4005f4d0d079
-  sha: 5d7fc06e9751687a850c495a31cc5d2c98545a56
-apt/git/libcurl4-openssl-dev_7.47.0-1ubuntu2.2_amd64.deb:
-  size: 261652
-  object_id: b6072d64-4d39-43a6-718c-dd88705fea4e
-  sha: b13c10158bd024e24693f21331f979790aa50826
-apt/git/libpcre2-8-0_10.21-1_amd64.deb:
-  size: 164942
-  object_id: 51fccd81-1734-480b-566a-f9c788e083a1
-  sha: 7a903943a6eb97d98087e38054c1352eaeff8e9e
 gerrit/gerrit-2.12.7.war:
   size: 48377669
   object_id: 8ce3ce7f-eac1-4187-560e-9e66d61b3e17

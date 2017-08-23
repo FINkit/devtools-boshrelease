@@ -1,5 +1,0 @@
-export PATH="/var/vcap/packages/git/apt/usr/bin:$PATH"
-export LD_LIBRARY_PATH="/var/vcap/packages/git/apt/usr/lib/x86_64-linux-gnu/:${LD_LIBRARY_PATH:-}"
-export INCLUDE_PATH="/var/vcap/packages/git/apt/usr/include:${INCLUDE_PATH:-}"
-export CPATH="$INCLUDE_PATH"
-export CPPPATH="$INCLUDE_PATH"

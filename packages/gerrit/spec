@@ -3,7 +3,7 @@ name: gerrit
 
 dependencies:
   - oraclejdk
-  - git
+  - git-client
 
 files:
   - gerrit/gerrit-2.12.7.war
