@@ -102,6 +102,7 @@ instance_groups:
       mysql-database:
         as: mysql-database
         shared: true
+  vm_extensions: [mysql-pool]
 
 - name: bootstrap
   instances: 1
