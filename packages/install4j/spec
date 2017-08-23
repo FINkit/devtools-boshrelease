@@ -1,8 +1,0 @@
----
-name: install4j
-
-dependencies:
-  - oraclejdk
-
-files:
-  - install4j_unix_7_0_1.tar.gz

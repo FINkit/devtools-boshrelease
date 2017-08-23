@@ -1,7 +1,0 @@
-#!/bin/bash
-set -e
-
-tar -xvzf install4j_unix*.tar.gz
-rm -rf install4j_unix*.tar.gz
-
-mv install4j*/* install4j*/.* ${BOSH_INSTALL_TARGET}
