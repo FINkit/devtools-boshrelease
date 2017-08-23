@@ -3,7 +3,6 @@ name: nexus
 
 packages:
   - oraclejdk
-  - install4j
   - nexus
 templates:
   bin/ctl: bin/ctl
