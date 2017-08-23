@@ -22,6 +22,10 @@ gerrit/gerrit-2.12.7.war:
   size: 48377669
   object_id: 8ce3ce7f-eac1-4187-560e-9e66d61b3e17
   sha: 405b3106d291e8e966cf75077c432ed9f9a45fc5
+install4j_unix_7_0_1.tar.gz:
+  size: 56823635
+  object_id: 069cec4b-cfd6-4223-4a42-f66b0f47ba18
+  sha: dca9127a32cd009d0acd9c6ba73003d13af5229f
 jenkins/apache-maven-3.5.0-bin.tar.gz:
   size: 8534562
   object_id: 8c967a7d-6490-4538-4e2d-57796790574e
