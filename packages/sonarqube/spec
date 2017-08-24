@@ -1,0 +1,6 @@
+---
+name: sonarqube
+dependencies: 
+- oraclejdk
+files:
+- sonarqube/sonarqube-6.5.zip
