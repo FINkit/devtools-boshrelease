@@ -71,7 +71,10 @@ instance_groups:
         mysql:
           username: ((sonar_mysql_username))
           password: ((sonar_mysql_password))
-          host: ((sonar_mysql_host))    
+          host: ((sonar_mysql_host))
+        server:
+          port: ((sonar_server_port))
+          address: ((sonar_server_address))    
   vm_type: m3.medium
   stemcell: default
   networks:
