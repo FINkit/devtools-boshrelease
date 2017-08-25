@@ -89,7 +89,7 @@ instance_groups:
   vm_type: m3.medium
   stemcell: default
   networks:
-  - name: default
+  - name: buildstack
 
 variables:
 - name: jenkins_admin_password
