@@ -33,8 +33,12 @@ instance_groups:
   jobs:
   - name: gerrit
     release: buildstack
-    properties: {}
+    properties:
+      gerrit:
+        mysql:
+          password: ((cf_mysql_mysql_gerrit_password))
   vm_type: m3.medium
+  persistent_disk_pool: 100GB
   stemcell: default
   networks:
   - name: buildstack
