@@ -61,7 +61,7 @@ instance_groups:
       seeded_databases:
       - name: reviewdb
         username: gerrit
-        password: pw1
+        password: ((cf_mysql_mysql_gerrit_password))
   - name: smoke-tests-user
     release: cf-mysql
     properties:
@@ -163,6 +163,8 @@ instance_groups:
 
 variables:
 - name: cf_mysql_mysql_admin_password
+  type: password
+- name: cf_mysql_mysql_gerrit_password
   type: password
 - name: cf_mysql_mysql_cluster_health_password
   type: password
