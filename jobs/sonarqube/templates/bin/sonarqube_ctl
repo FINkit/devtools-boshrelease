@@ -17,13 +17,13 @@ case $1 in
     # store pid in $PIDFILE
     echo $$ > $PIDFILE
 
-    exec chpst -u vcap:vcap /var/vcap/packages/sonarqube/bin/linux-x86-64/sonar.sh \
+    exec chpst -u vcap:vcap /var/vcap/packages/sonarqube/bin/linux-x86-64/sonar.sh start \
          >>$LOG_DIR/$JOB_NAME.log 2>&1
     ;;
 
   stop)
-    kill_and_wait $PIDFILE
-
+    exec chpst -u vcap:vcap /var/vcap/packages/sonarqube/bin/linux-x86-64/sonar.sh stop \
+         >>$LOG_DIR/$JOB_NAME.log 2>&1
     ;;
   *)
     echo "Usage: sonarqube_ctl {start|stop}"
