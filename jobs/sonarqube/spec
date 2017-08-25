@@ -1,0 +1,28 @@
+---
+name: sonarqube
+
+packages: 
+- oraclejdk
+- sonarqube
+
+templates:
+  bin/sonarqube_ctl: bin/sonarqube_ctl
+  bin/monit_debugger: bin/monit_debugger
+  bin/pre-start: bin/pre-start
+  config/sonar.properties: config/sonar.properties
+  data/properties.sh.erb: data/properties.sh
+  helpers/ctl_setup.sh: helpers/ctl_setup.sh
+  helpers/ctl_utils.sh: helpers/ctl_utils.sh
+
+properties:
+  sonar.server.address:
+    description: "Fully qualified address of Sonar server"
+  sonar.server.port:
+    description: "Port of the sonar server"
+    deafult: 9000
+  sonar.mysql.host:
+    description: "Host for sonar database"
+  sonar.mysql.username:
+    description: "Database username for sonar database"
+  sonar.mysql.password:
+    description: "Database password for sonar database"

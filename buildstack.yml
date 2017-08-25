@@ -59,9 +59,42 @@ instance_groups:
   stemcell: default
   networks:
   - name: buildstack
+- name: sonarqube
+  azs:
+  - z1
+  instances: 1
+  jobs:
+  - name: sonarqube
+    release: buildstack
+    properties:
+      sonar:
+        mysql:
+          username: ((sonar_mysql_username))
+          password: ((sonar_mysql_password))
+          host: ((sonar_mysql_host))
+        server:
+          port: ((sonar_server_port))
+          address: ((sonar_server_address))    
+  vm_type: m3.medium
+  stemcell: default
+  networks:
+  - name: buildstack
+- name: nexus
+  azs:
+  - z1
+  instances: 1
+  jobs:
+  - name: nexus
+    release: buildstack
+  vm_type: m3.medium
+  stemcell: default
+  networks:
+  - name: buildstack
 
 variables:
 - name: jenkins_admin_password
   type: password
 - name: jenkins_agent_password
+  type: password
+- name: sonar_mysql_password
   type: password
