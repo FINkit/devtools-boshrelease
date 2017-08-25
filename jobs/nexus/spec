@@ -1,0 +1,19 @@
+---
+name: nexus
+
+packages:
+  - oraclejdk
+  - nexus
+
+templates:
+  bin/ctl: bin/ctl
+  bin/monit_debugger: bin/monit_debugger
+  data/properties.sh.erb: data/properties.sh
+  helpers/ctl_setup.sh: helpers/ctl_setup.sh
+  helpers/ctl_utils.sh: helpers/ctl_utils.sh
+
+consumes: []
+
+provides:
+- name: nexus
+  type: nexus

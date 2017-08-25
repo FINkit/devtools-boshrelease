@@ -1,0 +1,19 @@
+#!/bin/bash
+set -e
+
+NEXUS_VERSION="3.5.0-02"
+
+tar -xvzf nexus-${NEXUS_VERSION}-unix.tar.gz
+rm -rf nexus-${NEXUS_VERSION}-unix.tar.gz
+
+mv nexus-${NEXUS_VERSION}/* nexus-${NEXUS_VERSION}/.install4j ${BOSH_INSTALL_TARGET}
+
+# Use vcap store as nexus working directory
+sed -i '/-Djava.io.tmpdir/c -Djava.io.tmpdir=\/var\/vcap\/store\/nexus\/' ${BOSH_INSTALL_TARGET}/bin/nexus.vmoptions
+sed -i '/-XX:LogFile/c -XX:LogFile=\/var\/vcap\/store\/nexus\/nexus.log' ${BOSH_INSTALL_TARGET}/bin/nexus.vmoptions
+sed -i '/-Dkaraf.data/c -Dkaraf.data=\/var\/vcap\/store\/nexus\/karaf' ${BOSH_INSTALL_TARGET}/bin/nexus.vmoptions
+sed -i '/#run_as_user/c run_as_user=\"vcap\"' ${BOSH_INSTALL_TARGET}/bin/nexus.rc
+
+# Set INSTALL4J override
+sed -i '/# INSTALL4J_JAVA_HOME_OVERRIDE=/c INSTALL4J_JAVA_HOME_OVERRIDE=\"/var/vcap/packages/oraclejdk/\"' ${BOSH_INSTALL_TARGET}/bin/nexus
+

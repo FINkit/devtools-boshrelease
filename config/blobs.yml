@@ -22,6 +22,10 @@ jenkins/swarm-client-3.4.jar:
   size: 1577986
   object_id: 0b682084-912f-4914-67e7-05be2e288621
   sha: ef74404b14710491ca7e416bb9bed29f7f5236db
+nexus-3.5.0-02-unix.tar.gz:
+  size: 110351030
+  object_id: 1066375f-4044-48d7-5257-83520032dd92
+  sha: 209448cd236febf7e3eae0682be3d95f786443ec
 oraclejava/jdk-8u144-linux-x64.tar.gz:
   size: 185515842
   object_id: d33d4af1-8f1c-438b-6d4e-b14334ac84a0

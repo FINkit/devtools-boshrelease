@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# configure custom properties for job
+export JAVA_HOME=/var/vcap/packages/oraclejdk
+export JAVA=${JAVA_HOME}/bin/java
+export INSTALL4J_JAVA_HOME=${JAVA_HOME}
+
+export JAVA_OPTS=""
+export JAVA_TOOL_OPTIONS="-Djava.awt.headless=true"
