@@ -12,15 +12,9 @@ export LANG=en_US.UTF-8
 case $1 in
 
   start)
-    pid_guard $PIDFILE $JOB_NAME
-
-    # store pid in $PIDFILE
-    echo $$ > $PIDFILE
-
     exec chpst -u vcap:vcap /var/vcap/packages/sonarqube/bin/linux-x86-64/sonar.sh start \
          >>$LOG_DIR/$JOB_NAME.log 2>&1
     ;;
-
   stop)
     exec chpst -u vcap:vcap /var/vcap/packages/sonarqube/bin/linux-x86-64/sonar.sh stop \
          >>$LOG_DIR/$JOB_NAME.log 2>&1
