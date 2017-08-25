@@ -5,6 +5,7 @@ templates:
   bin/gerrit_ctl: bin/gerrit_ctl
   bin/pre-start: bin/pre-start
   bin/monit_debugger: bin/monit_debugger
+  config/gerrit.config:config/gerrit.config
   data/properties.sh.erb: data/properties.sh
   helpers/ctl_setup.sh: helpers/ctl_setup.sh
   helpers/ctl_utils.sh: helpers/ctl_utils.sh
