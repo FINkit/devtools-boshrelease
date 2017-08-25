@@ -1,0 +1,5 @@
+check process sonarqube
+  with pidfile /var/vcap/sys/run/sonarqube/sonarqube.pid
+  start program "/var/vcap/jobs/sonarqube/bin/monit_debugger sonarqube_ctl '/var/vcap/jobs/sonarqube/bin/sonarqube_ctl start'"
+  stop program "/var/vcap/jobs/sonarqube/bin/monit_debugger sonarqube_ctl '/var/vcap/jobs/sonarqube/bin/sonarqube_ctl stop'"
+  group vcap
