@@ -76,6 +76,7 @@ instance_groups:
           port: ((sonar_server_port))
           address: ((sonar_server_address))    
   vm_type: m3.medium
+  vm_extensions: [internet-required]
   stemcell: default
   networks:
   - name: buildstack
@@ -87,6 +88,7 @@ instance_groups:
   - name: nexus
     release: buildstack
   vm_type: m3.medium
+  vm_extensions: [internet-required]
   stemcell: default
   networks:
   - name: buildstack
