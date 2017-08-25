@@ -11,4 +11,3 @@ export HOME=/var/vcap
 cd ${BOSH_COMPILE_TARGET}/sonarqube
 unzip sonarqube*.zip
 mv sonarqube-6.5/* ${BOSH_INSTALL_TARGET}
-chown vcap:vcap -R ${BOSH_INSTALL_TARGET}
