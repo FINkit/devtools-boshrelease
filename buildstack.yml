@@ -66,7 +66,12 @@ instance_groups:
   jobs:
   - name: sonarqube
     release: buildstack
-    properties: {} 
+    properties:
+      sonar:
+        mysql:
+          username: ((sonar_mysql_username))
+          password: ((sonar_mysql_password))
+          host: ((sonar_mysql_host))    
   vm_type: m3.medium
   stemcell: default
   networks:
@@ -87,4 +92,6 @@ variables:
 - name: jenkins_admin_password
   type: password
 - name: jenkins_agent_password
+  type: password
+- name: sonar_mysql_password
   type: password
