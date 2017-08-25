@@ -26,6 +26,10 @@ oraclejava/jdk-8u144-linux-x64.tar.gz:
   size: 185515842
   object_id: d33d4af1-8f1c-438b-6d4e-b14334ac84a0
   sha: d4c4f02908d39827393dd77f9eb8da348363efda
+sonarqube/sonarqube-6.5.zip:
+  size: 143286376
+  object_id: cdf1bb71-8c45-405d-6710-50a643131ca0
+  sha: 266051af830e1462f3455802326a52ba6f86efd9
 swarm-client/swarm-client-2.2-jar-with-dependencies.jar:
   size: 1385476
   object_id: 841f883a-7b47-4585-6024-2abc19253230
