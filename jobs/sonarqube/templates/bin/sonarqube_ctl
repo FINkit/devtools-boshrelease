@@ -17,7 +17,7 @@ case $1 in
     # store pid in $PIDFILE
     echo $$ > $PIDFILE
 
-    exec chpst -u vcap:vcap /var/vcap/packages/sonarqube/sonarqube-6.5/bin/linux-x86-64/wrapper \
+    exec chpst -u vcap:vcap /var/vcap/packages/sonarqube/bin/linux-x86-64/sonar.sh \
          >>$LOG_DIR/$JOB_NAME.log 2>&1
     ;;
 

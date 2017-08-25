@@ -8,6 +8,7 @@ CPUS=$(grep -c ^processor /proc/cpuinfo)
 # $BOSH_INSTALL_TARGET - where you copy/install files to be included in package
 export HOME=/var/vcap
 
-mv sonarqube/*.zip $BOSH_INSTALL_TARGET
-cd $BOSH_INSTALL_TARGET
+cd ${BOSH_COMPILE_TARGET}/sonarqube
 unzip sonarqube*.zip
+mv sonarqube-6.5/* ${BOSH_INSTALL_TARGET}
+chown vcap:vcap -R ${BOSH_INSTALL_TARGET}
