@@ -66,7 +66,7 @@ instance_groups:
   jobs:
   - name: sonarqube
     release: buildstack
-    properties: 
+    properties: {} 
   vm_type: m3.medium
   stemcell: default
   networks:
