@@ -1,0 +1,26 @@
+[gerrit]
+	basePath = git
+	canonicalWebUrl = http://localhost:8080/
+[database]
+    type = mysql
+    hostname = 10.40.0.2
+    database = reviewdb
+    username = gerrit
+    password = <%= p('gerrit.mysql.password') %>
+[index]
+	type = LUCENE
+[auth]
+	type = OPENID
+[receive]
+	enableSignedPush = false
+[sendemail]
+	smtpServer = localhost
+[container]
+	user = vcap
+	javaHome = /var/vcap/packages/oraclejdk/jre
+[sshd]
+	listenAddress = *:29418
+[httpd]
+	listenUrl = http://*:8080/
+[cache]
+	directory = cache
