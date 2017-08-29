@@ -1,0 +1,11 @@
+---
+- type: replace
+  path: /instance_groups/name=sonarqube/jobs/-
+  value: 
+    name: cloud-sql-proxy
+    release: buildstack
+    properties:
+      proxy:
+        instance: ((sonar.proxy.instance_name))
+        port: 3306
+        auth: ((sonar.proxy.auth))     
