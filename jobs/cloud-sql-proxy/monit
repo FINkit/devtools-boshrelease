@@ -1,0 +1,5 @@
+check process cloud-sql-proxy
+  with pidfile /var/vcap/sys/run/cloud-sql-proxy/cloud-sql-proxy.pid
+  start program "/var/vcap/jobs/cloud-sql-proxy/bin/monit_debugger cloud-sql-proxy_ctl '/var/vcap/jobs/cloud-sql-proxy/bin/cloud-sql-proxy_ctl start'"
+  stop program "/var/vcap/jobs/cloud-sql-proxy/bin/monit_debugger cloud-sql-proxy_ctl '/var/vcap/jobs/cloud-sql-proxy/bin/cloud-sql-proxy_ctl stop'"
+  group vcap
