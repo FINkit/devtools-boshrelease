@@ -64,13 +64,6 @@ instance_groups:
   - z1
   instances: 1
   jobs:
-  - name: cloud-sql-proxy
-    release: buildstack
-    properties:
-      proxy:
-        instance: finkit-cf-gcp-exp-01:europe-west1:buildtools
-        port: 3306
-        auth: ((sonar.proxy.auth))    
   - name: sonarqube
     release: buildstack
     properties:
