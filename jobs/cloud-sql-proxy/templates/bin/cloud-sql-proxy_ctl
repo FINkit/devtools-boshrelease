@@ -18,7 +18,7 @@ case $1 in
     # store pid in $PIDFILE
     echo $$ > $PIDFILE
 
-    exec chpst -u vcap:vcap /var/vcap/packages/cloud-sql-proxy/cloud-sql-proxy $AUTH \
+    exec chpst -u vcap:vcap /var/vcap/packages/cloud-sql-proxy/cloud_sql_proxy $AUTH \
          >>$LOG_DIR/$JOB_NAME.log 2>&1
     ;;
 
