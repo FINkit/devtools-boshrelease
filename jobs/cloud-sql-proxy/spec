@@ -12,8 +12,8 @@ templates:
   helpers/ctl_utils.sh: helpers/ctl_utils.sh
 
 properties:
-  proxy.instance
+  proxy.instance:
     description: "The instance id of the cloud-sql instance to proxy to"
-  proxy.port
+  proxy.port:
     description: "The port to run the proxy instance on"
     default: 3306
