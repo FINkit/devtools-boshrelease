@@ -18,3 +18,11 @@ packages:
 properties:
   gerrit.mysql.password:
     description: "MySQL password for the Gerrit user"
+  gerrit.mysql.hostname:
+    description: "Location of gerrit database"
+  gerrit.mysql.database:
+    description: "Name of the database for gerrit"
+    default: reviewdb
+  gerrit.mysql.username:
+    description: "Username to connect to the mysqldb"
+    default: gerrit
