@@ -105,6 +105,7 @@ instance_groups:
           password: ((gerrit_mysql_password))
           host: localhost    
   vm_type: m3.medium
+  vm_extensions: [internet-required]
   persistent_disk_pool: 100GB
   stemcell: default
   networks:
