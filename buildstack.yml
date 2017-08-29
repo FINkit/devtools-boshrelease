@@ -64,6 +64,12 @@ instance_groups:
   - z1
   instances: 1
   jobs:
+  - name: cloud-sql-proxy
+    release: buildstack
+    properties:
+      proxy:
+        instance: finkit-cf-gcp-exp-01:europe-west1:buildtools
+        port: 3306    
   - name: sonarqube
     release: buildstack
     properties:
@@ -71,7 +77,7 @@ instance_groups:
         mysql:
           username: ((sonar_mysql_username))
           password: ((sonar_mysql_password))
-          host: ((sonar_mysql_host))
+          host: localhost
         server:
           port: ((sonar_server_port))
           address: ((sonar_server_address))    
