@@ -92,6 +92,22 @@ instance_groups:
   stemcell: default
   networks:
   - name: buildstack
+- name: gerrit
+  azs:
+  - z1
+  instances: 1
+  jobs:
+  - name: gerrit
+    release: buildstack
+    properties:
+      gerrit:
+        mysql:
+          password: ((gerrit_mysql_password))
+  vm_type: m3.medium
+  persistent_disk_pool: 100GB
+  stemcell: default
+  networks:
+  - name: buildstack
 
 variables:
 - name: jenkins_admin_password
@@ -99,4 +115,6 @@ variables:
 - name: jenkins_agent_password
   type: password
 - name: sonar_mysql_password
+  type: password
+- name: gerrit_mysql_password
   type: password
