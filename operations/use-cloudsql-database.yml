@@ -6,6 +6,17 @@
     release: buildstack
     properties:
       proxy:
-        instance: ((sonar.proxy.instance_name))
+        instance: ((cloudsql.proxy.instance_name))
         port: 3306
-        auth: ((sonar.proxy.auth))     
+        auth: ((cloudsql.proxy.auth))     
+
+- type: replace
+  path: /instance_groups/name=gerrit/jobs/-
+  value: 
+    name: cloud-sql-proxy
+    release: buildstack
+    properties:
+      proxy:
+        instance: ((cloudsql.proxy.instance_name))
+        port: 3306
+        auth: ((cloudsql.proxy.auth))     
