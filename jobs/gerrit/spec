@@ -18,7 +18,7 @@ packages:
 properties:
   gerrit.mysql.password:
     description: "MySQL password for the Gerrit user"
-  gerrit.mysql.hostname:
+  gerrit.mysql.host:
     description: "Location of gerrit database"
   gerrit.mysql.database:
     description: "Name of the database for gerrit"

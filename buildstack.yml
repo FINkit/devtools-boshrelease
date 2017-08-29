@@ -103,7 +103,7 @@ instance_groups:
       gerrit:
         mysql:
           password: ((gerrit_mysql_password))
-          hostname: localhost    
+          host: localhost    
   vm_type: m3.medium
   persistent_disk_pool: 100GB
   stemcell: default

@@ -37,7 +37,7 @@ instance_groups:
       gerrit:
         mysql:
           password: ((cf_mysql_mysql_gerrit_password))
-          hostname: 10.40.0.2    
+          host: 10.40.0.2    
   vm_type: m3.medium
   persistent_disk_pool: 100GB
   stemcell: default
