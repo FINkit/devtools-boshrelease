@@ -10,6 +10,8 @@ case $1 in
 
   start)
 
+    pid_guard $GERRIT_PIDFILE $JOB_NAME
+    
     if [ ! -f ${GERRIT_STORE}/etc/gerrit.config ]
     then
       mkdir -p ${GERRIT_STORE}/etc/
@@ -24,10 +26,6 @@ case $1 in
 
     chown -R vcap:vcap ${GERRIT_STORE}
 
-    pid_guard $PIDFILE $JOB_NAME
-
-    echo $$ > $PIDFILE
-
     exec chpst -u vcap:vcap ${GERRIT_STORE}/bin/gerrit.sh restart \
        >>${LOG_DIR}/${JOB_NAME}.log 2>&1
 
@@ -35,7 +33,7 @@ case $1 in
 
   stop)
 
-    kill_and_wait ${PIDFILE}
+    kill_and_wait ${GERRIT_PIDFILE}
 
     ;;
   *)
