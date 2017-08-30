@@ -3,7 +3,7 @@
 set -e # exit immediately if a simple command exits with a non-zero status
 set -u # report the usage of uninitialized variables
 
-source /var/vcap/jobs/gerrit/helpers/ctl_setup.sh 'gerrit'
+source /var/vcap/jobs/gerrit/data/properties.sh
 
 if [[ ! -d ${GERRIT_STORE} ]]; then
     mkdir -p ${GERRIT_STORE}
