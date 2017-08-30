@@ -11,6 +11,7 @@ case $1 in
   start)
 
     if [ ! -f ${GERRIT_STORE}/etc/gerrit.config ]
+    then
       mkdir -p ${GERRIT_STORE}/etc/
       cp /var/vcap/jobs/gerrit/config/gerrit.config ${GERRIT_STORE}/etc/gerrit.config
     fi
