@@ -9,30 +9,17 @@ source /var/vcap/jobs/gerrit/helpers/ctl_setup.sh 'gerrit'
 case $1 in
 
   start)
-    if [ ! -f ${GERRIT_STORE}/etc/gerrit.config ]
-    then
-      mkdir -p ${GERRIT_STORE}/etc/
-      cp /var/vcap/jobs/gerrit/config/gerrit.config ${GERRIT_STORE}/etc/gerrit.config
-      cp /var/vcap/jobs/gerrit/config/secure.config ${GERRIT_STORE}/etc/secure.config
-    fi
 
-    echo "Running initialisation script" >> ${LOG_DIR}/${JOB_NAME}.log 2>&1
-    ${JAVA} ${MEMORY_SETTINGS} ${JAVA_OPTS} -jar ${GERRIT} ${GERRIT_INIT_ARGS} >> ${LOG_DIR}/${JOB_NAME}.log 2>&1
+    pid_guard $PIDFILE $JOB_NAME
+    echo $$ > $PIDFILE
 
-    chown -R vcap:vcap ${GERRIT_STORE}
-
-    exec chpst -u vcap:vcap ${GERRIT_STORE}/bin/gerrit.sh start \
-       >>${LOG_DIR}/${JOB_NAME}.log 2>&1
+    exec chpst -u vcap:vcap ${JAVA} ${MEMORY_SETTINGS} ${JAVA_OPTS} -jar ${GERRIT} daemon --console-log --site-path ${GERRIT_STORE} >> ${LOG_DIR}/${JOB_NAME}.log 2>&1
 
     ;;
-
   stop)
-
-    exec chpst -u vcap:vcap ${GERRIT_STORE}/bin/gerrit.sh stop \
-       >>${LOG_DIR}/${JOB_NAME}.log 2>&1
+    kill_and_wait $PIDFILE
 
     ;;
-
   *)
     echo "Usage: gerrit_ctl {start|stop}"
 
