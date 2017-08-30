@@ -13,6 +13,7 @@ case $1 in
     then
       mkdir -p ${GERRIT_STORE}/etc/
       cp /var/vcap/jobs/gerrit/config/gerrit.config ${GERRIT_STORE}/etc/gerrit.config
+      cp /var/vcap/jobs/gerrit/config/secure.config ${GERRIT_STORE}/etc/secure.config
     fi
 
     echo "Running initialisation script" >> ${LOG_DIR}/${JOB_NAME}.log 2>&1

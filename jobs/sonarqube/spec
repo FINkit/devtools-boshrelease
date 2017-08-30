@@ -24,5 +24,6 @@ properties:
     description: "Host for sonar database"
   sonar.mysql.username:
     description: "Database username for sonar database"
+    default: sonarqube
   sonar.mysql.password:
     description: "Database password for sonar database"
