@@ -19,6 +19,11 @@ case $1 in
     if [ -f ${GERRIT_STORE}/bin/gerrit.sh ]
     then
       cp /var/vcap/jobs/gerrit/config/gerrit.config ${GERRIT_STORE}/etc/gerrit.config
+
+      pid_guard $PIDFILE $JOB_NAME
+
+      echo $$ > $PIDFILE
+
       exec chpst -u vcap:vcap ${GERRIT_STORE}/bin/gerrit.sh restart \
          >>${LOG_DIR}/${JOB_NAME}.log 2>&1
     fi
@@ -27,11 +32,11 @@ case $1 in
 
   stop)
 
-    kill_and_wait ${GERRIT_PIDFILE}
+    kill_and_wait ${PIDFILE}
 
     ;;
   *)
-    echo "Usage: ctl {start|stop}"
+    echo "Usage: gerrit_ctl {start|stop}"
 
     ;;
 
