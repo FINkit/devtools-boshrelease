@@ -19,4 +19,21 @@
       proxy:
         instance: ((cloudsql.proxy.instance_name))
         port: 3306
-        auth: ((cloudsql.proxy.auth))     
+        auth: ((cloudsql.proxy.auth)) 
+
+- type: replace
+  path: /instance_groups/name=sonarqube/jobs/name=sonarqube/properties/sonar/mysql/host
+  value: localhost
+
+- type: replace
+  path: /instance_groups/name=gerrit/jobs/name=gerrit/properties/gerrit/mysql/host
+  value: localhost
+
+- type: remove
+  path: /instance_groups/name=proxy
+
+- type: remove
+  path: /instance_groups/name=mysql
+
+- type: remove
+  path: /instance_groups/name=arbitrator
