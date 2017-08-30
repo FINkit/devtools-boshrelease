@@ -39,4 +39,7 @@
   path: /instance_groups/name=arbitrator
 
 - type: remove
+  path: /instance_groups/name=bootstrap
+
+- type: remove
   path: /releases/name=cf-mysql
