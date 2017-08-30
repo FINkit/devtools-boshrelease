@@ -19,5 +19,5 @@ export GERRIT_VERSION=2.12.7
 export GERRIT=/var/vcap/jobs/gerrit/packages/gerrit/gerrit/gerrit-${GERRIT_VERSION}.war
 export GERRIT_STORE="/var/vcap/store/gerrit"
 export GERRIT_PIDFILE="${GERRIT_STORE}/logs/gerrit.pid"
-export GERRIT_INIT_ARGS="init --batch -d ${GERRIT_STORE}"
+export GERRIT_INIT_ARGS="init --batch -d ${GERRIT_STORE} --install-plugin=commit-message-length-validator --install-plugin=download-commands --install-plugin=replication --install-plugin=reviewnotes --install-plugin=singleusergroup --no-auto-start"
 export MEMORY_SETTINGS=""
