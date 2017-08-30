@@ -1,6 +1,6 @@
 ---
 - type: replace
-  path: /instance_groups/name=sonarqube/jobs/-
+  path: /instance_groups/name=sonarqube/jobs/0
   value: 
     name: cloud-sql-proxy
     release: buildstack
@@ -11,7 +11,7 @@
         auth: ((cloudsql.proxy.auth))     
 
 - type: replace
-  path: /instance_groups/name=gerrit/jobs/-
+  path: /instance_groups/name=gerrit/jobs/0
   value: 
     name: cloud-sql-proxy
     release: buildstack
