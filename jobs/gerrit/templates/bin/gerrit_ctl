@@ -9,9 +9,6 @@ source /var/vcap/jobs/gerrit/helpers/ctl_setup.sh 'gerrit'
 case $1 in
 
   start)
-
-    pid_guard $GERRIT_PIDFILE $JOB_NAME
-    
     if [ ! -f ${GERRIT_STORE}/etc/gerrit.config ]
     then
       mkdir -p ${GERRIT_STORE}/etc/
@@ -26,14 +23,15 @@ case $1 in
 
     chown -R vcap:vcap ${GERRIT_STORE}
 
-    exec chpst -u vcap:vcap ${GERRIT_STORE}/bin/gerrit.sh restart \
+    exec chpst -u vcap:vcap ${GERRIT_STORE}/bin/gerrit.sh start \
        >>${LOG_DIR}/${JOB_NAME}.log 2>&1
 
     ;;
 
   stop)
 
-    kill_and_wait ${GERRIT_PIDFILE}
+    exec chpst -u vcap:vcap ${GERRIT_STORE}/bin/gerrit.sh stop \
+       >>${LOG_DIR}/${JOB_NAME}.log 2>&1
 
     ;;
   *)
