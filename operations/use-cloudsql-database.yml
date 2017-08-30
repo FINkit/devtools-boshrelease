@@ -42,4 +42,11 @@
   path: /instance_groups/name=bootstrap
 
 - type: remove
+  path: /instance_groups/name=verify-cluster-schemas
+
+- type: remove
+  path: /instance_groups/name=smoke-tests
+
+
+- type: remove
   path: /releases/name=cf-mysql
