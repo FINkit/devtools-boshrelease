@@ -71,11 +71,12 @@ instance_groups:
         mysql:
           username: ((sonar_mysql_username))
           password: ((sonar_mysql_password))
-          host: ((sonar_mysql_host))
+          host: localhost
         server:
           port: ((sonar_server_port))
           address: ((sonar_server_address))    
   vm_type: m3.medium
+  vm_extensions: [internet-required]
   stemcell: default
   networks:
   - name: buildstack
@@ -87,6 +88,25 @@ instance_groups:
   - name: nexus
     release: buildstack
   vm_type: m3.medium
+  vm_extensions: [internet-required]
+  stemcell: default
+  networks:
+  - name: buildstack
+- name: gerrit
+  azs:
+  - z1
+  instances: 1
+  jobs:
+  - name: gerrit
+    release: buildstack
+    properties:
+      gerrit:
+        mysql:
+          password: ((gerrit_mysql_password))
+          host: localhost    
+  vm_type: m3.medium
+  vm_extensions: [internet-required]
+  persistent_disk_pool: 100GB
   stemcell: default
   networks:
   - name: buildstack
@@ -97,4 +117,6 @@ variables:
 - name: jenkins_agent_password
   type: password
 - name: sonar_mysql_password
+  type: password
+- name: gerrit_mysql_password
   type: password

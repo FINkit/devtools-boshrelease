@@ -10,19 +10,25 @@ case $1 in
 
   start)
 
+    pid_guard $GERRIT_PIDFILE $JOB_NAME
+    
+    if [ ! -f ${GERRIT_STORE}/etc/gerrit.config ]
+    then
+      mkdir -p ${GERRIT_STORE}/etc/
+      cp /var/vcap/jobs/gerrit/config/gerrit.config ${GERRIT_STORE}/etc/gerrit.config
+      cp /var/vcap/jobs/gerrit/config/secure.config ${GERRIT_STORE}/etc/secure.config
+    fi
+
     if [ ! -f ${GERRIT_STORE}/bin/gerrit.sh ]
     then
       echo "${JAVA} ${MEMORY_SETTINGS} ${JAVA_OPTS} -jar ${GERRIT} ${GERRIT_INIT_ARGS}"
       ${JAVA} ${MEMORY_SETTINGS} ${JAVA_OPTS} -jar ${GERRIT} ${GERRIT_INIT_ARGS}
     fi
 
-    if [ -f ${GERRIT_STORE}/bin/gerrit.sh ]
-    then
-      cp /var/vcap/jobs/gerrit/config/gerrit.config ${GERRIT_STORE}/etc/gerrit.config
-      cat /var/vcap/jobs/gerrit/config/secure.config >> ${GERRIT_STORE}/etc/secure.config
-      exec chpst -u vcap:vcap ${GERRIT_STORE}/bin/gerrit.sh restart \
-         >>${LOG_DIR}/${JOB_NAME}.log 2>&1
-    fi
+    chown -R vcap:vcap ${GERRIT_STORE}
+
+    exec chpst -u vcap:vcap ${GERRIT_STORE}/bin/gerrit.sh restart \
+       >>${LOG_DIR}/${JOB_NAME}.log 2>&1
 
     ;;
 
@@ -32,7 +38,7 @@ case $1 in
 
     ;;
   *)
-    echo "Usage: ctl {start|stop}"
+    echo "Usage: gerrit_ctl {start|stop}"
 
     ;;
 

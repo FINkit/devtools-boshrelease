@@ -1,3 +1,7 @@
+cloudsql/cloud_sql_proxy.linux.amd64:
+  size: 7304672
+  object_id: 30f8bb75-539a-4ab5-72ce-033a16c0c962
+  sha: 34e9d4890c6a08009b48a81cf1ee5d1fc953f5c3
 gerrit/gerrit-2.12.7.war:
   size: 48377669
   object_id: 8ce3ce7f-eac1-4187-560e-9e66d61b3e17
