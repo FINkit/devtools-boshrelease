@@ -19,6 +19,7 @@ case $1 in
     if [ -f ${GERRIT_STORE}/bin/gerrit.sh ]
     then
       cp /var/vcap/jobs/gerrit/config/gerrit.config ${GERRIT_STORE}/etc/gerrit.config
+      cat /var/vcap/jobs/gerrit/config/secure.config >> ${GERRIT_STORE}/etc/secure.config
       exec chpst -u vcap:vcap ${GERRIT_STORE}/bin/gerrit.sh restart \
          >>${LOG_DIR}/${JOB_NAME}.log 2>&1
     fi
