@@ -16,10 +16,5 @@ then
     cp /var/vcap/jobs/gerrit/config/secure.config ${GERRIT_STORE}/etc/secure.config
 fi
 
-echo "Running initialisation script"
-${JAVA} ${MEMORY_SETTINGS} ${JAVA_OPTS} -jar ${GERRIT} ${GERRIT_INIT_ARGS}
-
-${JAVA} ${MEMORY_SETTINGS} ${JAVA_OPTS} -jar ${GERRIT} reindex --site-path ${GERRIT_STORE} 
-
 chown vcap:vcap -R ${GERRIT_STORE}
 
