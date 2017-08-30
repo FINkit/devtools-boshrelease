@@ -6,6 +6,10 @@ gerrit/gerrit-2.12.7.war:
   size: 48377669
   object_id: 8ce3ce7f-eac1-4187-560e-9e66d61b3e17
   sha: 405b3106d291e8e966cf75077c432ed9f9a45fc5
+gerrit/gerrit-2.14.3.war:
+  size: 85875129
+  object_id: 1f081c6d-4960-4dc9-521f-f48afb85293f
+  sha: 399db7385be85eedf71caa464d91726fe37d26ca
 git/git-2.14.1.tar.gz:
   size: 6983655
   object_id: 755d810e-933a-48ff-624f-7aa332f3ea7b
