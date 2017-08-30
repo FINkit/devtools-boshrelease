@@ -3,9 +3,9 @@
 	canonicalWebUrl = http://localhost:8080/
 [database]
     type = mysql
-    hostname = 10.40.0.2
-    database = reviewdb
-    username = gerrit
+    hostname = <%= p('gerrit.mysql.host') %>
+    database = <%= p('gerrit.mysql.database') %>
+    username = <%= p('gerrit.mysql.username') %>
 [index]
 	type = LUCENE
 [auth]
