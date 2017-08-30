@@ -15,11 +15,8 @@ case $1 in
       cp /var/vcap/jobs/gerrit/config/gerrit.config ${GERRIT_STORE}/etc/gerrit.config
     fi
 
-    if [ ! -f ${GERRIT_STORE}/bin/gerrit.sh ]
-    then
-      echo "${JAVA} ${MEMORY_SETTINGS} ${JAVA_OPTS} -jar ${GERRIT} ${GERRIT_INIT_ARGS}"
-      ${JAVA} ${MEMORY_SETTINGS} ${JAVA_OPTS} -jar ${GERRIT} ${GERRIT_INIT_ARGS}
-    fi
+    echo "Running initialisation script" >> ${LOG_DIR}/${JOB_NAME}.log 2>&1
+    ${JAVA} ${MEMORY_SETTINGS} ${JAVA_OPTS} -jar ${GERRIT} ${GERRIT_INIT_ARGS} >> ${LOG_DIR}/${JOB_NAME}.log 2>&1
 
     chown -R vcap:vcap ${GERRIT_STORE}
 
@@ -34,6 +31,7 @@ case $1 in
        >>${LOG_DIR}/${JOB_NAME}.log 2>&1
 
     ;;
+
   *)
     echo "Usage: gerrit_ctl {start|stop}"
 
