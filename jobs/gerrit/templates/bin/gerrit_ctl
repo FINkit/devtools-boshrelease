@@ -10,23 +10,25 @@ case $1 in
 
   start)
 
+    if [ ! -f ${GERRIT_STORE}/etc/gerrit.config ]
+      mkdir -p ${GERRIT_STORE}/etc/
+      cp /var/vcap/jobs/gerrit/config/gerrit.config ${GERRIT_STORE}/etc/gerrit.config
+    fi
+
     if [ ! -f ${GERRIT_STORE}/bin/gerrit.sh ]
     then
       echo "${JAVA} ${MEMORY_SETTINGS} ${JAVA_OPTS} -jar ${GERRIT} ${GERRIT_INIT_ARGS}"
       ${JAVA} ${MEMORY_SETTINGS} ${JAVA_OPTS} -jar ${GERRIT} ${GERRIT_INIT_ARGS}
     fi
 
-    if [ -f ${GERRIT_STORE}/bin/gerrit.sh ]
-    then
-      cp /var/vcap/jobs/gerrit/config/gerrit.config ${GERRIT_STORE}/etc/gerrit.config
+    chown -R vcap:vcap ${GERRIT_STORE}
 
-      pid_guard $PIDFILE $JOB_NAME
+    pid_guard $PIDFILE $JOB_NAME
 
-      echo $$ > $PIDFILE
+    echo $$ > $PIDFILE
 
-      exec chpst -u vcap:vcap ${GERRIT_STORE}/bin/gerrit.sh restart \
-         >>${LOG_DIR}/${JOB_NAME}.log 2>&1
-    fi
+    exec chpst -u vcap:vcap ${GERRIT_STORE}/bin/gerrit.sh restart \
+       >>${LOG_DIR}/${JOB_NAME}.log 2>&1
 
     ;;
 
