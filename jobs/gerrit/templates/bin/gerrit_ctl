@@ -21,7 +21,7 @@ case $1 in
     echo $$ > $PIDFILE
 
     echo "Running daemon '${GERRIT_RUN_ARGS}'" >> ${LOG_DIR}/${JOB_NAME}.log 2>&1  
-    exec chpst -u vcap:vcap ${JAVA} ${MEMORY_SETTINGS} ${JAVA_OPTS} -jar ${GERRIT} ${GERRIT_RUN_ARGS} >> ${LOG_DIR}/${JOB_NAME}.log 2>&1
+    exec chpst -u vcap:vcap ${JAVA} ${MEMORY_SETTINGS} ${JAVA_OPTS} -jar ${GERRIT} ${GERRIT_RUN_ARGS} >> ${LOG_DIR}/${JOB_NAME}.log 2>&1 &
     echo "Running daemon - Complete" >> ${LOG_DIR}/${JOB_NAME}.log 2>&1  
 
     ;;
