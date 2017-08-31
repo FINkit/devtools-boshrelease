@@ -20,4 +20,7 @@ export GERRIT=/var/vcap/jobs/gerrit/packages/gerrit/gerrit/gerrit-${GERRIT_VERSI
 export GERRIT_STORE="/var/vcap/store/gerrit"
 export GERRIT_PIDFILE="${GERRIT_STORE}/logs/gerrit.pid"
 export GERRIT_INIT_ARGS="init --batch -d ${GERRIT_STORE} --install-plugin=commit-message-length-validator --install-plugin=download-commands --install-plugin=replication --install-plugin=reviewnotes --install-plugin=singleusergroup --no-auto-start"
+export GERRIT_INDEX_ARGS="reindex --site-path ${GERRIT_STORE}"
+export GERRIT_RUN_ARGS="daemon --console-log --site-path ${GERRIT_STORE}"
+
 export MEMORY_SETTINGS=""

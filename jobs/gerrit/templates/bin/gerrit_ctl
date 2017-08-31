@@ -9,12 +9,17 @@ source /var/vcap/jobs/gerrit/helpers/ctl_setup.sh 'gerrit'
 case $1 in
 
   start)
+    echo "Running init ${GERRIT_INIT_ARGS}" >> ${LOG_DIR}/${JOB_NAME}.log 2>&1  
     exec chpst -u vcap:vcap ${JAVA} ${MEMORY_SETTINGS} ${JAVA_OPTS} -jar ${GERRIT} ${GERRIT_INIT_ARGS} >> ${LOG_DIR}/${JOB_NAME}.log 2>&1
-    exec chpst -u vcap:vcap ${JAVA} ${MEMORY_SETTINGS} ${JAVA_OPTS} -jar ${GERRIT} reindex --site-path ${GERRIT_STORE} >> ${LOG_DIR}/${JOB_NAME}.log 2>&1
+
+    echo "Running index ${GERRIT_INDEX_ARGS}" >> ${LOG_DIR}/${JOB_NAME}.log 2>&1  
+    exec chpst -u vcap:vcap ${JAVA} ${MEMORY_SETTINGS} ${JAVA_OPTS} -jar ${GERRIT} ${GERRIT_INDEX_ARGS} >> ${LOG_DIR}/${JOB_NAME}.log 2>&1
 
     pid_guard $PIDFILE $JOB_NAME
     echo $$ > $PIDFILE
-    exec chpst -u vcap:vcap ${JAVA} ${MEMORY_SETTINGS} ${JAVA_OPTS} -jar ${GERRIT} daemon --console-log --site-path ${GERRIT_STORE} >> ${LOG_DIR}/${JOB_NAME}.log 2>&1
+
+    echo "Running daemon ${GERRIT_RUN_ARGS}" >> ${LOG_DIR}/${JOB_NAME}.log 2>&1  
+    exec chpst -u vcap:vcap ${JAVA} ${MEMORY_SETTINGS} ${JAVA_OPTS} -jar ${GERRIT} ${GERRIT_RUN_ARGS} >> ${LOG_DIR}/${JOB_NAME}.log 2>&1
 
     ;;
   stop)
