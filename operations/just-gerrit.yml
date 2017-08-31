@@ -1,0 +1,12 @@
+---
+- type: remove
+  path: /instance_groups/name=jenkins-master
+
+- type: remove
+  path: /instance_groups/name=jenkins-slave
+
+- type: remove
+  path: /instance_groups/name=nexus
+
+- type: remove
+  path: /instance_groups/name=sonarqube
