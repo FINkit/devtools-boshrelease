@@ -10,11 +10,11 @@ case $1 in
 
   start)
     echo "Running init '${GERRIT_INIT_ARGS}'" >> ${LOG_DIR}/${JOB_NAME}.log 2>&1  
-    exec chpst -u vcap:vcap ${JAVA} ${MEMORY_SETTINGS} ${JAVA_OPTS} -jar ${GERRIT} ${GERRIT_INIT_ARGS} >> ${LOG_DIR}/${JOB_NAME}.log 2>&1
+    sudo -u vcap ${JAVA} ${MEMORY_SETTINGS} ${JAVA_OPTS} -jar ${GERRIT} ${GERRIT_INIT_ARGS} >> ${LOG_DIR}/${JOB_NAME}.log 2>&1
     echo "Running init - Complete" >> ${LOG_DIR}/${JOB_NAME}.log 2>&1  
 
     echo "Running index '${GERRIT_INDEX_ARGS}'" >> ${LOG_DIR}/${JOB_NAME}.log 2>&1  
-    exec chpst -u vcap:vcap ${JAVA} ${MEMORY_SETTINGS} ${JAVA_OPTS} -jar ${GERRIT} ${GERRIT_INDEX_ARGS} >> ${LOG_DIR}/${JOB_NAME}.log 2>&1
+    sudo -u vcap ${JAVA} ${MEMORY_SETTINGS} ${JAVA_OPTS} -jar ${GERRIT} ${GERRIT_INDEX_ARGS} >> ${LOG_DIR}/${JOB_NAME}.log 2>&1
     echo "Running index - Complete" >> ${LOG_DIR}/${JOB_NAME}.log 2>&1  
 
     pid_guard $PIDFILE $JOB_NAME
