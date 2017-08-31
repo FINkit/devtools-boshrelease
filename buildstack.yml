@@ -129,7 +129,6 @@ instance_groups:
         mysql:
           admin_password: ((cf_mysql_mysql_admin_password))
           remote_admin_access: true
-          innodb_strict_mode: true
           cluster_health:
             password: ((cf_mysql_mysql_cluster_health_password))
           galera_healthcheck:
