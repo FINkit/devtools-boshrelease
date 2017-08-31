@@ -27,6 +27,7 @@ case $1 in
 
     ;;
   stop)
+    echo "Stopping '$(date)'" >> ${LOG_DIR}/${JOB_NAME}.log 2>&1  
     kill_and_wait $PIDFILE
 
     ;;
