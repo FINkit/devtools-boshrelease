@@ -9,6 +9,7 @@ source /var/vcap/jobs/gerrit/helpers/ctl_setup.sh 'gerrit'
 case $1 in
 
   start)
+    echo "Starting '$(date)'" >> ${LOG_DIR}/${JOB_NAME}.log 2>&1  
     echo "Running init '${GERRIT_INIT_ARGS}'" >> ${LOG_DIR}/${JOB_NAME}.log 2>&1  
     sudo -u vcap ${JAVA} ${MEMORY_SETTINGS} ${JAVA_OPTS} -jar ${GERRIT} ${GERRIT_INIT_ARGS} >> ${LOG_DIR}/${JOB_NAME}.log 2>&1
     echo "Running init - Complete" >> ${LOG_DIR}/${JOB_NAME}.log 2>&1  
