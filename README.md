@@ -1,6 +1,6 @@
 # bosh release for the FINkit build stack
 
-[![Build Status](https://travis-ci.org/garethjevans/buildstack-boshrelease.svg?branch=master)](https://travis-ci.org/garethjevans/buildstack-boshrelease)
+[![Build Status](https://travis-ci.org/FINkit/buildstack-boshrelease.svg?branch=master)](https://travis-ci.org/FINkit/buildstack-boshrelease)
 
 # Overview
 
