@@ -19,7 +19,7 @@ properties:
     description: "Fully qualified address of Sonar server"
   sonar.server.port:
     description: "Port of the sonar server"
-    deafult: 9000
+    default: 9000
   sonar.mysql.host:
     description: "Host for sonar database"
   sonar.mysql.username:
