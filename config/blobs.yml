@@ -1,3 +1,15 @@
+cloudsql/cloud_sql_proxy.linux.amd64:
+  size: 7505002
+  sha: 0d0cc0222aede7c28dc94d6226a9333e514cbea8
+gerrit/gerrit-2.14.3.war:
+  size: 85875129
+  sha: 399db7385be85eedf71caa464d91726fe37d26ca
+git/git-2.14.1.tar.gz:
+  size: 6987933
+  sha: e173270a5f224078e3f6c639937da5bd84045225
+jenkins/apache-maven-3.5.2-bin.tar.gz:
+  size: 8738691
+  sha: 190dcebb8a080f983af4420cac4f3ece7a47dd64
 jenkins/jenkins_2.89.3.war:
   size: 74292096
   object_id: 545e90f2-8c79-44a9-66a5-f434ed1d5e75
@@ -6,3 +18,18 @@ jenkins/plugins-201802011224.zip:
   size: 221178895
   object_id: 78146a0b-a7a8-43b6-5dd5-9d25767d88a0
   sha: c665451e2c75e6c4e9d37fadc524346f98e9f2c1
+jenkins/swarm-client-3.6.jar:
+  size: 1620623
+  sha: e9ee5866393ccae0d4b5500ce5521e2850c98cf7
+nexus-3.7.1-02-unix.tar.gz:
+  size: 112671471
+  sha: e15f7b170a13f3f8eef85f4043066d0fd3efe3b7
+oraclejava/jdk-8u161-linux-x64.tar.gz:
+  size: 189756259
+  sha: 9662b358ec90ecdc2c06acc2e326fbf25eaf567d
+sonarqube/sonarqube-6.5.zip:
+  size: 143286376
+  sha: 266051af830e1462f3455802326a52ba6f86efd9
+swarm-client/swarm-client-2.2-jar-with-dependencies.jar:
+  size: 1385476
+  sha: 731ca367119d4b46421c70367111f4c9902a2cb7
