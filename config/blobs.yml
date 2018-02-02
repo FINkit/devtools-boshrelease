@@ -1,48 +1,8 @@
-cloudsql/cloud_sql_proxy.linux.amd64:
-  size: 7304672
-  object_id: 30f8bb75-539a-4ab5-72ce-033a16c0c962
-  sha: 34e9d4890c6a08009b48a81cf1ee5d1fc953f5c3
-gerrit/gerrit-2.12.7.war:
-  size: 48377669
-  object_id: 8ce3ce7f-eac1-4187-560e-9e66d61b3e17
-  sha: 405b3106d291e8e966cf75077c432ed9f9a45fc5
-gerrit/gerrit-2.14.3.war:
-  size: 85875129
-  object_id: 1f081c6d-4960-4dc9-521f-f48afb85293f
-  sha: 399db7385be85eedf71caa464d91726fe37d26ca
-git/git-2.14.1.tar.gz:
-  size: 6983655
-  object_id: 755d810e-933a-48ff-624f-7aa332f3ea7b
-  sha: d44422945d5dc520ab44ccfec41a89bc90184efd
-jenkins/apache-maven-3.5.0-bin.tar.gz:
-  size: 8534562
-  object_id: 8c967a7d-6490-4538-4e2d-57796790574e
-  sha: 878b8b93a8f9685aefba5c21a17b46eb141b1122
-jenkins/jenkins_2.60.3.war:
-  size: 70620203
-  object_id: d4efa487-d0e2-40b1-4043-6baeb64d11c4
-  sha: e62d9ed7eb3d29b08719e639c959cd328776ba50
-jenkins/plugins-201708181416.zip:
-  size: 157380565
-  object_id: cd3eed7a-c99c-4b7a-5888-8d83c2054c19
-  sha: e09a10dd4977feb1972192824a076529eead976d
-jenkins/swarm-client-3.4.jar:
-  size: 1577986
-  object_id: 0b682084-912f-4914-67e7-05be2e288621
-  sha: ef74404b14710491ca7e416bb9bed29f7f5236db
-nexus-3.5.0-02-unix.tar.gz:
-  size: 110351030
-  object_id: 1066375f-4044-48d7-5257-83520032dd92
-  sha: 209448cd236febf7e3eae0682be3d95f786443ec
-oraclejava/jdk-8u144-linux-x64.tar.gz:
-  size: 185515842
-  object_id: d33d4af1-8f1c-438b-6d4e-b14334ac84a0
-  sha: d4c4f02908d39827393dd77f9eb8da348363efda
-sonarqube/sonarqube-6.5.zip:
-  size: 143286376
-  object_id: cdf1bb71-8c45-405d-6710-50a643131ca0
-  sha: 266051af830e1462f3455802326a52ba6f86efd9
-swarm-client/swarm-client-2.2-jar-with-dependencies.jar:
-  size: 1385476
-  object_id: 841f883a-7b47-4585-6024-2abc19253230
-  sha: 731ca367119d4b46421c70367111f4c9902a2cb7
+jenkins/jenkins_2.89.3.war:
+  size: 74292096
+  object_id: 545e90f2-8c79-44a9-66a5-f434ed1d5e75
+  sha: 80d9a44198195f70218867086759c108821ca0ce
+jenkins/plugins-201802011224.zip:
+  size: 221178895
+  object_id: 78146a0b-a7a8-43b6-5dd5-9d25767d88a0
+  sha: c665451e2c75e6c4e9d37fadc524346f98e9f2c1
