@@ -1,0 +1,42 @@
+---
+name: jenkins-master
+
+releases:
+- name: buildstack
+  version: latest
+
+stemcells:
+- alias: default
+  os: ubuntu-trusty
+  version: latest
+
+update:
+  canaries: 1
+  max_in_flight: 1
+  canary_watch_time: 15000-300000
+  update_watch_time: 15000-300000
+
+instance_groups:
+- name: jenkins-master
+  azs:
+  - z1
+  instances: 1
+  jobs:
+  - name: jenkins-master
+    release: buildstack
+    properties: 
+      jenkins:
+        server:
+          address: "http://localhost:8080/"
+        admin:
+          email: "admin@localhost"
+          password: ((jenkins_admin_password))
+  vm_type: m3.medium
+  persistent_disk_pool: 100GB
+  stemcell: default
+  networks:
+  - name: default
+
+variables:
+- name: jenkins_admin_password
+  type: password
