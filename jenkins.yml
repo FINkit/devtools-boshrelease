@@ -31,6 +31,8 @@ instance_groups:
         admin:
           email: "admin@localhost"
           password: ((jenkins_admin_password))
+        agent:
+          password: ((jenkins_agent_password))
   vm_type: default
   stemcell: default
   networks:
@@ -38,4 +40,6 @@ instance_groups:
 
 variables:
 - name: jenkins_admin_password
+  type: password
+- name: jenkins_agent_password
   type: password
