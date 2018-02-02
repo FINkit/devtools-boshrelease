@@ -1,8 +1,8 @@
 set -e
 
-JAVA_VERSION="1.8.0_144"
+JAVA_VERSION="1.8.0_161"
 
-archive="oraclejava/jdk-8u144-linux-x64.tar.gz"
+archive="oraclejava/jdk-8u161-linux-x64.tar.gz"
 
 echo "Extracting archive..."
 tar xzf ${archive}
