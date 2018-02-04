@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-NEXUS_VERSION="3.5.0-02"
+NEXUS_VERSION="3.7.1-02"
 
 tar -xvzf nexus-${NEXUS_VERSION}-unix.tar.gz
 rm -rf nexus-${NEXUS_VERSION}-unix.tar.gz
