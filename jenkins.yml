@@ -1,5 +1,5 @@
 ---
-name: jenkins-master
+name: jenkins
 
 releases:
 - name: buildstack
@@ -33,6 +33,26 @@ instance_groups:
           password: ((jenkins_admin_password))
         agent:
           password: ((jenkins_agent_password))
+  vm_type: default
+  stemcell: default
+  networks:
+  - name: default
+- name: jenkins-slave
+  azs:
+  - z1
+  - z2
+  instances: 2
+  jobs:
+  - name: jenkins-slave
+    release: buildstack
+    properties: 
+      jenkins:
+        slave:
+          master_password: ((jenkins_agent_password))
+          master_username: agent
+          executors: 2
+          mode: exclusive
+          labels: "build"    
   vm_type: default
   stemcell: default
   networks:
