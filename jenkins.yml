@@ -34,6 +34,7 @@ instance_groups:
         agent:
           password: ((jenkins_agent_password))
   vm_type: default
+  persistent_disk_pool: 100GB
   stemcell: default
   networks:
   - name: default
