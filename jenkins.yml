@@ -8,7 +8,7 @@ releases:
 stemcells:
 - alias: default
   os: ubuntu-trusty
-  version: latest
+  version: "3468.21"
 
 update:
   canaries: 1
