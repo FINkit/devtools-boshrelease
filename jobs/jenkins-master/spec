@@ -31,6 +31,8 @@ templates:
   config/org.codefirst.SimpleThemeDecorator.xml.erb: config/org.codefirst.SimpleThemeDecorator.xml
   config/scriptApproval.xml.erb: config/scriptApproval.xml
   config/sonar.xml.erb: config/sonar.xml
+  config/branding.css.erb: config/branding.css
+  config/jenkins_logo.png.erb: config/jenkins_logo.png
 
 properties:
   jenkins.server.address:
