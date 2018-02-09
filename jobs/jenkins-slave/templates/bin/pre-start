@@ -5,3 +5,8 @@ set -u # report the usage of uninitialized variables
 
 mkdir -p /var/vcap/data/jenkins-slave
 chown vcap:vcap -R /var/vcap/data/jenkins-slave
+
+if [[ ! -d /var/vcap/jenkins-slave/.m2 ]]; then
+    mkdir -p /var/vcap/jenkins-slave/.m2
+    mv /var/vcap/jobs/jenkins-slave/config/settings.xml /var/vcap/jenkins-slave/.m2/settings.xml
+fi
