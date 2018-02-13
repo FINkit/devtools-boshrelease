@@ -24,7 +24,15 @@ instance_groups:
   jobs:
   - name: nexus
     release: buildstack
-  vm_type: m3.medium
+    properties:
+      nexus:
+        admin:
+          password: ((nexus_admin_password))
+  vm_type: default
   stemcell: default
   networks:
   - name: default
+
+variables:
+- name: nexus_admin_password
+  type: password

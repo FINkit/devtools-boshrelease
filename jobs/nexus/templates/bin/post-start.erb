@@ -1,0 +1,17 @@
+#!/bin/bash
+
+set -e # exit immediately if a simple command exits with a non-zero status
+set -u # report the usage of uninitialized variables
+
+# Setup env vars and folders for the webapp_ctl script
+source /var/vcap/jobs/nexus/helpers/ctl_setup.sh 'nexus'
+source ${CONFIG_DIR}/configure_nexus.sh
+
+HTTP_PORT=<%= p("nexus.http.port") %>
+
+while [ "`curl -s -o /dev/null -k -I -w "%{http_code}" http://localhost:${HTTP_PORT}`" != "200" ];do
+  echo "Waiting until Neuxs is ready ..."
+  sleep 5
+done
+
+run_configure_script update_admin_password ${SCRIPT_DIR}/update_admin_password.json <%= p("nexus.admin.username") %> <%= p("nexus.default.admin.password") %> http://localhost:${HTTP_PORT}

@@ -1,0 +1,53 @@
+#!/bin/bash
+
+function run_configure_script() {
+  local SCRIPT_NAME=$1
+  local SCRIPT_FILE=$2
+  local NEXUS_ADMIN_USERNAME=$3
+  local NEXUS_ADMIN_PASSWORD=$4
+  local NEXUS_URL=$5
+  shift 5
+  local CURL_OPTS="$@"
+
+  CHECK_SCRIPT_STATUS=`curl ${CURL_OPTS} -s \
+    -o /dev/null \
+    -I -w "%{http_code}" \
+    -u "${NEXUS_ADMIN_USERNAME}:${NEXUS_ADMIN_PASSWORD}" \
+    "${NEXUS_URL}/service/siesta/rest/v1/script/${SCRIPT_NAME}"`
+
+  if [ "${CHECK_SCRIPT_STATUS}" == "401" ]
+  then
+    echo "${SCRIPT_NAME}: Unauthorized: returned (${CHECK_SCRIPT_STATUS})"
+    return
+  elif [ "${CHECK_SCRIPT_STATUS}" == "404" ]
+  then
+    echo "${SCRIPT_NAME}: creating!"
+    CHECK_RUN_LOG=`curl ${CURL_OPTS} -H "Accept: application/json" \
+      -H "Content-Type: application/json" \
+      -d @${SCRIPT_FILE} \
+      -u "${NEXUS_ADMIN_USERNAME}:${NEXUS_ADMIN_PASSWORD}" \
+      "${NEXUS_URL}/service/siesta/rest/v1/script/"`
+    echo "${SCRIPT_NAME}: outputted - ${CHECK_RUN_LOG}"
+    echo "${SCRIPT_NAME}: created from ${SCRIPT_FILE}"
+  fi
+
+  echo "${SCRIPT_NAME}: found, executing!"
+  CHECK_RUN_STATUS=`curl ${CURL_OPTS} -v -X POST \
+    -u ${NEXUS_ADMIN_USERNAME}:${NEXUS_ADMIN_PASSWORD} \
+    --noproxy localhost \
+    -H "Content-Type: text/plain" \
+    "${NEXUS_URL}/service/siesta/rest/v1/script/${SCRIPT_NAME}/run"`
+
+  if [ "${CHECK_RUN_STATUS}" == "200" ]
+  then
+    echo "${SCRIPT_NAME}: executed successfully, deleting!"
+  else
+    echo "${SCRIPT_NAME}: failed, deleting!"
+  fi
+
+  curl -v -X DELETE \
+    -u ${NEXUS_ADMIN_USERNAME}:${NEXUS_ADMIN_PASSWORD} \
+    --noproxy localhost \
+    "${NEXUS_URL}/service/siesta/rest/v1/script/${SCRIPT_NAME}"
+  echo "${SCRIPT_NAME}: deleted successfully"
+}
