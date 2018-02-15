@@ -67,5 +67,7 @@ done
 export TMPDIR=$TMP_DIR
 
 PIDFILE=$RUN_DIR/$output_label.pid
+CONFIG_DIR=/var/vcap/jobs/${JOB_NAME}/config
+SCRIPT_DIR=${CONFIG_DIR}/scripts
 
 echo '$PATH' $PATH

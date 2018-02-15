@@ -7,8 +7,11 @@ packages:
 
 templates:
   bin/ctl: bin/ctl
+  bin/post-start.erb: bin/post-start
   bin/monit_debugger: bin/monit_debugger
   data/properties.sh.erb: data/properties.sh
+  config/configure_nexus.sh.erb: config/configure_nexus.sh
+  config/scripts/update_admin_password.json.erb: config/scripts/update_admin_password.json
   helpers/ctl_setup.sh: helpers/ctl_setup.sh
   helpers/ctl_utils.sh: helpers/ctl_utils.sh
 
@@ -17,3 +20,16 @@ consumes: []
 provides:
 - name: nexus
   type: nexus
+
+properties:
+  nexus.http.port:
+    description: "Port that Nexus will listen on for HTTP connections"
+    default: 8081
+  nexus.admin.username:
+    description: "Username of the admin user"
+    default: admin
+  nexus.admin.password:
+    description: "Password of admin user"
+  nexus.default.admin.password:
+    description: "Default password of admin user"
+    default: admin123
