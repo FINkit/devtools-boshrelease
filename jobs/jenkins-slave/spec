@@ -10,12 +10,15 @@ packages:
 consumes:
 - name: jenkins_master
   type: jenkins
+- name: nexus
+  type: nexus
 
 templates:
   bin/jenkins-slave_ctl: bin/jenkins-slave_ctl
   bin/pre-start: bin/pre-start
   bin/monit_debugger: bin/monit_debugger
   data/properties.sh.erb: data/properties.sh
+  config/settings.xml.erb: config/settings.xml
   helpers/ctl_setup.sh: helpers/ctl_setup.sh
   helpers/ctl_utils.sh: helpers/ctl_utils.sh
 
