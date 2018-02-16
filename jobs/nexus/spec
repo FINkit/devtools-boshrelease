@@ -11,6 +11,7 @@ templates:
   bin/monit_debugger: bin/monit_debugger
   data/properties.sh.erb: data/properties.sh
   config/configure_nexus.sh.erb: config/configure_nexus.sh
+  config/scripts/repositories.json.erb: config/scripts/repositories.json
   config/scripts/update_admin_password.json.erb: config/scripts/update_admin_password.json
   helpers/ctl_setup.sh: helpers/ctl_setup.sh
   helpers/ctl_utils.sh: helpers/ctl_utils.sh
