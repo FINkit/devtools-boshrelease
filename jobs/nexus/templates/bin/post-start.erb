@@ -15,3 +15,4 @@ while [ "`curl -s -o /dev/null -k -I -w "%{http_code}" http://localhost:${HTTP_P
 done
 
 run_configure_script update_admin_password ${SCRIPT_DIR}/update_admin_password.json <%= p("nexus.admin.username") %> <%= p("nexus.default.admin.password") %> http://localhost:${HTTP_PORT}
+run_configure_script repositories ${SCRIPT_DIR}/repositories.json <%= p("nexus.admin.username") %> <%= p("nexus.admin.password") %> http://localhost:${HTTP_PORT}
