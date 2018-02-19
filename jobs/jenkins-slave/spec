@@ -37,3 +37,7 @@ properties:
     description: "Password of the user to connect to the master server"
   jenkins.slave.mode:
     description: "The mode to run the slave"
+  nexus.admin.username:
+    description: "Username of the nexus admin user"
+  nexus.admin.password:
+    description: "Password of nexus admin user"
