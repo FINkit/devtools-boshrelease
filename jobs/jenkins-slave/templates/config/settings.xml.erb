@@ -1,4 +1,16 @@
 <settings>
+    <servers>
+        <server>
+            <id>internal-releases</id>
+            <username><%= p("nexus.admin.username") %></username>
+            <password><%= p("nexus.admin.password") %></password>
+        </server>
+        <server>
+            <id>internal-snapshots</id>
+            <username><%= p("nexus.admin.username") %></username>
+            <password><%= p("nexus.admin.password") %></password>
+        </server>
+    </servers>
 	<mirrors>
 		<mirror>
 			<!--This sends everything else to /public -->
