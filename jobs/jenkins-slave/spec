@@ -41,3 +41,7 @@ properties:
     description: "Username of the nexus admin user"
   nexus.admin.password:
     description: "Password of nexus admin user"
+  nexus.deployer.username:
+    description: "Username of the nexus deployer user"
+  nexus.deployer.password:
+    description: "Password of nexus deployer user"
