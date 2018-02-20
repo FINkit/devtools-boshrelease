@@ -13,6 +13,7 @@ templates:
   config/configure_nexus.sh.erb: config/configure_nexus.sh
   config/scripts/repositories.json.erb: config/scripts/repositories.json
   config/scripts/update_admin_password.json.erb: config/scripts/update_admin_password.json
+  config/scripts/add_deployer_user.json.erb: config/scripts/add_deployer_user.json
   helpers/ctl_setup.sh: helpers/ctl_setup.sh
   helpers/ctl_utils.sh: helpers/ctl_utils.sh
 
@@ -34,3 +35,17 @@ properties:
   nexus.default.admin.password:
     description: "Default password of admin user"
     default: admin123
+  nexus.deployer.username:
+    description: "Username of the deployment user"
+    default: jenkins
+  nexus.deployer.firstname:
+    description: "First name of the deployment user"
+    default: Mr
+  nexus.deployer.lastname:
+    description: "Last name of the deployment user"
+    default: Jenkins
+  nexus.deployer.email:
+    description: "Email address of the deployment user"
+    default: jenkins@example.com
+  nexus.deployer.password:
+    description: "Password of the deployment user"

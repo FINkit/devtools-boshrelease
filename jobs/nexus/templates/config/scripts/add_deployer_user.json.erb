@@ -1,0 +1,5 @@
+{
+  "name": "add_deployer_user",
+  "type": "groovy",
+  "content": "privileges = [\r\n    \"nx-search-read\",\r\n    \"nx-repository-view-*-*-read\",\r\n    \"nx-repository-view-*-*-browse\",\r\n    \"nx-repository-view-*-*-add\",\r\n    \"nx-repository-view-*-*-edit\",\r\n    \"nx-apikey-all\"]\r\nsecurity.addRole(\"deployer\", \"deployer\", \"deployment on all repositories\", privileges, [])\r\nuser = security.addUser('<%= p("nexus.deployer.username") %>', '<%= p("nexus.deployer.firstname") %>', '<%= p("nexus.deployer.lastname") %>', '<%= p("nexus.deployer.email") %>', true, '<%= p("nexus.deployer.password") %>', [\"deployer\"])"
+}
