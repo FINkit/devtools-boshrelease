@@ -16,6 +16,12 @@ fi
 if [[ ! -d /var/vcap/store/jenkins-master/plugins ]]; then
     mkdir -p /var/vcap/store/jenkins-master/plugins
     unzip /var/vcap/jobs/jenkins-master/packages/jenkins/jenkins/plugins-*.zip -d /var/vcap/store/jenkins-master/plugins
+    # add disabled plugin list
+    touch /var/vcap/store/jenkins-master/plugins/windows-slaves.jpi.disabled
+    touch /var/vcap/store/jenkins-master/plugins/subversion.jpi.disabled
+    touch /var/vcap/store/jenkins-master/plugins/cvs.jpi.disabled
+    touch /var/vcap/store/jenkins-master/plugins/ant.jpi.disabled
+    touch /var/vcap/store/jenkins-master/plugins/translation.jpi.disabled
 fi
 
 if [[ -d /var/vcap/store/jenkins-master/userContent ]]; then
