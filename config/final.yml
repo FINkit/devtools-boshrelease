@@ -1,5 +1,5 @@
 ---
-name: buildstack
+name: devtools
 blobstore:
   provider: s3
   options:
