@@ -22,6 +22,8 @@ consumes: []
 provides:
 - name: nexus
   type: nexus
+  properties:
+  - nexus
 
 properties:
   nexus.http.port:
