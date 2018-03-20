@@ -14,7 +14,7 @@ export JAVA_HOME=/var/vcap/packages/oraclejdk
 export JENKINS_VERSION=2.89.4
 export JAVA=${JAVA_HOME}/bin/java
 
-export JAVA_OPTS=""
+export JAVA_OPTS="-Dhudson.DNSMultiCast.disabled=true"
 export JAVA_TOOL_OPTIONS="-Djava.awt.headless=true"
 
 export JENKINS=/var/vcap/packages/jenkins/jenkins/jenkins_${JENKINS_VERSION}.war
