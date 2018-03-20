@@ -23,7 +23,9 @@ provides:
 - name: nexus
   type: nexus
   properties:
-  - nexus
+  - nexus.http.port
+  - nexus.deployer.username
+  - nexus.deployer.password
 
 properties:
   nexus.http.port:
