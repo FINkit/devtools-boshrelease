@@ -14,14 +14,14 @@ jenkins/apache-maven-3.5.2-bin.tar.gz:
   size: 8738691
   object_id: 2e476708-9b9f-4973-6f39-ee38965cd9ee
   sha: 190dcebb8a080f983af4420cac4f3ece7a47dd64
-jenkins/jenkins_2.89.4.war:
-  size: 74297875
-  object_id: 25206118-953b-4edf-49f2-b205ee7b3e7a
-  sha: f4683b98d34efc7f7b9ef98149a17dee6ed5bf4c
-jenkins/plugins-201802261159.zip:
-  size: 223195766
-  object_id: 7a3bf293-5478-4c3d-6215-3a60b0f16915
-  sha: 3c467ce00c71c069f91c74e3c4aaf69a4d6e9266
+jenkins/jenkins_2.107.1.war:
+  size: 74525235
+  object_id: c1236e38-269a-46fb-4e65-a63a68c497b1
+  sha: 67b7a7e199fb225efdb98495b97b564110773c43
+jenkins/plugins-201803201413.zip:
+  size: 223146774
+  object_id: d9f7be5d-cf1e-4eb1-5dd0-2f59be1ba1af
+  sha: 1df4c93b539a78e8925b483f68639c1534c9f290
 jenkins/swarm-client-3.6.jar:
   size: 1620623
   object_id: 7960ab0b-6580-41ce-5139-43ebd3b390fa
