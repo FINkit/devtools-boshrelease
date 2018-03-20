@@ -1,14 +1,15 @@
 <settings>
+	<% if_link('nexus') do |nexus| %>
     <servers>
         <server>
-            <id>internal-releases</id>
-            <username><%= p("nexus.deployer.username") %></username>
-            <password><%= p("nexus.deployer.password") %></password>
+			<id>internal-releases</id>
+            <username><%= nexus.p("nexus.deployer.username") %></username>
+            <password><%= nexus.p("nexus.deployer.password") %></password>
         </server>
         <server>
             <id>internal-snapshots</id>
-            <username><%= p("nexus.deployer.username") %></username>
-            <password><%= p("nexus.deployer.password") %></password>
+            <username><%= nexus.p("nexus.deployer.username") %></username>
+            <password><%= nexus.p("nexus.deployer.password") %></password>
         </server>
     </servers>
 	<mirrors>
@@ -16,7 +17,7 @@
 			<!--This sends everything else to /public -->
 			<id>nexus-central</id>
 			<mirrorOf>*</mirrorOf>
-			<url>http://<%= link('nexus').instances[0].address %>:8081/repository/public/</url>
+			<url><%= "http://#{nexus.instances[0].address}:#{nexus.p('nexus.http.port')}/repository/public/" %></url>
 		</mirror>
 	</mirrors>
 	<profiles>
@@ -27,7 +28,7 @@
 			<repositories>
 				<repository>
 					<id>nexus-releases</id>
-					<url>http://<%= link('nexus').instances[0].address %>:8081/repository/releases</url>
+					<url><%= "http://#{nexus.instances[0].address}:#{nexus.p('nexus.http.port')}/repository/releases" %></url>
 					<releases>
 						<enabled>true</enabled>
 					</releases>
@@ -37,7 +38,7 @@
 				</repository>
 				<repository>
 					<id>nexus-snapshots</id>
-					<url>http://<%= link('nexus').instances[0].address %>:8081/repository/snapshots</url>
+					<url><%= "http://#{nexus.instances[0].address}:#{nexus.p('nexus.http.port')}/repository/snapshots" %></url>
 					<releases>
 						<enabled>false</enabled>
 					</releases>
@@ -74,4 +75,5 @@
 		<!--make the profile active all the time -->
 		<activeProfile>nexus</activeProfile>
 	</activeProfiles>
+	<% end %>
 </settings>

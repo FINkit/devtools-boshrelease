@@ -12,6 +12,7 @@ consumes:
   type: jenkins
 - name: nexus
   type: nexus
+  optional: true
 
 templates:
   bin/jenkins-slave_ctl: bin/jenkins-slave_ctl
@@ -37,11 +38,3 @@ properties:
     description: "Password of the user to connect to the master server"
   jenkins.slave.mode:
     description: "The mode to run the slave"
-  nexus.admin.username:
-    description: "Username of the nexus admin user"
-  nexus.admin.password:
-    description: "Password of nexus admin user"
-  nexus.deployer.username:
-    description: "Username of the nexus deployer user"
-  nexus.deployer.password:
-    description: "Password of nexus deployer user"
