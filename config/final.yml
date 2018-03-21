@@ -1,8 +1,6 @@
 ---
 name: devtools
 blobstore:
-  provider: s3
+  provider: gcs
   options:
-    host: storage.googleapis.com
-    port: 443
     bucket_name: buildtools-blobs
