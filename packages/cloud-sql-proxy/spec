@@ -1,4 +1,0 @@
----
-name: cloud-sql-proxy
-files:
-- cloudsql/cloud_sql_proxy.linux.amd64
