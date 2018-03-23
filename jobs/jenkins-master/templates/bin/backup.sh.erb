@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -ex
+
+JOB_NAME=$1
+export JOB_DIR=/var/vcap/jobs/$JOB_NAME
+source $JOB_DIR/data/properties.sh
+
+cd $JENKINS_HOME
+tar -czf ${BBR_ARTIFACT_DIRECTORY}jenkins.tgz .
