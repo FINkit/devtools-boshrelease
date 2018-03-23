@@ -26,7 +26,6 @@ templates:
   config/envInject.xml.erb: config/envInject.xml
   config/hudson.plugins.build_timeout.operations.BuildStepOperation.xml.erb: config/hudson.plugins.build_timeout.operations.BuildStepOperation.xml
   config/hudson.plugins.timestamper.TimestamperConfig.xml.erb: config/hudson.plugins.timestamper.TimestamperConfig.xml
-  config/jenkins.CLI.xml.erb: config/jenkins.CLI.xml
   config/jenkins.model.JenkinsLocationConfiguration.xml.erb: config/jenkins.model.JenkinsLocationConfiguration.xml
   config/org.codefirst.SimpleThemeDecorator.xml.erb: config/org.codefirst.SimpleThemeDecorator.xml
   config/scriptApproval.xml.erb: config/scriptApproval.xml
