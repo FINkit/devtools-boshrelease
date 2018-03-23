@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 set -euxo
 
-JOB_NAME=$1
-export JOB_DIR=/var/vcap/jobs/$JOB_NAME
+export JOB_DIR=/var/vcap/jobs/jenkins-master
 source $JOB_DIR/data/properties.sh
 
 rm -r $JENKINS_HOME/*
