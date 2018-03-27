@@ -7,15 +7,15 @@ mkdir -p /var/vcap/store/jenkins-master
 mkdir -p /var/vcap/store/jenkins-master/init.groovy.d	
 mkdir -p /var/vcap/store/jenkins-master/plugins
 
-if [[ -d /var/vcap/store/jenkins-master ]]; then
+if [[ ! -d /var/vcap/store/jenkins-master ]]; then
     mv /var/vcap/jobs/jenkins-master/config/*.xml /var/vcap/store/jenkins-master
 fi
 
-if [[ -d /var/vcap/store/jenkins-master/init.groovy.d ]]; then
+if [[ ! -d /var/vcap/store/jenkins-master/init.groovy.d ]]; then
     mv /var/vcap/jobs/jenkins-master/config/*.groovy /var/vcap/store/jenkins-master/init.groovy.d
 fi
 
-if [[ -d /var/vcap/store/jenkins-master/plugins ]]; then
+if [[ ! -d /var/vcap/store/jenkins-master/plugins ]]; then
     unzip /var/vcap/jobs/jenkins-master/packages/jenkins/jenkins/plugins-*.zip -d /var/vcap/store/jenkins-master/plugins
     # add disabled plugin list
     touch /var/vcap/store/jenkins-master/plugins/windows-slaves.jpi.disabled
@@ -25,7 +25,7 @@ if [[ -d /var/vcap/store/jenkins-master/plugins ]]; then
     touch /var/vcap/store/jenkins-master/plugins/translation.jpi.disabled
 fi
 
-if [[ -d /var/vcap/store/jenkins-master/userContent ]]; then
+if [[ ! -d /var/vcap/store/jenkins-master/userContent ]]; then
     mv /var/vcap/jobs/jenkins-master/config/*.png /var/vcap/store/jenkins-master/userContent
     mv /var/vcap/jobs/jenkins-master/config/*.css /var/vcap/store/jenkins-master/userContent
 fi
