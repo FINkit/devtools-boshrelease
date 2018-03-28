@@ -4,8 +4,24 @@ resource_types:
   type: docker-image
   source:
     repository: frodenas/gcs-resource
+- name: bbl-state-resource
+  type: docker-image
+  source:
+    repository: cfinfrastructure/bbl-state-resource
 
 resources:
+- name: bbl-state
+  type: git
+  source:
+    branch: master
+    uri: ((bbl-state-url))
+    username: ((git-credentials.username))
+    password: ((git-credentials.password))
+- name: cf-deployment-concourse-tasks
+  type: git
+  source:
+    branch: master
+    uri: https://github.com/cloudfoundry/cf-deployment-concourse-tasks.git
 - name: devtools-boshrelease
   type: git
   source:
@@ -15,7 +31,7 @@ resources:
 - name: release-tarballs
   type: google-cloud-storage
   source:
-    bucket: dev-build-automate-release-tarballs
+    bucket: dev-build-automate-release-tarballs #TODO: Paramatise me!
     json_key: ((concourse_project_google_key))
     versioned_file: devtools-boshrelease/dev-release.tgz
 
@@ -24,6 +40,7 @@ jobs:
   plan:
   - aggregate:
     - get: devtools-boshrelease
+      trigger: true
   - task: create-release
     config:
       platform: linux
@@ -47,4 +64,30 @@ jobs:
             --timestamp-version
   - put: release-tarballs
     params: { file: release-tarballs/devtools-boshrelease/dev-release.tgz }
-
+- name: test-jenkins
+  serial: true
+  plan:
+  - aggregate:
+    - get: release-tarballs
+      passed: [create-dev-release]
+    - get: cf-deployment-concourse-tasks
+    - get: bbl-state
+  - task: deploy-bosh
+    file: cf-deployment-concourse-tasks/bbl-up/task.yml
+    input_mapping:
+      bbl-config: bbl-state
+      bbl-state: bbl-state
+    output_mapping:
+      updated-bbl-state: updated-bbl-state
+    params:
+      BBL_ENV_NAME: test-jenkins # TODO: Rename me after bbl-down works
+      BBL_GCP_SERVICE_ACCOUNT_KEY: ((gcp.key))
+      BBL_GCP_REGION: ((gcp.region))
+      BBL_IAAS: gcp
+      BBL_STATE_DIR: bbl-state/test-jenkins
+      SKIP_LB_CREATION: true
+    ensure:
+      put: bbl-state
+      params:
+        repository: updated-bbl-state
+        rebase: true
