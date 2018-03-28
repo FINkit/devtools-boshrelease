@@ -1,0 +1,50 @@
+---
+resource_types:
+- name: google-cloud-storage
+  type: docker-image
+  source:
+    repository: frodenas/gcs-resource
+
+resources:
+- name: devtools-boshrelease
+  type: git
+  source:
+    uri: git@github.com:finkit/devtools-boshrelease
+    branch: master
+    private_key: ((github-finkit-ssh-key))
+- name: release-tarballs
+  type: google-cloud-storage
+  source:
+    bucket: dev-build-automate-release-tarballs
+    json_key: ((concourse_project_google_key))
+    versioned_file: devtools-boshrelease/dev-release.tgz
+
+jobs:
+- name: create-dev-release
+  plan:
+  - aggregate:
+    - get: devtools-boshrelease
+  - task: create-release
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source:
+          repository: engineerbetter/pcf-ops
+      inputs:
+      - name: devtools-boshrelease
+      outputs:
+      - name: release-tarballs
+      run:
+        path: bash
+        args:
+        - -c
+        - |
+          mkdir -p release-tarballs/devtools-boshrelease
+          bosh create-release \
+            --tarball=release-tarballs/devtools-boshrelease/dev-release.tgz \
+            --dir=devtools-boshrelease \
+            --timestamp-version
+  - put: release-tarballs
+    params: { file: release-tarballs/devtools-boshrelease/dev-release.tgz }
+
