@@ -31,7 +31,7 @@ resources:
 - name: release-tarballs
   type: google-cloud-storage
   source:
-    bucket: dev-build-automate-release-tarballs #TODO: Paramatise me!
+    bucket: ((dev-build-automate-release-tarballs))
     json_key: ((concourse_project_google_key))
     versioned_file: devtools-boshrelease/dev-release.tgz
 
