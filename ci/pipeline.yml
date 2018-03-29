@@ -32,7 +32,7 @@ resources:
 - name: release-tarballs
   type: google-cloud-storage
   source:
-    bucket: ((dev-build-automate-release-tarballs))
+    bucket: ((dev-build-automate-release-tarballs.bucket))
     json_key: ((concourse_project_google_key))
     versioned_file: devtools-boshrelease/dev-release.tgz
 
