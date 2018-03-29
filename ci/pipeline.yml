@@ -8,6 +8,10 @@ resource_types:
   type: docker-image
   source:
     repository: cfinfrastructure/bbl-state-resource
+- name: bosh-deployment
+  type: docker-image
+  source:
+    repository: cloudfoundry/bosh-deployment-resource
 
 resources:
 - name: bbl-state
@@ -17,6 +21,8 @@ resources:
     uri: ((bbl-state-url))
     username: ((git-credentials.username))
     password: ((git-credentials.password))
+- name: bosh-deployment
+  type: bosh-deployment
 - name: cf-deployment-concourse-tasks
   type: git
   source:
@@ -28,13 +34,18 @@ resources:
     uri: git@github.com:finkit/devtools-boshrelease
     branch: master
     private_key: ((github-finkit-ssh-key))
-    ignore_paths: ci/**
-- name: release-tarballs
+    ignore_paths:
+    - ci/**
+- name: dev-release-tarball
   type: google-cloud-storage
   source:
     bucket: ((dev-build-automate-release-tarballs.bucket))
     json_key: ((concourse_project_google_key))
     versioned_file: devtools-boshrelease/dev-release.tgz
+- name: gcp-stemcell
+  type: bosh-io-stemcell
+  source:
+    name: bosh-google-kvm-ubuntu-trusty-go_agent
 
 jobs:
 - name: create-dev-release
@@ -52,28 +63,33 @@ jobs:
       inputs:
       - name: devtools-boshrelease
       outputs:
-      - name: release-tarballs
+      - name: dev-release-tarball
       run:
         path: bash
         args:
         - -c
         - |
-          mkdir -p release-tarballs/devtools-boshrelease
+          mkdir -p dev-release-tarball/devtools-boshrelease
           bosh create-release \
-            --tarball=release-tarballs/devtools-boshrelease/dev-release.tgz \
+            --tarball=dev-release-tarball/devtools-boshrelease/dev-release.tgz \
             --dir=devtools-boshrelease \
             --timestamp-version
-  - put: release-tarballs
-    params: { file: release-tarballs/devtools-boshrelease/dev-release.tgz }
+  - put: dev-release-tarball
+    params: { file: dev-release-tarball/devtools-boshrelease/dev-release.tgz }
+
 - name: test-jenkins
   serial: true
   plan:
   - aggregate:
-    - get: release-tarballs
-      passed: [create-dev-release]
-    - get: cf-deployment-concourse-tasks
     - get: bbl-state
-  - task: deploy-bosh
+    - get: cf-deployment-concourse-tasks
+    - get: devtools-boshrelease
+    - get: gcp-stemcell
+      trigger: true
+    - get: dev-release-tarball
+      passed: [create-dev-release]
+      trigger: true
+  - task: bbl-up
     file: cf-deployment-concourse-tasks/bbl-up/task.yml
     input_mapping:
       bbl-config: bbl-state
@@ -81,9 +97,9 @@ jobs:
     output_mapping:
       updated-bbl-state: updated-bbl-state
     params:
-      BBL_ENV_NAME: test-jenkins # TODO: Rename me after bbl-down works
-      BBL_GCP_SERVICE_ACCOUNT_KEY: ((gcp.key))
+      BBL_ENV_NAME: &jenkins-deployment-name devtools-boshrelease-test-jenkins
       BBL_GCP_REGION: ((gcp.region))
+      BBL_GCP_SERVICE_ACCOUNT_KEY: ((gcp.key))
       BBL_IAAS: gcp
       BBL_STATE_DIR: bbl-state/test-jenkins
       SKIP_LB_CREATION: true
@@ -92,3 +108,71 @@ jobs:
       params:
         repository: updated-bbl-state
         rebase: true
+  - aggregate:
+    - do:
+      - task: create-bosh-source
+        params:
+          BOSH_DEPLOYMENT: *jenkins-deployment-name
+        config:
+          platform: linux
+          image_resource:
+            type: docker-image
+            source:
+              repository: engineerbetter/pcf-ops
+          inputs:
+          - name: bbl-state
+          outputs:
+          - name: source
+          run:
+            path: bash
+            args:
+            - -c
+            - |
+              set -euo pipefail
+              eval "$(cd bbl-state/bbl-state/test-jenkins; bbl print-env)"
+              jq -n \
+              --arg "deployment" "$BOSH_DEPLOYMENT" \
+              --arg "target" "$BOSH_ENVIRONMENT" \
+              --arg "client" "$BOSH_CLIENT" \
+              --arg "client_secret" "$BOSH_CLIENT_SECRET" \
+              --arg "ca_cert" "$BOSH_CA_CERT" \
+              --arg "jumpbox_url" "$(sed 's/.*@\(.*\):.*/\1:22/' <<< "$BOSH_ALL_PROXY")" \
+              --arg "jumpbox_ssh_key" "$(<$JUMPBOX_PRIVATE_KEY)" \
+              --arg "jumpbox_username" "jumpbox" \
+              '{
+                  "deployment": $deployment,
+                  "target": $target,
+                  "client": $client,
+                  "client_secret": $client_secret,
+                  "ca_cert": $ca_cert,
+                  "jumpbox_url": $jumpbox_url,
+                  "jumpbox_ssh_key": $jumpbox_ssh_key,
+                  "jumpbox_username": $jumpbox_username
+              }' > source/source.yml
+      - put: bosh-deployment
+        params:
+          source_file: source/source.yml
+          manifest: devtools-boshrelease/ci/manifests/jenkins.yml
+          releases:
+          - dev-release-tarball/dev-release.tgz
+          stemcells:
+          - gcp-stemcell/stemcell.tgz
+          vars:
+            deployment_name: *jenkins-deployment-name
+      #- task: test-jenkins-is-up
+      #- task: destroy-jenkins
+  - task: bbl-destroy
+    file: cf-deployment-concourse-tasks/bbl-destroy/task.yml
+    input_mapping:
+      bbl-state: bbl-state
+    output_mapping:
+      updated-bbl-state: updated-bbl-state
+    params:
+      BBL_GCP_SERVICE_ACCOUNT_KEY: ((gcp.key))
+      BBL_STATE_DIR: bbl-state/test-jenkins
+    ensure:
+      put: bbl-state
+      params:
+        repository: updated-bbl-state
+        rebase: true
+
