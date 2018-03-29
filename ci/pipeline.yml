@@ -28,6 +28,7 @@ resources:
     uri: git@github.com:finkit/devtools-boshrelease
     branch: master
     private_key: ((github-finkit-ssh-key))
+    ignore_paths: ci/**
 - name: release-tarballs
   type: google-cloud-storage
   source:
