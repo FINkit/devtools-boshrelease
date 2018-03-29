@@ -1,0 +1,63 @@
+name: ((deployment_name))
+instance_groups:
+- name: jenkins-master
+  azs: [z1]
+  instances: 1
+  jobs:
+  - name: jenkins-master
+    release: devtools
+    properties:
+      jenkins:
+        admin:
+          email: admin@localhost
+          password: ((jenkins_admin_password))
+        agent:
+          password: ((jenkins_agent_password))
+        server:
+          address: http://localhost:8080/
+  networks:
+  - name: default
+  persistent_disk_pool: 10GB
+  stemcell: default
+  vm_extensions:
+  - internet-required
+  vm_type: default
+- name: jenkins-slave
+  azs: [z1]
+  instances: 1
+  jobs:
+  - name: jenkins-slave
+    release: devtools
+    properties:
+      jenkins:
+        slave:
+          executors: 2
+          labels: build
+          master_password: ((jenkins_agent_password))
+          master_username: agent
+          mode: exclusive
+  networks:
+  - name: default
+  stemcell: default
+  vm_type: default
+
+releases:
+- name: devtools
+  version: latest
+
+stemcells:
+- alias: default
+  os: ubuntu-trusty
+  version: latest
+
+update:
+  canaries: 1
+  canary_watch_time: 15000-300000
+  max_in_flight: 1
+  update_watch_time: 15000-300000
+
+variables:
+- name: jenkins_admin_password
+  type: password
+- name: jenkins_agent_password
+  type: password
