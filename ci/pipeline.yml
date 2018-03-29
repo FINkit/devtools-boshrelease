@@ -28,10 +28,11 @@ resources:
     uri: git@github.com:finkit/devtools-boshrelease
     branch: master
     private_key: ((github-finkit-ssh-key))
+    ignore_paths: ci/**
 - name: release-tarballs
   type: google-cloud-storage
   source:
-    bucket: dev-build-automate-release-tarballs #TODO: Paramatise me!
+    bucket: ((dev-build-automate-release-tarballs.bucket))
     json_key: ((concourse_project_google_key))
     versioned_file: devtools-boshrelease/dev-release.tgz
 
