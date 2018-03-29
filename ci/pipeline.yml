@@ -149,7 +149,7 @@ jobs:
                   "jumpbox_ssh_key": $jumpbox_ssh_key,
                   "jumpbox_username": $jumpbox_username
               }' > source/source.yml
-      - put: bosh-deployment
+      - put: bosh-deployment # Deploy Jenkins instance
         params:
           source_file: source/source.yml
           manifest: devtools-boshrelease/ci/manifests/jenkins.yml
@@ -159,8 +159,14 @@ jobs:
           - gcp-stemcell/stemcell.tgz
           vars:
             deployment_name: *jenkins-deployment-name
-      #- task: test-jenkins-is-up
-      #- task: destroy-jenkins
+      - put: bosh-deployment # Destroy Jenkins instance
+        params:
+          source_file: source/source.yml
+          delete:
+            enabled: true
+            force: true
+          vars:
+            deployment_name: *jenkins-deployment-name
   - task: bbl-destroy
     file: cf-deployment-concourse-tasks/bbl-destroy/task.yml
     input_mapping:
