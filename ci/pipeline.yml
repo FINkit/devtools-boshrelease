@@ -107,7 +107,7 @@ jobs:
     output_mapping:
       updated-bbl-state: updated-bbl-state
     params:
-      BBL_ENV_NAME: &bosh-deployment-name devtools-boshrelease
+      BBL_ENV_NAME: devtools-boshrelease
       BBL_GCP_REGION: ((gcp.region))
       BBL_GCP_SERVICE_ACCOUNT_KEY: ((gcp.key))
       BBL_IAAS: gcp
@@ -132,9 +132,9 @@ jobs:
       trigger: true
   - aggregate:
     - do:
-      - task: create-bosh-source # TODO Rename me to something sensible
+      - task: create-jenkins-bosh-config
         params:
-          BOSH_DEPLOYMENT: *bosh-deployment-name
+          BOSH_DEPLOYMENT: &jenkins-deployment-name jenkins
         config:
           platform: linux
           image_resource:
@@ -180,7 +180,7 @@ jobs:
           stemcells:
           - gcp-stemcell/stemcell.tgz
           vars:
-            deployment_name: &jenkins-deployment-name devtools-boshrelease
+            deployment_name: *jenkins-deployment-name
       - task: curl-jenkins-home
         config:
           platform: linux
@@ -191,25 +191,24 @@ jobs:
           inputs:
           - name: bbl-state
           run:
-            path: sh
+            path: /bin/bash
             args:
             - -c
             - |
-              pushd bbl-state/bbl-state
-                source <(bbl print-env)
-                JUMPBOX_USER="jumpbox"; export JUMPBOX_USER
-                JUMPBOX_HOST=$(bosh int <(bbl outputs) --path /jumpbox_url | cut -d: -f1); export      JUMPBOX_HOST
-                BOSH_NAME=$(bosh int <(bbl outputs) --path /director_name); export BOSH_NAME
-                JENKINS_PASSWORD=$(credhub get -j -n "/$BOSH_NAME/$BOSH_DEPLOYMENT/                  jenkins_admin_password" | jq -r .value)
-                # set up jumpbox ssh tunnel
-                instance_info=$(bosh --json instances -i); export instance_info
-                jenkins_ip=$(jq -r .Tables[0].Rows[0].ips <<< "$instance_info")
-                # shellcheck disable=SC2029
-                ssh -o StrictHostKeyChecking=no -fNnL "8080:$jenkins_ip:8080" -i                     "$JUMPBOX_PRIVATE_KEY" "$JUMPBOX_USER@$JUMPBOX_HOST"
-                trap "pkill ssh" EXIT
-                sleep 10
-                curl -S --retry-max-time 300  --retry-delay 1 --retry-connrefused --retry 300 http://  localhost:8080/login
-              popd
+              cd bbl-state/bbl-state
+              source <(bbl print-env)
+              JUMPBOX_USER="jumpbox"; export JUMPBOX_USER
+              JUMPBOX_HOST=$(bosh int <(bbl outputs) --path /jumpbox_url | cut -d: -f1); export      JUMPBOX_HOST
+              BOSH_NAME=$(bosh int <(bbl outputs) --path /director_name); export BOSH_NAME
+              JENKINS_PASSWORD=$(credhub get -j -n "/$BOSH_NAME/$BOSH_DEPLOYMENT/                  jenkins_admin_password" | jq -r .value)
+              # set up jumpbox ssh tunnel
+              instance_info=$(bosh --json instances -i); export instance_info
+              jenkins_ip=$(jq -r .Tables[0].Rows[0].ips <<< "$instance_info")
+              # shellcheck disable=SC2029
+              ssh -o StrictHostKeyChecking=no -fNnL "8080:$jenkins_ip:8080" -i                     "$JUMPBOX_PRIVATE_KEY" "$JUMPBOX_USER@$JUMPBOX_HOST"
+              trap "pkill ssh" EXIT
+              sleep 10
+              curl -S --retry-max-time 300  --retry-delay 1 --retry 300 http://  localhost:8080/login
       - put: bosh-deployment # Destroy Jenkins instance
         params:
           source_file: source/source.yml
@@ -298,7 +297,7 @@ jobs:
       pre: rc
   - do: *do-release
 
-  - name: prerelease-patch
+- name: prerelease-patch
   serial: true
   plan:
   - put: version
