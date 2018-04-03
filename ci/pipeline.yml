@@ -180,7 +180,7 @@ jobs:
           stemcells:
           - gcp-stemcell/stemcell.tgz
           vars:
-            deployment_name: &jenkins-deployment-name jenkins
+            deployment_name: &jenkins-deployment-name devtools-boshrelease
       - task: curl-jenkins-home
         config:
           platform: linux
@@ -240,11 +240,11 @@ jobs:
   #        repository: updated-bbl-state
   #        rebase: true
 
-- name: major
+- name: release-final
   serial: true
   plan:
   - put: version
-    params: {bump: major}
+    params: {bump: final}
   - do: &do-release
     - aggregate:
       - get: devtools-boshrelease
@@ -280,22 +280,30 @@ jobs:
         globs: 
         - final-release-tarball/*.tgz
 
-- name: minor
+- name: prerelease-major
   serial: true
   plan:
   - put: version
-    params: {bump: minor}
+    params:
+      bump: major
+      pre: rc
   - do: *do-release
 
-- name: patch
+- name: prerelease-minor
   serial: true
   plan:
   - put: version
-    params: {bump: patch}
+    params:
+      bump: minor
+      pre: rc
   - do: *do-release
 
-- name: pre
+  - name: prerelease-patch
+  serial: true
   plan:
   - put: version
-    params: {bump: pre}
+    params:
+      bump: patch
+      pre: rc
   - do: *do-release
+  
