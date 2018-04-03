@@ -47,7 +47,7 @@ resources:
   source:
     bucket: ((dev-build-automate-release-tarballs.bucket))
     json_key: ((concourse_project_google_key))
-    versioned_file: devtools-boshrelease/final-release-*.tgz
+    regexp: devtools-boshrelease/final-release-(.*).tgz
 - name: gcp-stemcell
   type: bosh-io-stemcell
   source:
@@ -196,37 +196,51 @@ jobs:
         repository: updated-bbl-state
         rebase: true
 
-- name: create-final-release
+- name: major
   plan:
-  - aggregate:
-    - get: devtools-boshrelease
-      passed: [test-jenkins]
-      trigger: true
-    - get: dev-release-tarball
-    - get: version
-  - task: create-release
-    config:
-      platform: linux
-      image_resource:
-        type: docker-image
-        source:
-          repository: engineerbetter/pcf-ops
-      inputs:
-      - name: devtools-boshrelease
-      - name: version
-      outputs:
-      - name: final-release-tarball
-      run:
-        path: bash
-        args:
-        - -c
-        - |
-          mkdir -p final-release-tarball/devtools-boshrelease
-          version=$(<version/version)
-          bosh create-release \
-            --tarball=final-release-tarball/devtools-boshrelease/final-release-$version.tgz \
-            --dir=devtools-boshrelease \
-            --final \
-            --version="$version"
-  - put: final-release-tarball
-    params: { file: final-release-tarball/devtools-boshrelease/final-release-(.*).tgz }
+  - put: version
+    params: {bump: major}
+  - do: &do-release
+    - aggregate:
+      - get: devtools-boshrelease
+        passed: [test-jenkins]
+      - get: dev-release-tarball
+    - task: create-release
+      config:
+        platform: linux
+        image_resource:
+          type: docker-image
+          source:
+            repository: engineerbetter/pcf-ops
+        inputs:
+        - name: devtools-boshrelease
+        - name: version
+        outputs:
+        - name: final-release-tarball
+        run:
+          path: bash
+          args:
+          - -c
+          - |
+            mkdir -p final-release-tarball/devtools-boshrelease
+            version=$(<version/version)
+            bosh create-release \
+              --tarball=final-release-tarball/devtools-boshrelease/final-release-$version.tgz \
+              --dir=devtools-boshrelease \
+              --final \
+              --version="$version"
+    - put: final-release-tarball
+      params: { file: final-release-tarball/devtools-boshrelease/final-release-*.tgz }
+
+- name: minor
+  plan:
+  - put: version
+    params: {bump: minor}
+  - do: *do-release
+
+- name: patch
+  plan:
+  - put: version
+    params: {bump: patch}
+  - do: *do-release
+
