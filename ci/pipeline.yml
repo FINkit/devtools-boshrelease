@@ -42,10 +42,24 @@ resources:
     bucket: ((dev-build-automate-release-tarballs.bucket))
     json_key: ((concourse_project_google_key))
     versioned_file: devtools-boshrelease/dev-release.tgz
+- name: final-release-tarball
+  type: google-cloud-storage
+  source:
+    bucket: ((dev-build-automate-release-tarballs.bucket))
+    json_key: ((concourse_project_google_key))
+    versioned_file: devtools-boshrelease/final-release-*.tgz
 - name: gcp-stemcell
   type: bosh-io-stemcell
   source:
     name: bosh-google-kvm-ubuntu-trusty-go_agent
+- name: version
+  type: semver
+  source:
+    driver: gcs 
+    bucket: ((dev-build-automate-release-tarballs.bucket))
+    json_key: ((concourse_project_google_key))
+    initial_version: 0.1.0
+    key: version
 
 jobs:
 - name: create-dev-release
@@ -110,7 +124,7 @@ jobs:
         rebase: true
   - aggregate:
     - do:
-      - task: create-bosh-source
+      - task: create-bosh-source # TODO Rename me to something sensible
         params:
           BOSH_DEPLOYMENT: *jenkins-deployment-name
         config:
@@ -181,4 +195,36 @@ jobs:
       params:
         repository: updated-bbl-state
         rebase: true
+
+- name: create-final-release
+  plan:
+  - aggregate:
+    - get: devtools-boshrelease
+      passed: [test-jenkins]
+      trigger: true
+    - get: dev-release-tarball
+  - task: create-release
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source:
+          repository: engineerbetter/pcf-ops
+      inputs:
+      - name: devtools-boshrelease
+      outputs:
+      - name: final-release-tarball
+      run:
+        path: bash
+        args:
+        - -c
+        - |
+          mkdir -p dev-release-tarball/devtools-boshrelease
+          bosh create-release \
+            --tarball=dev-release-tarball/devtools-boshrelease/dev-release.tgz \
+            --dir=devtools-boshrelease \
+            --final \
+            --version=
+  - put: final-release-tarball
+    params: { file: final-release-tarball/devtools-boshrelease/final-release.tgz }
 
