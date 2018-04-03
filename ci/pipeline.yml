@@ -91,17 +91,13 @@ jobs:
   - put: dev-release-tarball
     params: { file: dev-release-tarball/devtools-boshrelease/dev-release.tgz }
 
-- name: test-jenkins
+- name: deploy-bosh
   serial: true
   plan:
   - aggregate:
     - get: bbl-state
     - get: cf-deployment-concourse-tasks
     - get: devtools-boshrelease
-    - get: gcp-stemcell
-      trigger: true
-    - get: dev-release-tarball
-      passed: [create-dev-release]
       trigger: true
   - task: bbl-up
     file: cf-deployment-concourse-tasks/bbl-up/task.yml
@@ -111,22 +107,34 @@ jobs:
     output_mapping:
       updated-bbl-state: updated-bbl-state
     params:
-      BBL_ENV_NAME: &jenkins-deployment-name devtools-boshrelease-test-jenkins
+      BBL_ENV_NAME: &bosh-deployment-name devtools-boshrelease
       BBL_GCP_REGION: ((gcp.region))
       BBL_GCP_SERVICE_ACCOUNT_KEY: ((gcp.key))
       BBL_IAAS: gcp
-      BBL_STATE_DIR: bbl-state/test-jenkins
       SKIP_LB_CREATION: true
     ensure:
       put: bbl-state
       params:
         repository: updated-bbl-state
         rebase: true
+
+- name: test-jenkins
+  serial: true
+  plan:
+  - aggregate:
+    - get: bbl-state
+      passed: [deploy-bosh]
+    - get: cf-deployment-concourse-tasks
+    - get: devtools-boshrelease
+    - get: gcp-stemcell
+    - get: dev-release-tarball
+      passed: [create-dev-release]
+      trigger: true
   - aggregate:
     - do:
       - task: create-bosh-source # TODO Rename me to something sensible
         params:
-          BOSH_DEPLOYMENT: *jenkins-deployment-name
+          BOSH_DEPLOYMENT: *bosh-deployment-name
         config:
           platform: linux
           image_resource:
@@ -143,7 +151,7 @@ jobs:
             - -c
             - |
               set -euo pipefail
-              eval "$(cd bbl-state/bbl-state/test-jenkins; bbl print-env)"
+              eval "$(cd bbl-state/bbl-state; bbl print-env)"
               jq -n \
               --arg "deployment" "$BOSH_DEPLOYMENT" \
               --arg "target" "$BOSH_ENVIRONMENT" \
@@ -172,7 +180,36 @@ jobs:
           stemcells:
           - gcp-stemcell/stemcell.tgz
           vars:
-            deployment_name: *jenkins-deployment-name
+            deployment_name: &jenkins-deployment-name jenkins
+      - task: curl-jenkins-home
+        config:
+          platform: linux
+          image_resource:
+            type: docker-image
+            source:
+              repository: engineerbetter/pcf-ops
+          inputs:
+          - name: bbl-state
+          run:
+            path: sh
+            args:
+            - -c
+            - |
+              pushd bbl-state/bbl-state
+                source <(bbl print-env)
+                JUMPBOX_USER="jumpbox"; export JUMPBOX_USER
+                JUMPBOX_HOST=$(bosh int <(bbl outputs) --path /jumpbox_url | cut -d: -f1); export      JUMPBOX_HOST
+                BOSH_NAME=$(bosh int <(bbl outputs) --path /director_name); export BOSH_NAME
+                JENKINS_PASSWORD=$(credhub get -j -n "/$BOSH_NAME/$BOSH_DEPLOYMENT/                  jenkins_admin_password" | jq -r .value)
+                # set up jumpbox ssh tunnel
+                instance_info=$(bosh --json instances -i); export instance_info
+                jenkins_ip=$(jq -r .Tables[0].Rows[0].ips <<< "$instance_info")
+                # shellcheck disable=SC2029
+                ssh -o StrictHostKeyChecking=no -fNnL "8080:$jenkins_ip:8080" -i                     "$JUMPBOX_PRIVATE_KEY" "$JUMPBOX_USER@$JUMPBOX_HOST"
+                trap "pkill ssh" EXIT
+                sleep 10
+                curl -S --retry-max-time 300  --retry-delay 1 --retry-connrefused --retry 300 http://  localhost:8080/login
+              popd
       - put: bosh-deployment # Destroy Jenkins instance
         params:
           source_file: source/source.yml
@@ -181,22 +218,30 @@ jobs:
             force: true
           vars:
             deployment_name: *jenkins-deployment-name
-  - task: bbl-destroy
-    file: cf-deployment-concourse-tasks/bbl-destroy/task.yml
-    input_mapping:
-      bbl-state: bbl-state
-    output_mapping:
-      updated-bbl-state: updated-bbl-state
-    params:
-      BBL_GCP_SERVICE_ACCOUNT_KEY: ((gcp.key))
-      BBL_STATE_DIR: bbl-state/test-jenkins
-    ensure:
-      put: bbl-state
-      params:
-        repository: updated-bbl-state
-        rebase: true
+
+  #- name: destroy-bosh
+  #  serial: true
+  #  plan:
+  #  - aggregate:
+  #    - get: bbl-state
+  #      passed: [test-jenkins]
+  #    - get: cf-deployment-concourse-tasks
+  #  - task: bbl-destroy
+  #    file: cf-deployment-concourse-tasks/bbl-destroy/task.yml
+  #    input_mapping:
+  #      bbl-state: bbl-state
+  #    output_mapping:
+  #      updated-bbl-state: updated-bbl-state
+  #    params:
+  #      BBL_GCP_SERVICE_ACCOUNT_KEY: ((gcp.key))
+  #    ensure:
+  #      put: bbl-state
+  #      params:
+  #        repository: updated-bbl-state
+  #        rebase: true
 
 - name: major
+  serial: true
   plan:
   - put: version
     params: {bump: major}
@@ -204,7 +249,6 @@ jobs:
     - aggregate:
       - get: devtools-boshrelease
         passed: [test-jenkins]
-      - get: dev-release-tarball
     - task: create-release
       config:
         platform: linux
@@ -237,12 +281,14 @@ jobs:
         - final-release-tarball/*.tgz
 
 - name: minor
+  serial: true
   plan:
   - put: version
     params: {bump: minor}
   - do: *do-release
 
 - name: patch
+  serial: true
   plan:
   - put: version
     params: {bump: patch}
