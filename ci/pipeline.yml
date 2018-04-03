@@ -42,23 +42,23 @@ resources:
     bucket: ((dev-build-automate-release-tarballs.bucket))
     json_key: ((concourse_project_google_key))
     versioned_file: devtools-boshrelease/dev-release.tgz
-- name: final-release-tarball
-  type: google-cloud-storage
-  source:
-    bucket: ((dev-build-automate-release-tarballs.bucket))
-    json_key: ((concourse_project_google_key))
-    regexp: devtools-boshrelease/final-release-(.*).tgz
 - name: gcp-stemcell
   type: bosh-io-stemcell
   source:
     name: bosh-google-kvm-ubuntu-trusty-go_agent
+- name: github-release
+  type: github-release
+  source:
+    owner: finkit
+    repository: devtools-boshrelease
+    access_token: ((github-access-token))
 - name: version
   type: semver
   source:
     driver: gcs 
     bucket: ((dev-build-automate-release-tarballs.bucket))
     json_key: ((concourse_project_google_key))
-    initial_version: 0.1.0
+    initial_version: 0.0.0
     key: version
 
 jobs:
@@ -222,15 +222,19 @@ jobs:
           args:
           - -c
           - |
-            mkdir -p final-release-tarball/devtools-boshrelease
             version=$(<version/version)
             bosh create-release \
-              --tarball=final-release-tarball/devtools-boshrelease/final-release-$version.tgz \
+              --tarball=final-release-tarball/devtools-boshrelease-v$version.tgz \
               --dir=devtools-boshrelease \
               --final \
               --version="$version"
-    - put: final-release-tarball
-      params: { file: final-release-tarball/devtools-boshrelease/final-release-*.tgz }
+    - put: github-release
+      params:
+        name: version/version
+        tag: version/version
+        tag_prefix: v
+        globs: 
+        - final-release-tarball/*.tgz
 
 - name: minor
   plan:
@@ -244,3 +248,8 @@ jobs:
     params: {bump: patch}
   - do: *do-release
 
+- name: pre
+  plan:
+  - put: version
+    params: {bump: pre}
+  - do: *do-release
