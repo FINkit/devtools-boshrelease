@@ -192,23 +192,15 @@ jobs:
           - name: bbl-state
           run:
             path: /bin/bash
+            env:
+              BOSH_DEPLOYMENT: *jenkins-deployment-name
             args:
             - -c
             - |
               cd bbl-state/bbl-state
               source <(bbl print-env)
-              JUMPBOX_USER="jumpbox"; export JUMPBOX_USER
-              JUMPBOX_HOST=$(bosh int <(bbl outputs) --path /jumpbox_url | cut -d: -f1); export      JUMPBOX_HOST
-              BOSH_NAME=$(bosh int <(bbl outputs) --path /director_name); export BOSH_NAME
-              JENKINS_PASSWORD=$(credhub get -j -n "/$BOSH_NAME/$BOSH_DEPLOYMENT/                  jenkins_admin_password" | jq -r .value)
-              # set up jumpbox ssh tunnel
-              instance_info=$(bosh --json instances -i); export instance_info
-              jenkins_ip=$(jq -r .Tables[0].Rows[0].ips <<< "$instance_info")
-              # shellcheck disable=SC2029
-              ssh -o StrictHostKeyChecking=no -fNnL "8080:$jenkins_ip:8080" -i                     "$JUMPBOX_PRIVATE_KEY" "$JUMPBOX_USER@$JUMPBOX_HOST"
-              trap "pkill ssh" EXIT
-              sleep 10
-              curl -S --retry-max-time 300  --retry-delay 1 --retry 300 http://  localhost:8080/login
+              sleep 10 # Sleeping because this curl lacks the --retry-connrefused
+              bosh -d $BOSH_DEPLOYMENT ssh jenkins-master/0 -c "curl -S --retry-max-time 300 --retry-delay 1 --retry 300 http://localhost:8080/login"
       - put: bosh-deployment # Destroy Jenkins instance
         params:
           source_file: source/source.yml
@@ -305,4 +297,4 @@ jobs:
       bump: patch
       pre: rc
   - do: *do-release
-  
+
