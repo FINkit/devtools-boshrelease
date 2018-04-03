@@ -203,6 +203,7 @@ jobs:
       passed: [test-jenkins]
       trigger: true
     - get: dev-release-tarball
+    - get: version
   - task: create-release
     config:
       platform: linux
@@ -212,6 +213,7 @@ jobs:
           repository: engineerbetter/pcf-ops
       inputs:
       - name: devtools-boshrelease
+      - name: version
       outputs:
       - name: final-release-tarball
       run:
@@ -219,12 +221,12 @@ jobs:
         args:
         - -c
         - |
-          mkdir -p dev-release-tarball/devtools-boshrelease
+          mkdir -p final-release-tarball/devtools-boshrelease
+          version=$(<version/version)
           bosh create-release \
-            --tarball=dev-release-tarball/devtools-boshrelease/dev-release.tgz \
+            --tarball=final-release-tarball/devtools-boshrelease/final-release-$version.tgz \
             --dir=devtools-boshrelease \
             --final \
-            --version=
+            --version="$version"
   - put: final-release-tarball
-    params: { file: final-release-tarball/devtools-boshrelease/final-release.tgz }
-
+    params: { file: final-release-tarball/devtools-boshrelease/final-release-(.*).tgz }
