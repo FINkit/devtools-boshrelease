@@ -253,42 +253,7 @@ jobs:
       - task: create-nexus-bosh-config
         params:
           BOSH_DEPLOYMENT: &nexus-deployment-name nexus
-        config:
-          platform: linux
-          image_resource:
-            type: docker-image
-            source:
-              repository: engineerbetter/pcf-ops
-          inputs:
-          - name: bbl-state
-          outputs:
-          - name: source
-          run:
-            path: bash
-            args:
-            - -c
-            - |
-              set -euo pipefail
-              eval "$(cd bbl-state/bbl-state; bbl print-env)"
-              jq -n \
-              --arg "deployment" "$BOSH_DEPLOYMENT" \
-              --arg "target" "$BOSH_ENVIRONMENT" \
-              --arg "client" "$BOSH_CLIENT" \
-              --arg "client_secret" "$BOSH_CLIENT_SECRET" \
-              --arg "ca_cert" "$BOSH_CA_CERT" \
-              --arg "jumpbox_url" "$(sed 's/.*@\(.*\):.*/\1:22/' <<< "$BOSH_ALL_PROXY")" \
-              --arg "jumpbox_ssh_key" "$(<$JUMPBOX_PRIVATE_KEY)" \
-              --arg "jumpbox_username" "jumpbox" \
-              '{
-                  "deployment": $deployment,
-                  "target": $target,
-                  "client": $client,
-                  "client_secret": $client_secret,
-                  "ca_cert": $ca_cert,
-                  "jumpbox_url": $jumpbox_url,
-                  "jumpbox_ssh_key": $jumpbox_ssh_key,
-                  "jumpbox_username": $jumpbox_username
-              }' > source/source.yml
+        file: devtools-boshrelease-ci/ci/tasks/create-bosh-config.yml
       - put: bosh-deployment # Deploy Nexus instance
         params:
           source_file: source/source.yml
@@ -318,7 +283,7 @@ jobs:
               cd bbl-state/bbl-state
               source <(bbl print-env)
               sleep 10 # Sleeping because this curl lacks the --retry-connrefused
-              bosh -d $BOSH_DEPLOYMENT ssh nexus/0 -c "curl -S --retry-max-time 300 --retry-delay 1 --retry 300 http://localhost:9000/"
+              bosh -d $BOSH_DEPLOYMENT ssh nexus/0 -c "curl -S --retry-max-time 300 --retry-delay 1 --retry 300 http://localhost:8081/"
       - put: bosh-deployment # Destroy Nexus instance
         params:
           source_file: source/source.yml
