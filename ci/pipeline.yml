@@ -36,17 +36,16 @@ resources:
 - name: devtools-boshrelease
   type: git
   source:
-    uri: git@github.com:finkit/devtools-boshrelease
-    branch: master
-    private_key: ((github-finkit-ssh-key))
+    <<: &devtools-boshrelease-git-source
+      uri: git@github.com:finkit/devtools-boshrelease
+      branch: master
+      private_key: ((github-finkit-ssh-key))
     ignore_paths:
     - ci/**
 - name: devtools-boshrelease-ci
   type: git
   source:
-    uri: git@github.com:finkit/devtools-boshrelease
-    branch: master
-    private_key: ((github-finkit-ssh-key))
+    <<: *devtools-boshrelease-git-source
     paths:
     - ci/**
 - name: dev-release-tarball
@@ -62,16 +61,15 @@ resources:
 - name: github-prerelease
   type: github-release
   source:
+    <<: &github-release-source
+      owner: finkit
+      repository: devtools-boshrelease
+      access_token: ((github-access-token))
     pre_release: true
-    owner: finkit
-    repository: devtools-boshrelease
-    access_token: ((github-access-token))
 - name: github-release
   type: github-release
-  source: # TODO: YAML anchor me
-    owner: finkit
-    repository: devtools-boshrelease
-    access_token: ((github-access-token))
+  source:
+    <<: *github-release-source
 - name: version
   type: semver
   source:
@@ -143,7 +141,7 @@ jobs:
 - name: test-jenkins
   serial: true
   plan:
-  - aggregate:
+  - aggregate: &get-test-resources
     - get: bbl-state
       passed: [deploy-bosh]
     - get: cf-deployment-concourse-tasks
@@ -202,17 +200,7 @@ jobs:
 - name: test-nexus
   serial: true
   plan:
-  - aggregate:
-    - get: bbl-state
-      passed: [deploy-bosh]
-    - get: cf-deployment-concourse-tasks
-    - get: devtools-boshrelease
-      passed: [create-dev-release]
-    - get: devtools-boshrelease-ci
-    - get: dev-release-tarball
-      passed: [create-dev-release]
-      trigger: true
-    - get: warden-stemcell
+  - aggregate: *get-test-resources
   - aggregate:
     - do:
       - task: create-nexus-bosh-config
