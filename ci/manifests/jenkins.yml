@@ -21,7 +21,7 @@ instance_groups:
   stemcell: default
   vm_extensions:
   - internet-required
-  vm_type: default
+  vm_type: small
 - name: jenkins-slave
   azs: [z1]
   instances: 1
@@ -39,7 +39,7 @@ instance_groups:
   networks:
   - name: default
   stemcell: default
-  vm_type: default
+  vm_type: small
 
 releases:
 - name: devtools
