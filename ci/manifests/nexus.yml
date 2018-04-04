@@ -1,0 +1,39 @@
+name: ((deployment_name))
+instance_groups:
+- name: nexus
+  azs: [z1]
+  instances: 1
+  jobs:
+  - name: nexus
+    release: devtools
+    properties:
+      nexus:
+        admin:
+          password: ((nexus_admin_password))
+        deployer:
+          password: ((nexus_deployer_password))
+  networks:
+  - name: default
+  stemcell: default
+  vm_type: small
+
+releases:
+- name: devtools
+  version: latest
+
+stemcells:
+- alias: default
+  os: ubuntu-trusty
+  version: latest
+
+update:
+  canaries: 1
+  canary_watch_time: 15000-300000
+  max_in_flight: 1
+  update_watch_time: 15000-300000
+
+variables:
+- name: nexus_admin_password
+  type: password
+- name: nexus_deployer_password
+  type: password
