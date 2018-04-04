@@ -190,10 +190,10 @@ jobs:
               repository: engineerbetter/pcf-ops
           inputs:
           - name: bbl-state
+          params:
+            BOSH_DEPLOYMENT: *jenkins-deployment-name
           run:
             path: /bin/bash
-            env:
-              BOSH_DEPLOYMENT: *jenkins-deployment-name
             args:
             - -c
             - |
