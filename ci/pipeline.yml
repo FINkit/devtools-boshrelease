@@ -47,10 +47,10 @@ resources:
     bucket: ((dev-build-automate-release-tarballs.bucket))
     json_key: ((concourse_project_google_key))
     versioned_file: devtools-boshrelease/dev-release.tgz
-- name: gcp-stemcell
+- name: warden-stemcell
   type: bosh-io-stemcell
   source:
-    name: bosh-google-kvm-ubuntu-trusty-go_agent
+    name: bosh-warden-boshlite-ubuntu-trusty-go_agent
 - name: github-prerelease
   type: github-release
   source:
@@ -140,7 +140,7 @@ jobs:
     - get: cf-deployment-concourse-tasks
     - get: devtools-boshrelease
       passed: [create-dev-release]
-    - get: gcp-stemcell
+    - get: warden-stemcell
     - get: dev-release-tarball
       passed: [create-dev-release]
       trigger: true
@@ -192,7 +192,7 @@ jobs:
           releases:
           - dev-release-tarball/dev-release.tgz
           stemcells:
-          - gcp-stemcell/stemcell.tgz
+          - warden-stemcell/stemcell.tgz
           vars:
             deployment_name: *jenkins-deployment-name
       - task: curl-jenkins-home
