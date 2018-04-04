@@ -247,30 +247,9 @@ jobs:
       - get: devtools-boshrelease
         passed: *tests
     - task: create-release
-      config:
-        platform: linux
-        image_resource:
-          type: docker-image
-          source:
-            repository: engineerbetter/pcf-ops
-        inputs:
-        - name: devtools-boshrelease
-        - name: version
-        outputs:
-        - name: final-release-tarball
-        run:
-          path: bash
-          args:
-          - -c
-          - |
-            version=$(<version/version)
-            bosh create-release \
-              --tarball=final-release-tarball/devtools-boshrelease-v$version.tgz \
-              --dir=devtools-boshrelease \
-              --final \
-              --version="$version"
+      file: devtools-boshrelease-ci/ci/tasks/create-final-release.yml
     - put: github-release
-      params:
+      params: &put-github-release-params
         name: version/version
         tag: version/version
         tag_prefix: v
@@ -289,35 +268,9 @@ jobs:
       - get: devtools-boshrelease
         passed: *tests
     - task: create-release
-      config:
-        platform: linux
-        image_resource:
-          type: docker-image
-          source:
-            repository: engineerbetter/pcf-ops
-        inputs:
-        - name: devtools-boshrelease
-        - name: version
-        outputs:
-        - name: final-release-tarball
-        run:
-          path: bash
-          args:
-          - -c
-          - |
-            version=$(<version/version)
-            bosh create-release \
-              --tarball=final-release-tarball/devtools-boshrelease-v$version.tgz \
-              --dir=devtools-boshrelease \
-              --final \
-              --version="$version"
+      file: devtools-boshrelease-ci/ci/tasks/create-final-release.yml
     - put: github-prerelease
-      params:
-        name: version/version
-        tag: version/version
-        tag_prefix: v
-        globs: 
-        - final-release-tarball/*.tgz
+      params: *put-github-release-params
 
 - name: prerelease-minor
   serial_groups: [github-release]
