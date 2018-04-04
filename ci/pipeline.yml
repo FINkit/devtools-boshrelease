@@ -85,6 +85,7 @@ jobs:
   - aggregate:
     - get: devtools-boshrelease
       trigger: true
+    - get: devtools-boshrelease-ci
   - task: create-release
     file: devtools-boshrelease-ci/ci/tasks/create-dev-release.yml
   - put: dev-release-tarball
