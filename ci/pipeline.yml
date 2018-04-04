@@ -245,7 +245,7 @@ jobs:
     params:
       bump: major
       pre: rc
-  - do: &do-prerelease # TODO: More YAML anchor goodness required
+  - do: &do-prerelease
     - aggregate:
       - get: devtools-boshrelease
         passed: *tests
