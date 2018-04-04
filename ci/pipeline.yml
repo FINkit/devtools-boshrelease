@@ -86,28 +86,9 @@ jobs:
     - get: devtools-boshrelease
       trigger: true
   - task: create-release
-    config:
-      platform: linux
-      image_resource:
-        type: docker-image
-        source:
-          repository: engineerbetter/pcf-ops
-      inputs:
-      - name: devtools-boshrelease
-      outputs:
-      - name: dev-release-tarball
-      run:
-        path: bash
-        args:
-        - -c
-        - |
-          mkdir -p dev-release-tarball/devtools-boshrelease
-          bosh create-release \
-            --tarball=dev-release-tarball/devtools-boshrelease/dev-release.tgz \
-            --dir=devtools-boshrelease \
-            --timestamp-version
+    file: devtools-boshrelease-ci/ci/tasks/create-dev-release.yml
   - put: dev-release-tarball
-    params: { file: dev-release-tarball/devtools-boshrelease/dev-release.tgz }
+    params: { file: dev-release-tarball/dev-release.tgz }
 
 - name: deploy-bosh
   serial_groups: [bbl]
