@@ -19,8 +19,6 @@ instance_groups:
   - name: default
   persistent_disk_pool: 10GB
   stemcell: default
-  vm_extensions:
-  - internet-required
   vm_type: small
 - name: jenkins-slave
   azs: [z1]
