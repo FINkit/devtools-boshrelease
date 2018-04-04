@@ -2,10 +2,10 @@
 	basePath = git
 	canonicalWebUrl = http://localhost:8080/
 [database]
-    type = mysql
-    hostname = <%= p('gerrit.mysql.host') %>
-    database = <%= p('gerrit.mysql.database') %>
-    username = <%= p('gerrit.mysql.username') %>
+    type = <%= p('gerrit.database.type') %>
+    hostname = <%= p('gerrit.database.host') %>
+    database = <%= p('gerrit.database.name') %>
+    username = <%= p('gerrit.database.username') %>
 [index]
 	type = LUCENE
 [auth]

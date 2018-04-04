@@ -17,13 +17,16 @@ packages:
   - gerrit
 
 properties:
-  gerrit.mysql.password:
-    description: "MySQL password for the Gerrit user"
-  gerrit.mysql.host:
-    description: "Location of gerrit database"
-  gerrit.mysql.database:
+  gerrit.database.type:
+    description: "Database type, e.g. H2, MYSQL"
+    default: H2
+  gerrit.database.password:
+    description: "Database password for the gerrit user"
+  gerrit.database.host:
+    description: "Hostname of the gerrit database"
+  gerrit.database.name:
     description: "Name of the database for gerrit"
     default: reviewdb
-  gerrit.mysql.username:
-    description: "Username to connect to the mysqldb"
+  gerrit.database.username:
+    description: "Username to connect to the gerrit database"
     default: gerrit
