@@ -108,6 +108,7 @@ jobs:
   plan:
   - aggregate:
     - get: bbl-state
+    - get: bosh-bootloader
     - get: cf-deployment-concourse-tasks
     - get: devtools-boshrelease
       trigger: true
