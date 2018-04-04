@@ -41,6 +41,14 @@ resources:
     private_key: ((github-finkit-ssh-key))
     ignore_paths:
     - ci/**
+- name: devtools-boshrelease-ci
+  type: git
+  source:
+    uri: git@github.com:finkit/devtools-boshrelease
+    branch: master
+    private_key: ((github-finkit-ssh-key))
+    paths:
+    - ci/**
 - name: dev-release-tarball
   type: google-cloud-storage
   source:
@@ -141,10 +149,11 @@ jobs:
     - get: cf-deployment-concourse-tasks
     - get: devtools-boshrelease
       passed: [create-dev-release]
-    - get: warden-stemcell
+    - get: devtools-boshrelease-ci
     - get: dev-release-tarball
       passed: [create-dev-release]
       trigger: true
+    - get: warden-stemcell
   - aggregate:
     - do:
       - task: create-jenkins-bosh-config
@@ -189,7 +198,7 @@ jobs:
       - put: bosh-deployment # Deploy Jenkins instance
         params:
           source_file: source/source.yml
-          manifest: devtools-boshrelease/ci/manifests/jenkins.yml
+          manifest: devtools-boshrelease-ci/ci/manifests/jenkins.yml
           releases:
           - dev-release-tarball/dev-release.tgz
           stemcells:
