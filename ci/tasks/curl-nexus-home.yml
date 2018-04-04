@@ -1,0 +1,16 @@
+platform: linux
+image_resource:
+  type: docker-image
+  source:
+    repository: engineerbetter/pcf-ops
+inputs:
+- name: bbl-state
+run:
+  path: /bin/bash
+  args:
+  - -c
+  - | 
+    cd bbl-state/bbl-state
+    source <(bbl print-env)
+    sleep 10 # Sleeping because this curl lacks the --retry-connrefused
+    bosh -d $BOSH_DEPLOYMENT ssh nexus/0 -c "curl -S --retry-max-time 300 --   retry-delay 1 --retry 300 http://localhost:8081/"
