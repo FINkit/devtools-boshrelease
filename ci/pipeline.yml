@@ -149,8 +149,8 @@ jobs:
           - warden-stemcell/stemcell.tgz
           vars:
             deployment_name: *jenkins-deployment-name
-      - task: curl-jenkins-home
-        file: devtools-boshrelease-ci/ci/tasks/curl-jenkins-home.yml
+      - task: test-jenkins-curl
+        file: devtools-boshrelease-ci/ci/tasks/test-jenkins-curl.yml
         params:
           BOSH_DEPLOYMENT: *jenkins-deployment-name
       - put: bosh-deployment # Destroy Jenkins instance
@@ -182,8 +182,8 @@ jobs:
           - warden-stemcell/stemcell.tgz
           vars:
             deployment_name: *nexus-deployment-name
-      - task: curl-nexus-home
-        file: devtools-boshrelease-ci/ci/tasks/curl-nexus-home.yml
+      - task: test-nexus-curl
+        file: devtools-boshrelease-ci/ci/tasks/test-nexus-curl.yml
         params:
           BOSH_DEPLOYMENT: *nexus-deployment-name
       - put: bosh-deployment # Destroy Nexus instance
