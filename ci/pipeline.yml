@@ -297,6 +297,7 @@ jobs:
     - aggregate:
       - get: devtools-boshrelease
         passed: *tests
+      - get: devtools-boshrelease-ci
     - task: create-release
       file: devtools-boshrelease-ci/ci/tasks/create-final-release.yml
     - put: github-release
@@ -318,6 +319,7 @@ jobs:
     - aggregate:
       - get: devtools-boshrelease
         passed: *tests
+      - get: devtools-boshrelease-ci
     - task: create-release
       file: devtools-boshrelease-ci/ci/tasks/create-final-release.yml
     - put: github-prerelease
