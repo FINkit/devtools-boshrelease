@@ -153,10 +153,10 @@ jobs:
           - warden-stemcell/stemcell.tgz
           vars:
             deployment_name: *gerrit-deployment-name
-#      - task: test-gerrit-curl
-#        file: devtools-boshrelease-ci/ci/tasks/test-gerrit-curl.yml
-#        params:
-#          BOSH_DEPLOYMENT: *gerrit-deployment-name
+      - task: test-gerrit-curl
+        file: devtools-boshrelease-ci/ci/tasks/test-gerrit-curl.yml
+        params:
+          BOSH_DEPLOYMENT: *gerrit-deployment-name
       - put: bosh-deployment # Destroy Gerrit instance
         params:
           source_file: source/source.yml
