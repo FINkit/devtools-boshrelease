@@ -232,6 +232,39 @@ jobs:
           vars:
             deployment_name: *nexus-deployment-name
 
+- name: test-sonarqube
+  serial: true
+  plan:
+  - aggregate: *get-test-resources
+  - aggregate:
+    - do:
+      - task: create-sonarqube-bosh-config
+        params:
+          BOSH_DEPLOYMENT: &sonarqube-deployment-name sonarqube
+        file: devtools-boshrelease-ci/ci/tasks/create-bosh-config.yml
+      - put: bosh-deployment # Deploy sonarqube instance
+        params:
+          source_file: source/source.yml
+          manifest: devtools-boshrelease-ci/ci/manifests/sonarqube.yml
+          releases:
+          - dev-release-tarball/dev-release.tgz
+          stemcells:
+          - warden-stemcell/stemcell.tgz
+          vars:
+            deployment_name: *sonarqube-deployment-name
+      - task: test-sonarqube-curl
+        file: devtools-boshrelease-ci/ci/tasks/test-sonarqube-curl.yml
+        params:
+          BOSH_DEPLOYMENT: *sonarqube-deployment-name
+      - put: bosh-deployment # Destroy sonarqube instance
+        params:
+          source_file: source/source.yml
+          delete:
+            enabled: true
+            force: true
+          vars:
+            deployment_name: *sonarqube-deployment-name
+
 - name: destroy-bosh
   serial_groups: [bbl]
   plan:
