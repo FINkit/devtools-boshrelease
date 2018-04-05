@@ -345,5 +345,19 @@ jobs:
     params:
       bump: patch
       pre: rc
-  - do: *do-prerelease
+  - do:
+    - aggregate:
+      - get: devtools-boshrelease
+        passed: *tests
+        trigger: true
+      - get: devtools-boshrelease-ci
+    - task: create-release
+      file: devtools-boshrelease-ci/ci/tasks/create-final-release.yml
+    - put: github-prerelease
+      params: &put-github-release-params
+        name: version/version
+        tag: version/version
+        tag_prefix: v
+        globs: 
+        - final-release-tarball/*.tgz
 
