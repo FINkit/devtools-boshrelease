@@ -24,6 +24,7 @@ properties:
     description: "Database password for the gerrit user"
   gerrit.database.host:
     description: "Hostname of the gerrit database"
+    default: localhost
   gerrit.database.name:
     description: "Name of the database for gerrit"
     default: reviewdb
