@@ -6,6 +6,10 @@ instance_groups:
   jobs:
   - name: gerrit
     release: devtools
+    properties:
+      gerrit:
+        database:
+          password: ((gerrit_database_password))
   networks:
   - name: default
   persistent_disk_pool: 100GB
@@ -26,3 +30,8 @@ update:
   canary_watch_time: 15000-300000
   max_in_flight: 1
   update_watch_time: 15000-300000
+
+variables:
+- name: gerrit_database_password
+  type: password
+
