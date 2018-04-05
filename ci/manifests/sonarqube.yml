@@ -1,3 +1,5 @@
+name: ((deployment_name))
+instance_groups:
 - name: sonarqube
   azs: [z1]
   instances: 1
@@ -8,3 +10,18 @@
   - name: default
   stemcell: default
   vm_type: small
+
+releases:
+- name: devtools
+  version: latest
+
+stemcells:
+- alias: default
+  os: ubuntu-trusty
+  version: latest
+
+update:
+  canaries: 1
+  canary_watch_time: 15000-300000
+  max_in_flight: 1
+  update_watch_time: 15000-300000
