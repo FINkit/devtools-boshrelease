@@ -271,8 +271,10 @@ jobs:
   - aggregate:
     - get: bbl-state
       passed: &tests
+      - test-gerrit
       - test-jenkins
       - test-nexus
+      - test-sonarqube
     - get: cf-deployment-concourse-tasks
   - task: bbl-destroy
     file: cf-deployment-concourse-tasks/bbl-destroy/task.yml
