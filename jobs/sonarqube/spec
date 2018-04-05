@@ -17,6 +17,7 @@ templates:
 properties:
   sonar.server.address:
     description: "Fully qualified address of Sonar server"
+    default: 127.0.0.1
   sonar.server.port:
     description: "Port of the sonar server"
     default: 9000

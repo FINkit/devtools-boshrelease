@@ -3,16 +3,8 @@
   instances: 1
   jobs:
   - name: sonarqube
-    properties:
-      sonar:
-        database:
-          password: ((sonar_database_password))
     release: devtools
   networks:
   - name: default
   stemcell: default
   vm_type: small
-
-variables:
-- name: sonar_database_password
-  type: password
