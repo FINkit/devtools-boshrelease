@@ -65,7 +65,9 @@ resources:
       owner: finkit
       repository: devtools-boshrelease
       access_token: ((github-access-token))
+    # https://github.com/concourse/github-release-resource/issues/40
     pre_release: true
+    release: false
 - name: github-release
   type: github-release
   source:
