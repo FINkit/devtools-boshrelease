@@ -125,10 +125,13 @@ jobs:
   plan:
   - aggregate: &get-test-resources
     - get: bbl-state
-      passed: [deploy-bosh]
+      passed:
+      - deploy-bosh
     - get: cf-deployment-concourse-tasks
     - get: devtools-boshrelease
-      passed: [create-dev-release]
+      passed:
+      - create-dev-release
+      - deploy-bosh
     - get: devtools-boshrelease-ci
     - get: dev-release-tarball
       passed: [create-dev-release]
@@ -166,17 +169,7 @@ jobs:
 - name: test-jenkins
   serial: true
   plan:
-  - aggregate: &get-test-resources
-    - get: bbl-state
-      passed: [deploy-bosh]
-    - get: cf-deployment-concourse-tasks
-    - get: devtools-boshrelease
-      passed: [create-dev-release]
-    - get: devtools-boshrelease-ci
-    - get: dev-release-tarball
-      passed: [create-dev-release]
-      trigger: true
-    - get: warden-stemcell
+  - aggregate: *get-test-resources
   - aggregate:
     - do:
       - task: create-jenkins-bosh-config
