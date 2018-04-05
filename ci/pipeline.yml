@@ -123,7 +123,7 @@ jobs:
         rebase: true
 
 - name: test-gerrit
-  serial: true
+  serial_groups: [tests]
   plan:
   - aggregate: &get-test-resources
     - get: bbl-state
@@ -169,7 +169,7 @@ jobs:
             deployment_name: *gerrit-deployment-name
 
 - name: test-jenkins
-  serial: true
+  serial_groups: [tests]
   plan:
   - aggregate: *get-test-resources
   - aggregate:
@@ -202,7 +202,7 @@ jobs:
             deployment_name: *jenkins-deployment-name
 
 - name: test-nexus
-  serial: true
+  serial_groups: [tests]
   plan:
   - aggregate: *get-test-resources
   - aggregate:
@@ -235,7 +235,7 @@ jobs:
             deployment_name: *nexus-deployment-name
 
 - name: test-sonarqube
-  serial: true
+  serial_groups: [tests]
   plan:
   - aggregate: *get-test-resources
   - aggregate:
