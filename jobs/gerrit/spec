@@ -22,8 +22,10 @@ properties:
     default: H2
   gerrit.database.password:
     description: "Database password for the gerrit user"
+    default: unused
   gerrit.database.host:
     description: "Hostname of the gerrit database"
+    default: unused
   gerrit.database.name:
     description: "Name of the database for gerrit"
     default: reviewdb
