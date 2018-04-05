@@ -120,6 +120,49 @@ jobs:
         repository: updated-bbl-state
         rebase: true
 
+- name: test-gerrit
+  serial: true
+  plan:
+  - aggregate: &get-test-resources
+    - get: bbl-state
+      passed: [deploy-bosh]
+    - get: cf-deployment-concourse-tasks
+    - get: devtools-boshrelease
+      passed: [create-dev-release]
+    - get: devtools-boshrelease-ci
+    - get: dev-release-tarball
+      passed: [create-dev-release]
+      trigger: true
+    - get: warden-stemcell
+  - aggregate:
+    - do:
+      - task: create-gerrit-bosh-config
+        file: devtools-boshrelease-ci/ci/tasks/create-bosh-config.yml
+        params:
+          BOSH_DEPLOYMENT: &gerrit-deployment-name gerrit
+      - put: bosh-deployment # Deploy Gerrit instance
+        params:
+          source_file: source/source.yml
+          manifest: devtools-boshrelease-ci/ci/manifests/gerrit.yml
+          releases:
+          - dev-release-tarball/dev-release.tgz
+          stemcells:
+          - warden-stemcell/stemcell.tgz
+          vars:
+            deployment_name: *gerrit-deployment-name
+#      - task: test-gerrit-curl
+#        file: devtools-boshrelease-ci/ci/tasks/test-gerrit-curl.yml
+#        params:
+#          BOSH_DEPLOYMENT: *gerrit-deployment-name
+      - put: bosh-deployment # Destroy Gerrit instance
+        params:
+          source_file: source/source.yml
+          delete:
+            enabled: true
+            force: true
+          vars:
+            deployment_name: *gerrit-deployment-name
+
 - name: test-jenkins
   serial: true
   plan:
