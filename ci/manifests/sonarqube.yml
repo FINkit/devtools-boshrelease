@@ -1,0 +1,10 @@
+- name: sonarqube
+  azs: [z1]
+  instances: 1
+  jobs:
+  - name: sonarqube
+    release: devtools
+  networks:
+  - name: default
+  stemcell: default
+  vm_type: small

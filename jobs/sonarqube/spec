@@ -17,13 +17,18 @@ templates:
 properties:
   sonar.server.address:
     description: "Fully qualified address of Sonar server"
+    default: 127.0.0.1
   sonar.server.port:
     description: "Port of the sonar server"
     default: 9000
-  sonar.mysql.host:
+  sonar.database.host:
     description: "Host for sonar database"
-  sonar.mysql.username:
+    default: localhost
+  sonar.database.username:
     description: "Database username for sonar database"
     default: sonar
-  sonar.mysql.password:
+  sonar.database.password:
     description: "Database password for sonar database"
+  sonar.database.type:
+    description: "Database type, e.g. H2, MYSQL"
+    default: H2
