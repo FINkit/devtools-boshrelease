@@ -5,5 +5,6 @@ image_resource:
     repository: engineerbetter/pcf-ops
 inputs:
 - name: bbl-state
+- name: devtools-boshrelease-ci
 run:
   path: devtools-boshrelease-ci/ci/tasks/test-jenkins-run-job.sh
