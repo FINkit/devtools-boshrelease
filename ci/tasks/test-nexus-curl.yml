@@ -21,6 +21,5 @@ run:
       ssh -o StrictHostKeyChecking=no -fNnL "8081:$ip:8081" -i "$JUMPBOX_PRIVATE_KEY" "$JUMPBOX_USER@$JUMPBOX_HOST"
       trap "pkill ssh" EXIT
       sleep 10
-curl -S --retry-max-time 300  --retry-delay 1 --retry 300 http://localhost:8081/
+      curl -S --retry-max-time 300 --retry-delay 1 --retry 300 http://localhost:8081/
     popd
-
