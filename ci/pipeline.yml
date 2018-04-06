@@ -51,7 +51,7 @@ resources:
   source:
       uri: git@github.com:finkit/devtools-boshrelease
       branch: master
-      private_key: ((github-deploy-key))
+      private_key: ((github-deploy-key.private))
 - name: dev-release-tarball
   type: google-cloud-storage
   source:
