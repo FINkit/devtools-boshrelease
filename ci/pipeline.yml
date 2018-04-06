@@ -38,7 +38,7 @@ resources:
   source:
     branch: master
     uri: https://github.com/garethjevans/concourse-tasks.git
-  - name: devtools-boshrelease
+- name: devtools-boshrelease
   type: git
   source:
     <<: &devtools-boshrelease-git-source
@@ -120,7 +120,7 @@ jobs:
         ci/terraform/test-jenkins.tf
         ci/terraform/test-gerrit.tf
         ci/terraform/test-nexus.tf
-        ci/etrraform/test-sonarqube.tf
+        ci/terraform/test-sonarqube.tf
     input_mapping:
       env-repo: bbl-state
       terraform-customisations: devtools-boshrelease-ci

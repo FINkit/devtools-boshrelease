@@ -1,5 +1,5 @@
-resource "google_compute_firewall" "jumpbox-to-gerrit" {
-  name    = "${var.env_id}-jumpbox-to-gerrit"
+resource "google_compute_firewall" "jumpbox-to-nexus" {
+  name    = "${var.env_id}-jumpbox-to-nexus"
   network = "${google_compute_network.bbl-network.name}"
 
   source_tags = ["${var.env_id}-jumpbox"]
