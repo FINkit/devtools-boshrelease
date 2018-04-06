@@ -65,6 +65,7 @@ resources:
       owner: finkit
       repository: devtools-boshrelease
       access_token: ((github-access-token))
+    # "pre_release: true" is not effective on it's own, "release: false" must also be set
     # https://github.com/concourse/github-release-resource/issues/40
     pre_release: true
     release: false
