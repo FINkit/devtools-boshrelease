@@ -115,7 +115,7 @@ jobs:
       params:
         channel: ((slack.channel))
         username: ((slack.user))
-        text: "<((concourse-auth.target))/teams/((concourse-auth.team))/pipelines/((pipeline-name))/jobs/${BUILD_JOB_NAME}|$BUILD_PIPELINE_NAME/$BUILD_JOB_NAME>: $BUILD_ID - [Failed]"
+        text: "<((concourse-auth.target))/teams/((concourse-auth.team))/pipelines/${BUILD_PIPELINE_NAME}/jobs/${BUILD_JOB_NAME}|${BUILD_PIPELINE_NAME}/${BUILD_JOB_NAME}>: ${BUILD_ID} - [Failed]"
         icon_emoji: ":fire:"
 
 - name: create-dev-release
