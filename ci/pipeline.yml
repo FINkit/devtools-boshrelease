@@ -41,18 +41,9 @@ resources:
 - name: devtools-boshrelease
   type: git
   source:
-    <<: &devtools-boshrelease-git-source
       uri: git@github.com:finkit/devtools-boshrelease
       branch: master
       private_key: ((github-finkit-ssh-key))
-    ignore_paths:
-    - ci/**
-- name: devtools-boshrelease-ci
-  type: git
-  source:
-    <<: *devtools-boshrelease-git-source
-    paths:
-    - ci/**
 - name: dev-release-tarball
   type: google-cloud-storage
   source:
@@ -93,9 +84,8 @@ jobs:
   - aggregate:
     - get: devtools-boshrelease
       trigger: true
-    - get: devtools-boshrelease-ci
   - task: create-release
-    file: devtools-boshrelease-ci/ci/tasks/create-dev-release.yml
+    file: devtools-boshrelease/ci/tasks/create-dev-release.yml
   - put: dev-release-tarball
     params: { file: dev-release-tarball/dev-release.tgz }
 
@@ -109,8 +99,6 @@ jobs:
     - get: concourse-tasks
     - get: devtools-boshrelease
       trigger: true
-    - get: devtools-boshrelease-ci
-      trigger: true
   - task: customise-terraform
     file: concourse-tasks/tasks/customise-deployment/task.yml
     params:
@@ -123,8 +111,8 @@ jobs:
         ci/terraform/test-sonarqube.tf
     input_mapping:
       env-repo: bbl-state
-      terraform-customisations: devtools-boshrelease-ci
-      cloud-config-customisations: devtools-boshrelease-ci
+      terraform-customisations: devtools-boshrelease
+      cloud-config-customisations: devtools-boshrelease
     ensure:
       put: bbl-state
       params:
@@ -162,7 +150,6 @@ jobs:
       passed:
       - create-dev-release
       - deploy-bosh
-    - get: devtools-boshrelease-ci
     - get: dev-release-tarball
       passed: [create-dev-release]
       trigger: true
@@ -170,13 +157,13 @@ jobs:
   - aggregate:
     - do:
       - task: create-gerrit-bosh-config
-        file: devtools-boshrelease-ci/ci/tasks/create-bosh-config.yml
+        file: devtools-boshrelease/ci/tasks/create-bosh-config.yml
         params:
           BOSH_DEPLOYMENT: &gerrit-deployment-name gerrit
       - put: bosh-deployment # Deploy Gerrit instance
         params:
           source_file: source/source.yml
-          manifest: devtools-boshrelease-ci/ci/manifests/gerrit.yml
+          manifest: devtools-boshrelease/ci/manifests/gerrit.yml
           releases:
           - dev-release-tarball/dev-release.tgz
           stemcells:
@@ -184,7 +171,7 @@ jobs:
           vars:
             deployment_name: *gerrit-deployment-name
       - task: test-gerrit-curl
-        file: devtools-boshrelease-ci/ci/tasks/test-gerrit-curl.yml
+        file: devtools-boshrelease/ci/tasks/test-gerrit-curl.yml
         params:
           BOSH_DEPLOYMENT: *gerrit-deployment-name
       - put: bosh-deployment # Destroy Gerrit instance
@@ -203,13 +190,13 @@ jobs:
   - aggregate:
     - do:
       - task: create-jenkins-bosh-config
-        file: devtools-boshrelease-ci/ci/tasks/create-bosh-config.yml
+        file: devtools-boshrelease/ci/tasks/create-bosh-config.yml
         params:
           BOSH_DEPLOYMENT: &jenkins-deployment-name jenkins
       - put: bosh-deployment # Deploy Jenkins instance
         params:
           source_file: source/source.yml
-          manifest: devtools-boshrelease-ci/ci/manifests/jenkins.yml
+          manifest: devtools-boshrelease/ci/manifests/jenkins.yml
           releases:
           - dev-release-tarball/dev-release.tgz
           stemcells:
@@ -217,7 +204,7 @@ jobs:
           vars:
             deployment_name: *jenkins-deployment-name
       - task: test-jenkins-curl
-        file: devtools-boshrelease-ci/ci/tasks/test-jenkins-curl.yml
+        file: devtools-boshrelease/ci/tasks/test-jenkins-curl.yml
         params:
           BOSH_DEPLOYMENT: *jenkins-deployment-name
       - put: bosh-deployment # Destroy Jenkins instance
@@ -238,11 +225,11 @@ jobs:
       - task: create-nexus-bosh-config
         params:
           BOSH_DEPLOYMENT: &nexus-deployment-name nexus
-        file: devtools-boshrelease-ci/ci/tasks/create-bosh-config.yml
+        file: devtools-boshrelease/ci/tasks/create-bosh-config.yml
       - put: bosh-deployment # Deploy Nexus instance
         params:
           source_file: source/source.yml
-          manifest: devtools-boshrelease-ci/ci/manifests/nexus.yml
+          manifest: devtools-boshrelease/ci/manifests/nexus.yml
           releases:
           - dev-release-tarball/dev-release.tgz
           stemcells:
@@ -250,7 +237,7 @@ jobs:
           vars:
             deployment_name: *nexus-deployment-name
       - task: test-nexus-curl
-        file: devtools-boshrelease-ci/ci/tasks/test-nexus-curl.yml
+        file: devtools-boshrelease/ci/tasks/test-nexus-curl.yml
         params:
           BOSH_DEPLOYMENT: *nexus-deployment-name
       - put: bosh-deployment # Destroy Nexus instance
@@ -271,11 +258,11 @@ jobs:
       - task: create-sonarqube-bosh-config
         params:
           BOSH_DEPLOYMENT: &sonarqube-deployment-name sonarqube
-        file: devtools-boshrelease-ci/ci/tasks/create-bosh-config.yml
+        file: devtools-boshrelease/ci/tasks/create-bosh-config.yml
       - put: bosh-deployment # Deploy sonarqube instance
         params:
           source_file: source/source.yml
-          manifest: devtools-boshrelease-ci/ci/manifests/sonarqube.yml
+          manifest: devtools-boshrelease/ci/manifests/sonarqube.yml
           releases:
           - dev-release-tarball/dev-release.tgz
           stemcells:
@@ -283,7 +270,7 @@ jobs:
           vars:
             deployment_name: *sonarqube-deployment-name
       - task: test-sonarqube-curl
-        file: devtools-boshrelease-ci/ci/tasks/test-sonarqube-curl.yml
+        file: devtools-boshrelease/ci/tasks/test-sonarqube-curl.yml
         params:
           BOSH_DEPLOYMENT: *sonarqube-deployment-name
       - put: bosh-deployment # Destroy sonarqube instance
@@ -329,9 +316,8 @@ jobs:
     - aggregate:
       - get: devtools-boshrelease
         passed: *tests
-      - get: devtools-boshrelease-ci
     - task: create-release
-      file: devtools-boshrelease-ci/ci/tasks/create-final-release.yml
+      file: devtools-boshrelease/ci/tasks/create-final-release.yml
     - put: github-release
       params: &put-github-release-params
         name: version/version
@@ -351,9 +337,8 @@ jobs:
     - aggregate:
       - get: devtools-boshrelease
         passed: *tests
-      - get: devtools-boshrelease-ci
     - task: create-release
-      file: devtools-boshrelease-ci/ci/tasks/create-final-release.yml
+      file: devtools-boshrelease/ci/tasks/create-final-release.yml
     - put: github-prerelease
       params: *put-github-release-params
 
@@ -378,9 +363,8 @@ jobs:
       - get: devtools-boshrelease
         passed: *tests
         trigger: true
-      - get: devtools-boshrelease-ci
     - task: create-release
-      file: devtools-boshrelease-ci/ci/tasks/create-final-release.yml
+      file: devtools-boshrelease/ci/tasks/create-final-release.yml
     - put: github-prerelease
       params: &put-github-release-params
         name: version/version
