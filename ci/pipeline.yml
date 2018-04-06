@@ -1,9 +1,5 @@
 ---
 resource_types:
-- name: google-cloud-storage
-  type: docker-image
-  source:
-    repository: frodenas/gcs-resource
 - name: bbl-state-resource
   type: docker-image
   source:
@@ -12,6 +8,14 @@ resource_types:
   type: docker-image
   source:
     repository: cloudfoundry/bosh-deployment-resource
+- name: concourse-pipeline
+  type: docker-image
+  source:
+    repository: concourse/concourse-pipeline-resource
+- name: google-cloud-storage
+  type: docker-image
+  source:
+    repository: frodenas/gcs-resource
 - name: slack-notification
   type: docker-image
   source:
@@ -37,6 +41,14 @@ resources:
   source:
     branch: master
     uri: https://github.com/cloudfoundry/cf-deployment-concourse-tasks.git
+- name: set-pipeline
+  type: concourse-pipeline
+  source:
+    target: ((concourse-auth.target))
+    teams:
+    - name: ((concourse-auth.team))
+      username: ((concourse-auth.username))
+      password: ((concourse-auth.password))
 - name: concourse-tasks
   type: git 
   source:
@@ -87,15 +99,16 @@ resources:
     key: version
 
 jobs:
-- name: create-dev-release
+- name: set-pipeline
   plan:
-  - aggregate:
-    - get: devtools-boshrelease
-      trigger: true
-  - task: create-release
-    file: devtools-boshrelease/ci/tasks/create-dev-release.yml
-  - put: dev-release-tarball
-    params: { file: dev-release-tarball/dev-release.tgz }
+  - get: devtools-boshrelease
+    trigger: true
+  - put: set-pipeline
+    params:
+      pipelines:
+      - name: devtools-boshrelease
+        team: ((concourse-auth.team))
+        config_file: devtools-boshrelease/ci/pipeline.yml
   <<: &slack-alert
     on_failure:
       put: slack-alert
@@ -104,6 +117,19 @@ jobs:
         username: ((slack.user))
         text: "<((concourse-auth.target))/teams/((concourse-auth.team))/pipelines/((pipeline-name))/jobs/${BUILD_JOB_NAME}|$BUILD_PIPELINE_NAME/$BUILD_JOB_NAME>: $BUILD_ID - [Failed]"
         icon_emoji: ":fire:"
+
+- name: create-dev-release
+  plan:
+  - aggregate:
+    - get: devtools-boshrelease
+      passed:
+      - set-pipeline
+      trigger: true
+  - task: create-release
+    file: devtools-boshrelease/ci/tasks/create-dev-release.yml
+  - put: dev-release-tarball
+    params: { file: dev-release-tarball/dev-release.tgz }
+  <<: *slack-alert
 
 - name: deploy-bosh
   serial_groups: [bbl]
@@ -114,6 +140,8 @@ jobs:
     - get: cf-deployment-concourse-tasks
     - get: concourse-tasks
     - get: devtools-boshrelease
+      passed:
+      - set-pipeline
       trigger: true
   - task: customise-terraform
     file: concourse-tasks/tasks/customise-deployment/task.yml
@@ -168,7 +196,8 @@ jobs:
       - create-dev-release
       - deploy-bosh
     - get: dev-release-tarball
-      passed: [create-dev-release]
+      passed:
+      - create-dev-release
       trigger: true
     - get: warden-stemcell
   - aggregate:
@@ -313,6 +342,7 @@ jobs:
       - test-jenkins
       - test-nexus
       - test-sonarqube
+      trigger: true
     - get: cf-deployment-concourse-tasks
   - task: bbl-destroy
     file: cf-deployment-concourse-tasks/bbl-destroy/task.yml
