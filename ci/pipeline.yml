@@ -12,6 +12,10 @@ resource_types:
   type: docker-image
   source:
     repository: cloudfoundry/bosh-deployment-resource
+- name: slack-notification
+  type: docker-image
+  source:
+    repository: cfcommunity/slack-notification-resource
 
 resources:
 - name: bbl-state
@@ -69,6 +73,10 @@ resources:
   type: github-release
   source:
     <<: *github-release-source
+- name: slack-alert
+  type: slack-notification
+  source:
+    url: ((slack.hook))
 - name: version
   type: semver
   source:
@@ -88,6 +96,14 @@ jobs:
     file: devtools-boshrelease/ci/tasks/create-dev-release.yml
   - put: dev-release-tarball
     params: { file: dev-release-tarball/dev-release.tgz }
+  <<: &slack-alert
+    on_failure:
+      put: slack-alert
+      params:
+        channel: ((slack.channel))
+        username: ((slack.user))
+        text: "<((concourse-auth.target))/teams/((concourse-auth.team))/pipelines/((pipeline-name))/jobs/${BUILD_JOB_NAME}|$BUILD_PIPELINE_NAME/$BUILD_JOB_NAME>: $BUILD_ID - [Failed]"
+        icon_emoji: ":fire:"
 
 - name: deploy-bosh
   serial_groups: [bbl]
@@ -137,6 +153,7 @@ jobs:
       params:
         repository: updated-bbl-state
         rebase: true
+  <<: *slack-alert
 
 - name: test-gerrit
   serial_groups: [tests]
@@ -182,6 +199,7 @@ jobs:
             force: true
           vars:
             deployment_name: *gerrit-deployment-name
+  <<: *slack-alert
 
 - name: test-jenkins
   serial_groups: [tests]
@@ -215,6 +233,7 @@ jobs:
             force: true
           vars:
             deployment_name: *jenkins-deployment-name
+  <<: *slack-alert
 
 - name: test-nexus
   serial_groups: [tests]
@@ -248,6 +267,7 @@ jobs:
             force: true
           vars:
             deployment_name: *nexus-deployment-name
+  <<: *slack-alert
 
 - name: test-sonarqube
   serial_groups: [tests]
@@ -281,6 +301,7 @@ jobs:
             force: true
           vars:
             deployment_name: *sonarqube-deployment-name
+  <<: *slack-alert
 
 - name: destroy-bosh
   serial_groups: [bbl]
@@ -306,6 +327,7 @@ jobs:
       params:
         repository: updated-bbl-state
         rebase: true
+  <<: *slack-alert
 
 - name: release-final
   serial_groups: [github-release]
@@ -325,6 +347,7 @@ jobs:
         tag_prefix: v
         globs: 
         - final-release-tarball/*.tgz
+  <<: *slack-alert
 
 - name: prerelease-major
   serial_groups: [github-release]
@@ -341,6 +364,7 @@ jobs:
       file: devtools-boshrelease/ci/tasks/create-final-release.yml
     - put: github-prerelease
       params: *put-github-release-params
+  <<: *slack-alert
 
 - name: prerelease-minor
   serial_groups: [github-release]
@@ -350,6 +374,7 @@ jobs:
       bump: minor
       pre: rc
   - do: *do-prerelease
+  <<: *slack-alert
 
 - name: prerelease-patch
   serial_groups: [github-release]
@@ -372,4 +397,4 @@ jobs:
         tag_prefix: v
         globs: 
         - final-release-tarball/*.tgz
-
+  <<: *slack-alert
