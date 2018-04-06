@@ -38,7 +38,7 @@ resources:
   source:
     branch: master
     uri: https://github.com/garethjevans/concourse-tasks.git
-  - name: devtools-boshrelease
+- name: devtools-boshrelease
   type: git
   source:
     <<: &devtools-boshrelease-git-source
