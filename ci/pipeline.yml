@@ -41,14 +41,6 @@ resources:
   source:
     branch: master
     uri: https://github.com/cloudfoundry/cf-deployment-concourse-tasks.git
-- name: set-pipeline
-  type: concourse-pipeline
-  source:
-    target: ((concourse-auth.target))
-    teams:
-    - name: ((concourse-auth.team))
-      username: ((concourse-auth.username))
-      password: ((concourse-auth.password))
 - name: concourse-tasks
   type: git 
   source:
@@ -59,7 +51,7 @@ resources:
   source:
       uri: git@github.com:finkit/devtools-boshrelease
       branch: master
-      private_key: ((github-finkit-ssh-key))
+      private_key: ((github-deploy-key))
 - name: dev-release-tarball
   type: google-cloud-storage
   source:
@@ -85,6 +77,14 @@ resources:
   type: github-release
   source:
     <<: *github-release-source
+- name: set-pipeline
+  type: concourse-pipeline
+  source:
+    target: ((concourse-auth.target))
+    teams:
+    - name: ((concourse-auth.team))
+      username: ((concourse-auth.username))
+      password: ((concourse-auth.password))
 - name: slack-alert
   type: slack-notification
   source:
@@ -132,7 +132,8 @@ jobs:
   <<: *slack-alert
 
 - name: deploy-bosh
-  serial_groups: [bbl]
+  serial_groups:
+  - bbl
   plan:
   - aggregate:
     - get: bbl-state
@@ -184,7 +185,8 @@ jobs:
   <<: *slack-alert
 
 - name: test-gerrit
-  serial_groups: [tests]
+  serial_groups:
+  - tests
   plan:
   - aggregate: &get-test-resources
     - get: bbl-state
@@ -231,7 +233,8 @@ jobs:
   <<: *slack-alert
 
 - name: test-jenkins
-  serial_groups: [tests]
+  serial_groups:
+  - tests
   plan:
   - aggregate: *get-test-resources
   - aggregate:
@@ -265,7 +268,8 @@ jobs:
   <<: *slack-alert
 
 - name: test-nexus
-  serial_groups: [tests]
+  serial_groups:
+  - tests
   plan:
   - aggregate: *get-test-resources
   - aggregate:
@@ -299,7 +303,8 @@ jobs:
   <<: *slack-alert
 
 - name: test-sonarqube
-  serial_groups: [tests]
+  serial_groups:
+  - tests
   plan:
   - aggregate: *get-test-resources
   - aggregate:
@@ -333,7 +338,8 @@ jobs:
   <<: *slack-alert
 
 - name: destroy-bosh
-  serial_groups: [bbl]
+  serial_groups:
+  - bbl
   plan:
   - aggregate:
     - get: bbl-state
@@ -360,10 +366,12 @@ jobs:
   <<: *slack-alert
 
 - name: release-final
-  serial_groups: [github-release]
+  serial_groups:
+  - github-release
   plan:
   - put: version
-    params: {bump: final}
+    params:
+      bump: final
   - do: &do-release
     - aggregate:
       - get: devtools-boshrelease
@@ -380,7 +388,8 @@ jobs:
   <<: *slack-alert
 
 - name: prerelease-major
-  serial_groups: [github-release]
+  serial_groups:
+  - github-release
   plan:
   - put: version
     params:
@@ -397,7 +406,8 @@ jobs:
   <<: *slack-alert
 
 - name: prerelease-minor
-  serial_groups: [github-release]
+  serial_groups:
+  - github-release
   plan:
   - put: version
     params:
@@ -407,7 +417,8 @@ jobs:
   <<: *slack-alert
 
 - name: prerelease-patch
-  serial_groups: [github-release]
+  serial_groups:
+  - github-release
   plan:
   - put: version
     params:
