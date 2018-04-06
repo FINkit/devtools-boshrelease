@@ -10,7 +10,16 @@ run:
   args:
   - -c
   - | 
-    cd bbl-state/bbl-state
-    source <(bbl print-env)
-    sleep 10 # Sleeping because this curl lacks the --retry-connrefused
-    bosh -d $BOSH_DEPLOYMENT ssh gerrit/0 -c "curl -S --retry-max-time 300 --retry-delay 1 --retry 300 http://localhost:8080"
+    pushd bbl-state/bbl-state
+      source <(bbl print-env)
+      JUMPBOX_USER="jumpbox"; export JUMPBOX_USER
+      JUMPBOX_HOST=$(bosh int <(bbl outputs) --path /jumpbox_url | cut -d: -f1); export JUMPBOX_HOST
+      # set up jumpbox ssh tunnel
+      instance_info=$(bosh --json instances -i); export instance_info
+      gerrit_ip=$(jq -r .Tables[0].Rows[0].ips <<< "$instance_info")
+      # shellcheck disable=SC2029
+      ssh -o StrictHostKeyChecking=no -fNnL "8080:$gerrit_ip:8080" -i "$JUMPBOX_PRIVATE_KEY" "$JUMPBOX_USER@$JUMPBOX_HOST"
+      trap "pkill ssh" EXIT
+      sleep 10
+      curl -S --retry-max-time 300  --retry-delay 1 --retry 300 http://localhost:8080
+    popd
