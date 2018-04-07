@@ -1,6 +1,7 @@
 resource "google_compute_firewall" "jumpbox-to-sonarqube" {
-  name    = "${var.env_id}-jumpbox-to-sonarqube"
-  network = "${google_compute_network.bbl-network.name}"
+  name        = "${var.env_id}-jumpbox-to-sonarqube"
+  network     = "${google_compute_network.bbl-network.name}"
+  description = "Jumpbox to Sonarqube for test jobs"
 
   source_tags = ["${var.env_id}-jumpbox"]
 
