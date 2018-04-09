@@ -20,9 +20,9 @@ templates:
   bin/restore.sh.erb: bin/bbr/restore
   config/branding.css.erb: config/branding.css
   config/config.xml.erb: config/config.xml
-  config/configure-access.groovy.erb: config/configure-access.groovy
-  config/configure-master-access-control.groovy.erb: config/configure-master-access-control.groovy
-  config/configure-maven.groovy.erb: config/configure-maven.groovy
+  config/configure-access.groovy.erb: init.groovy.d/configure-access.groovy
+  config/configure-master-access-control.groovy.erb: init.groovy.d/configure-master-access-control.groovy
+  config/configure-maven.groovy.erb: init.groovy.d/configure-maven.groovy
   config/envInject.xml.erb: config/envInject.xml
   config/envinject-plugin-configuration.xml.erb: config/envinject-plugin-configuration.xml
   config/hudson.plugins.build_timeout.operations.BuildStepOperation.xml.erb: config/hudson.plugins.build_timeout.operations.BuildStepOperation.xml
@@ -32,7 +32,7 @@ templates:
   config/org.codefirst.SimpleThemeDecorator.xml.erb: config/org.codefirst.SimpleThemeDecorator.xml
   config/scriptApproval.xml.erb: config/scriptApproval.xml
   config/sonar.xml.erb: config/sonar.xml
-  config/tcp-slave-agent-port.groovy.erb: config/tcp-slave-agent-port.groovy
+  config/tcp-slave-agent-port.groovy.erb: init.groovy.d/tcp-slave-agent-port.groovy
   data/properties.sh.erb: data/properties.sh
   helpers/ctl_setup.sh: helpers/ctl_setup.sh
   helpers/ctl_utils.sh: helpers/ctl_utils.sh
