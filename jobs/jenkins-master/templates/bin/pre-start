@@ -8,11 +8,11 @@ mkdir -p /var/vcap/store/jenkins-master/init.groovy.d
 mkdir -p /var/vcap/store/jenkins-master/plugins
 
 if [[ $(ls /var/vcap/jobs/jenkins-master/config/*.xml 1> /dev/null 2>&1) ]]; then
-    mv /var/vcap/jobs/jenkins-master/config/*.xml /var/vcap/store/jenkins-master
+    cp /var/vcap/jobs/jenkins-master/config/*.xml /var/vcap/store/jenkins-master
 fi
 
 if [[ $(ls /var/vcap/jobs/jenkins-master/init.groovy.d/*.groovy 1> /dev/null 2>&1) ]]; then
-    mv /var/vcap/jobs/jenkins-master/init.groovy.d/*.groovy /var/vcap/store/jenkins-master/init.groovy.d/
+    cp /var/vcap/jobs/jenkins-master/init.groovy.d/*.groovy /var/vcap/store/jenkins-master/init.groovy.d/
 fi
 
 if [[ $(ls /var/vcap/jobs/jenkins-master/packages/jenkins/jenkins/plugins-*.zip 1> /dev/null 2>&1) ]]; then
@@ -26,8 +26,8 @@ if [[ $(ls /var/vcap/jobs/jenkins-master/packages/jenkins/jenkins/plugins-*.zip 
 fi
 
 if [[ ! -d /var/vcap/store/jenkins-master/userContent ]]; then
-    mv /var/vcap/jobs/jenkins-master/config/*.png /var/vcap/store/jenkins-master/userContent
-    mv /var/vcap/jobs/jenkins-master/config/*.css /var/vcap/store/jenkins-master/userContent
+    cp /var/vcap/jobs/jenkins-master/config/*.png /var/vcap/store/jenkins-master/userContent
+    cp /var/vcap/jobs/jenkins-master/config/*.css /var/vcap/store/jenkins-master/userContent
 fi
 
 chown vcap:vcap -R /var/vcap/store/jenkins-master
