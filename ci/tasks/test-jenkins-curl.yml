@@ -21,5 +21,6 @@ run:
       ssh -o StrictHostKeyChecking=no -fNnL "8080:$ip:8080" -i "$JUMPBOX_PRIVATE_KEY" "$JUMPBOX_USER@$JUMPBOX_HOST"
       trap "pkill ssh" EXIT
       sleep 10
-      curl -S --retry-max-time 300 --retry-delay 1 --retry 300 http://localhost:8080/login
+      set -o pipefail
+      curl --fail --retry-max-time 300 --retry-delay 1 --retry 300 http://localhost:8080/login 2>&1 | grep -v "Unlock Jenkins"
     popd
