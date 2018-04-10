@@ -255,8 +255,8 @@ jobs:
           - warden-stemcell/stemcell.tgz
           vars:
             deployment_name: *jenkins-deployment-name
-      - task: test-jenkins-curl
-        file: devtools-boshrelease/ci/tasks/test-jenkins-curl.yml
+      - task: test-jenkins
+        file: devtools-boshrelease/ci/tasks/test-jenkins.yml
         params:
           BOSH_DEPLOYMENT: *jenkins-deployment-name
       - put: bosh-deployment # Destroy Jenkins instance
