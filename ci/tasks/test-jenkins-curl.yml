@@ -29,6 +29,5 @@ run:
 
     pushd /go/src/jenkinstest
       go get github.com/DATA-DOG/godog
-	  godog
+      godog
     popd
-
