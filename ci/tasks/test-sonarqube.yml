@@ -18,8 +18,16 @@ run:
       instance_info=$(bosh --json instances -i); export instance_info
       ip=$(jq -r .Tables[0].Rows[0].ips <<< "$instance_info")
       # shellcheck disable=SC2029
-      ssh -o StrictHostKeyChecking=no -fNnL "8081:$ip:8081" -i "$JUMPBOX_PRIVATE_KEY" "$JUMPBOX_USER@$JUMPBOX_HOST"
+      ssh -o StrictHostKeyChecking=no -fNnL "9000:$ip:9000" -i "$JUMPBOX_PRIVATE_KEY" "$JUMPBOX_USER@$JUMPBOX_HOST"
       trap "pkill ssh" EXIT
-      sleep 10
-      curl -S --retry-max-time 300 --retry-delay 1 --retry 300 http://localhost:8081/
+      export SONARQUBE_HOST="http://localhost:9000"
+    popd
+
+    cp -R devtools-boshrelease/ci/tests/sonarqubetest /go/src/
+    sleep 10
+
+    pushd /go/src/sonarqubetest
+      go get github.com/DATA-DOG/godog/cmd/godog
+      set -e
+      godog
     popd
