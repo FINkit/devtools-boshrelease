@@ -32,5 +32,6 @@ run:
       go get github.com/DATA-DOG/godog/cmd/godog
       ls -al /go/bin/
       ls -al /go/src/
+      set -e
       godog
     popd
