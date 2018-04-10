@@ -5,6 +5,7 @@ image_resource:
     repository: engineerbetter/pcf-ops
 inputs:
 - name: bbl-state
+- name: devtools-boshrelease 
 run:
   path: /bin/bash
   args:
