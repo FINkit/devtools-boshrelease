@@ -350,7 +350,6 @@ jobs:
       - test-jenkins
       - test-nexus
       - test-sonarqube
-      trigger: true
     - get: cf-deployment-concourse-tasks
   - task: bbl-destroy
     file: cf-deployment-concourse-tasks/bbl-destroy/task.yml
