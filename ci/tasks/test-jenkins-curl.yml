@@ -28,6 +28,7 @@ run:
     sleep 10
 
     pushd /go/src/jenkinstest
+      echo $GOPATH
       go get github.com/DATA-DOG/godog
       go build github.com/DATA-DOG/godog
       ls -al /go/bin/
