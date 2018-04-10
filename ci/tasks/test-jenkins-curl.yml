@@ -5,6 +5,7 @@ image_resource:
     repository: engineerbetter/pcf-ops
 inputs:
 - name: bbl-state
+- name: devtools-boshrelease 
 run:
   path: /bin/bash
   args:
@@ -20,7 +21,14 @@ run:
       # shellcheck disable=SC2029
       ssh -o StrictHostKeyChecking=no -fNnL "8080:$ip:8080" -i "$JUMPBOX_PRIVATE_KEY" "$JUMPBOX_USER@$JUMPBOX_HOST"
       trap "pkill ssh" EXIT
-      sleep 10
-      set -o pipefail
-      curl --fail --retry-max-time 300 --retry-delay 1 --retry 300 http://localhost:8080/login 2>&1 | grep -v "Unlock Jenkins"
+      export JENKINS_HOST="http://localhost:8080"
     popd
+
+    cp -R devtools-boshrelease/ci/tests/jenkinstest /go/src/
+    sleep 10
+
+    pushd /go/src/jenkinstest
+      go get github.com/DATA-DOG/godog
+	  godog
+    popd
+
