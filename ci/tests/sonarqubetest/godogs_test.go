@@ -35,8 +35,8 @@ func iAccessTheLoginScreen() error {
 }
 
 func sonarQubeShouldBeUnlocked() error {
-	if !strings.Contains(body, "Log In to SonarQube") {
-		return fmt.Errorf("expected %s to contain 'Log In to SonarQube'", body)
+	if !strings.Contains(body, "SonarQube") {
+		return fmt.Errorf("expected %s to contain 'SonarQube'", body)
 	}
 	return nil
 }
