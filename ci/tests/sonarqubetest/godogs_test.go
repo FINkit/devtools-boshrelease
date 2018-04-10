@@ -12,7 +12,7 @@ import (
 var url string
 var body string
 
-func thereIsASonarqubeInstall() error {
+func thereIsASonarQubeInstall() error {
 	url = os.Getenv("SONARQUBE_HOST")
 	return nil
 }
@@ -44,6 +44,6 @@ func sonarQubeShouldBeUnlocked() error {
 func FeatureContext(s *godog.Suite) {
 	s.Step(`^there is a sonarqube install$`, thereIsASonarQubeInstall)
 	s.Step(`^I access the login screen$`, iAccessTheLoginScreen)
-	s.Step(`^sonarqube should be unlocked$`, sonarqubeShouldBeUnlocked)
+	s.Step(`^sonarqube should be unlocked$`, sonarQubeShouldBeUnlocked)
 }
 
