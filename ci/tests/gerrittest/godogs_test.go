@@ -35,8 +35,8 @@ func iAccessTheLoginScreen() error {
 }
 
 func gerritShouldBeUnlocked() error {
-	if !strings.Contains(body, "Sign In") {
-		return fmt.Errorf("expected %s to contain 'Sign In'", body)
+	if !strings.Contains(body, "Gerrit Code Review") {
+		return fmt.Errorf("expected %s to contain 'Gerrit Code Review'", body)
 	}
 	return nil
 }
