@@ -34,6 +34,7 @@ resources:
   source:
     branch: master
     uri: https://github.com/cloudfoundry/bosh-bootloader.git
+    tag_filter: "v6.6.4"
 - name: bosh-deployment
   type: bosh-deployment
 - name: cf-deployment-concourse-tasks
@@ -41,6 +42,7 @@ resources:
   source:
     branch: master
     uri: https://github.com/cloudfoundry/cf-deployment-concourse-tasks.git
+    tag_filter: "v6.7"
 - name: concourse-tasks
   type: git 
   source:
