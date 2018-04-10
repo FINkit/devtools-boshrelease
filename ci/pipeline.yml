@@ -220,8 +220,8 @@ jobs:
           - warden-stemcell/stemcell.tgz
           vars:
             deployment_name: *gerrit-deployment-name
-      - task: test-gerrit-curl
-        file: devtools-boshrelease/ci/tasks/test-gerrit-curl.yml
+      - task: test-gerrit
+        file: devtools-boshrelease/ci/tasks/test-gerrit.yml
         params:
           BOSH_DEPLOYMENT: *gerrit-deployment-name
       - put: bosh-deployment # Destroy Gerrit instance
@@ -290,8 +290,8 @@ jobs:
           - warden-stemcell/stemcell.tgz
           vars:
             deployment_name: *nexus-deployment-name
-      - task: test-nexus-curl
-        file: devtools-boshrelease/ci/tasks/test-nexus-curl.yml
+      - task: test-nexus
+        file: devtools-boshrelease/ci/tasks/test-nexus.yml
         params:
           BOSH_DEPLOYMENT: *nexus-deployment-name
       - put: bosh-deployment # Destroy Nexus instance
@@ -325,8 +325,8 @@ jobs:
           - warden-stemcell/stemcell.tgz
           vars:
             deployment_name: *sonarqube-deployment-name
-      - task: test-sonarqube-curl
-        file: devtools-boshrelease/ci/tasks/test-sonarqube-curl.yml
+      - task: test-sonarqube
+        file: devtools-boshrelease/ci/tasks/test-sonarqube.yml
         params:
           BOSH_DEPLOYMENT: *sonarqube-deployment-name
       - put: bosh-deployment # Destroy sonarqube instance
