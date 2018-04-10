@@ -32,5 +32,6 @@ run:
       go build github.com/DATA-DOG/godog
       ls -al /go/bin/
       ls -al /go/src/
+      ls -al /go/src/github.com/
       godog
     popd
