@@ -48,6 +48,7 @@ resources:
   source:
     branch: master
     uri: https://github.com/garethjevans/concourse-tasks.git
+    tag_filter: "v1.0"
 - name: devtools-boshrelease
   type: git
   source:
