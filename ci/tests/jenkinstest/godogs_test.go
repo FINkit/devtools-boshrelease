@@ -51,15 +51,15 @@ func thereIsAJenkinsInstall() error {
 	return nil
 }
 
-func getBodyString(resp *http.Response) string {
+func getBodyString(resp *http.Response)(string, error) {
 	defer resp.Body.Close()
 	body_bytes, err := ioutil.ReadAll(resp.Body)
 
 	if err != nil {
-		return fmt.Sprintf("%s", err)
+		return "", fmt.Errorf("%s", err)
 	}
 
-	return string(body_bytes)
+	return string(body_bytes), nil
 }
 
 func iAccessTheLoginScreen() error {
@@ -68,7 +68,7 @@ func iAccessTheLoginScreen() error {
 		return err
 	}
 
-	body = getBodyString(resp)
+	body, _ = getBodyString(resp)
 	return nil
 }
 
@@ -81,11 +81,12 @@ func jenkinsShouldBeUnlocked() error {
 
 func iAccessPluginManagement() error {
 	u := jenkinsHostUrl + "/pluginManager/api/xml?depth=1"
-	pluginsResp, err := http.Get(u)
+	pluginsResp, err := httpClient.Get(u)
+
 	if err != nil {
 		return err
 	}
-	body = getBodyString(pluginsResp)
+	body, _ = getBodyString(pluginsResp)
 	return nil
 }
 
@@ -100,11 +101,11 @@ func getNewJenkinsCrumb() error {
 	u := jenkinsHostUrl + "/crumbIssuer/api/json"
 	resp, err := httpClient.Get(u)
 
-	defer resp.Body.Close()
-
 	if err != nil {
 		return fmt.Errorf("expected response from crumbIssuer, got: %s", body)
 	}
+
+	defer resp.Body.Close()
 
 	body_bytes, _ := ioutil.ReadAll(resp.Body)
 
@@ -127,11 +128,10 @@ func iHaveLoggedIntoJenkins() error {
 	resp, err := httpClient.PostForm(loginUrl,
 		url.Values{"j_username": {"administrator"}, "j_password": {jenkinsPassword}, "Jenkins-Crumb": {crumb.Crumb}})
 
-	defer resp.Body.Close()
-
 	if err != nil {
-		fmt.Printf("%s", err)
+		return fmt.Errorf("%s", err)
 	}
+	defer resp.Body.Close()
 
 	body, _ := ioutil.ReadAll(resp.Body)
 
