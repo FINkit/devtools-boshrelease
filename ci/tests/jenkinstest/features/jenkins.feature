@@ -7,3 +7,8 @@ Feature: jenkins configuration
     Given there is a jenkins install
     When I access the login screen
     Then jenkins should be unlocked
+
+  Scenario: Plugins are installed
+    Given there is a jenkins install
+    When I access plugin management
+    Then all the plugins are installed
