@@ -17,16 +17,14 @@ if [[ $(ls /var/vcap/jobs/jenkins-master/init.groovy.d/*.groovy) ]]; then
     cp /var/vcap/jobs/jenkins-master/init.groovy.d/*.groovy /var/vcap/store/jenkins-master/init.groovy.d/
 fi
 
-if [[ $(ls /var/vcap/jobs/jenkins-master/packages/jenkins/jenkins/plugins-*.zip) ]]; then
-    echo "Configuring Plugins..."
-    unzip /var/vcap/jobs/jenkins-master/packages/jenkins/jenkins/plugins-*.zip -d /var/vcap/store/jenkins-master/plugins
-    # add disabled plugin list
-    touch /var/vcap/store/jenkins-master/plugins/windows-slaves.jpi.disabled
-    touch /var/vcap/store/jenkins-master/plugins/subversion.jpi.disabled
-    touch /var/vcap/store/jenkins-master/plugins/cvs.jpi.disabled
-    touch /var/vcap/store/jenkins-master/plugins/ant.jpi.disabled
-    touch /var/vcap/store/jenkins-master/plugins/translation.jpi.disabled
-fi
+echo "Configuring Plugins..."
+unzip /var/vcap/jobs/jenkins-master/packages/jenkins/jenkins/plugins-*.zip -d /var/vcap/store/jenkins-master/plugins
+# add disabled plugin list
+touch /var/vcap/store/jenkins-master/plugins/windows-slaves.jpi.disabled
+touch /var/vcap/store/jenkins-master/plugins/subversion.jpi.disabled
+touch /var/vcap/store/jenkins-master/plugins/cvs.jpi.disabled
+touch /var/vcap/store/jenkins-master/plugins/ant.jpi.disabled
+touch /var/vcap/store/jenkins-master/plugins/translation.jpi.disabled
 
 if [[ ! -d /var/vcap/store/jenkins-master/userContent ]]; then
     echo "Copying UserContent..."
