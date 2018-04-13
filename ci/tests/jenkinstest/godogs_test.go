@@ -23,10 +23,27 @@ var body string
 var pluginsResp string
 var cookieJar *cookiejar.Jar
 var crumb JenkinsCrumb
+var httpClient *http.Client
 
 type JenkinsCrumb struct {
 	Crumb             string `json:"crumb"`
 	CrumbRequestField string `json: "crumbRequestField"`
+}
+
+func init() {
+	createNewHttpClient()
+}
+
+func createNewCookieJar() {
+	cookieJar, _ = cookiejar.New(&cookiejar.Options{})
+}
+
+func createNewHttpClient() {
+	createNewCookieJar()
+
+	httpClient = &http.Client{
+		Jar: cookieJar,
+	}
 }
 
 func thereIsAJenkinsInstall() error {
@@ -79,26 +96,25 @@ func allThePluginsAreInstalled() error {
 	return nil
 }
 
-func getNewJenkinsCrumb() {
-	if crumb.Crumb == "" {
-		cookieJar, _ = cookiejar.New(&cookiejar.Options{})
+func getNewJenkinsCrumb() error {
+	u := jenkinsHostUrl + "/crumbIssuer/api/json"
+	resp, err := httpClient.Get(u)
 
-		u := jenkinsHostUrl + "/crumbIssuer/api/json"
-		client := &http.Client{
-			Jar: cookieJar,
-		}
-		resp, err := client.Get(u)
+	defer resp.Body.Close()
 
-		defer resp.Body.Close()
-
-		if err != nil {
-			fmt.Sprintf("%s", err)
-		}
-
-		body_bytes, _ := ioutil.ReadAll(resp.Body)
-
-		json.Unmarshal(body_bytes, &crumb)
+	if err != nil {
+		return fmt.Errorf("expected response from crumbIssuer, got: %s", body)
 	}
+
+	body_bytes, _ := ioutil.ReadAll(resp.Body)
+
+	if ! strings.Contains(body, `{"_class":"hudson.security.csrf.DefaultCrumbIssuer","crumb":`) {
+		return fmt.Errorf("expected %s to contain '/logout' link", body)
+	}
+
+	json.Unmarshal(body_bytes, &crumb)
+
+	return nil
 }
 
 func iHaveLoggedIntoJenkins() error {
@@ -107,10 +123,8 @@ func iHaveLoggedIntoJenkins() error {
 
 	loginUrl := jenkinsHostUrl + "/j_acegi_security_check"
 	jenkinsPassword := os.Getenv("JENKINS_PASSWORD")
-	client := &http.Client{
-		Jar: cookieJar,
-	}
-	resp, err := client.PostForm(loginUrl,
+
+	resp, err := httpClient.PostForm(loginUrl,
 		url.Values{"j_username": {"administrator"}, "j_password": {jenkinsPassword}, "Jenkins-Crumb": {crumb.Crumb}})
 
 	defer resp.Body.Close()
@@ -120,7 +134,10 @@ func iHaveLoggedIntoJenkins() error {
 	}
 
 	body, _ := ioutil.ReadAll(resp.Body)
-	fmt.Println("response Body:", string(body))
+
+	if !strings.Contains(string(body), `<a href="/logout"><b>log out</b></a>`) {
+		return fmt.Errorf("expected %s to contain '/logout' link", body)
+	}
 
 	return nil
 }
