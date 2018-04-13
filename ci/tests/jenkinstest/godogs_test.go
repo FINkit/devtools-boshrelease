@@ -5,19 +5,24 @@ import (
 	"fmt"
 	"os"
 	"net/http"
+    "net/url"
 	"io/ioutil"
 	"github.com/DATA-DOG/godog"
+    "encoding/json"
 )
 
-const JENKINS_HOST string = "JENKINS_HOST"
+const (
+    JENKINS_HOST string = "JENKINS_HOST"
+)
 
 var jenkinsHostUrl string = os.Getenv(JENKINS_HOST)
-var url string
+var jenkinsLogin string = jenkinsHostUrl + "/login"
+var requestUrl string
 var body string
 var pluginsResp string
 
 func thereIsAJenkinsInstall() error {
-	url = jenkinsHostUrl + "/login"
+    requestUrl = jenkinsHostUrl + "/login"
 	return nil
 }
 
@@ -33,7 +38,7 @@ func getBodyString(resp *http.Response) string {
 }
 
 func iAccessTheLoginScreen() error {
-	resp, err := http.Get(url)
+	resp, err := http.Get(requestUrl)
 	if err != nil {
 		return err
 	}
@@ -50,8 +55,8 @@ func jenkinsShouldBeUnlocked() error {
 }
 
 func iAccessPluginManagement() error {
-	url = jenkinsHostUrl + "/pluginManager/api/xml?depth=1"
-	pluginsResp, err := http.Get(url)
+	u := jenkinsHostUrl + "/pluginManager/api/xml?depth=1"
+	pluginsResp, err := http.Get(u)
 	if err != nil {
 		return err
 	}
@@ -66,8 +71,53 @@ func allThePluginsAreInstalled() error {
 	return nil
 }
 
+type JenkinsCrumb struct {
+    Crumb string `json:"crumb"`
+    CrumbRequestField string `json: "crumbRequestField"`
+}
+
+var crumb JenkinsCrumb
+
+func getJenkinsCrumb() {
+    if crumb.Crumb == "" {
+        u := jenkinsHostUrl + "/crumbIssuer/api/json"
+        resp, err := http.Get(u)
+
+        defer resp.Body.Close()
+
+        if err != nil {
+            fmt.Sprintf("%s", err)
+        }
+
+        body_bytes, _ := ioutil.ReadAll(resp.Body)
+
+        json.Unmarshal(body_bytes, &crumb)
+    }
+}
+
+func iHaveLoggedIntoJenkins() error {
+    getJenkinsCrumb()
+
+    loginUrl := jenkinsHostUrl + "/j_acegi_security_check"
+	jenkinsPassword := os.Getenv("JENKINS_PASSWORD")
+
+    resp, err := http.PostForm(loginUrl,
+    url.Values{"j_username": {"admin"}, "j_password": {jenkinsPassword}, "Jenkins-Crumb": {crumb.Crumb}})
+
+    if err != nil {
+        fmt.Printf("%s", err)
+    }
+
+    body, _ := ioutil.ReadAll(resp.Body)
+    fmt.Println("response Body:", string(body))
+
+    return nil
+}
+
 func FeatureContext(s *godog.Suite) {
 	s.Step(`^there is a jenkins install$`, thereIsAJenkinsInstall)
+
+	s.Step(`^I have logged into Jenkins$`, iHaveLoggedIntoJenkins)
 
     s.Step(`^I access the login screen$`, iAccessTheLoginScreen)
 	s.Step(`^jenkins should be unlocked$`, jenkinsShouldBeUnlocked)

@@ -21,6 +21,9 @@ run:
       # shellcheck disable=SC2029
       ssh -o StrictHostKeyChecking=no -fNnL "8080:$ip:8080" -i "$JUMPBOX_PRIVATE_KEY" "$JUMPBOX_USER@$JUMPBOX_HOST"
       trap "pkill ssh" EXIT
+      credhub api --server=${CREDHUB_SERVER}
+      credhub login --username=${CREDHUB_USERNAME} --password=${CREDHUB_PASSWORD}
+      export JENKINS_PASSWORD=$(credhub get --name=/bosh-devtools-boshrelease/jenkins/jenkins_admin_password --output-json | jq -r ".value" | tr -d ' ')
       export JENKINS_HOST="http://localhost:8080"
     popd
 
