@@ -1,18 +1,19 @@
 package main
 
 import (
-	"strings"
+	"encoding/json"
 	"fmt"
-	"os"
-	"net/http"
-    "net/url"
-	"io/ioutil"
 	"github.com/DATA-DOG/godog"
-    "encoding/json"
+	"io/ioutil"
+	"net/http"
+	"net/http/cookiejar"
+	"net/url"
+	"os"
+	"strings"
 )
 
 const (
-    JENKINS_HOST string = "JENKINS_HOST"
+	JENKINS_HOST string = "JENKINS_HOST"
 )
 
 var jenkinsHostUrl string = os.Getenv(JENKINS_HOST)
@@ -20,9 +21,16 @@ var jenkinsLogin string = jenkinsHostUrl + "/login"
 var requestUrl string
 var body string
 var pluginsResp string
+var cookieJar *cookiejar.Jar
+var crumb JenkinsCrumb
+
+type JenkinsCrumb struct {
+	Crumb             string `json:"crumb"`
+	CrumbRequestField string `json: "crumbRequestField"`
+}
 
 func thereIsAJenkinsInstall() error {
-    requestUrl = jenkinsHostUrl + "/login"
+	requestUrl = jenkinsHostUrl + "/login"
 	return nil
 }
 
@@ -43,7 +51,7 @@ func iAccessTheLoginScreen() error {
 		return err
 	}
 
-    body = getBodyString(resp)
+	body = getBodyString(resp)
 	return nil
 }
 
@@ -60,58 +68,61 @@ func iAccessPluginManagement() error {
 	if err != nil {
 		return err
 	}
-    body = getBodyString(pluginsResp)
+	body = getBodyString(pluginsResp)
 	return nil
 }
 
 func allThePluginsAreInstalled() error {
-	if ! strings.Contains(body, "<shortName>cucumber-reports</shortName>") {
+	if !strings.Contains(body, "<shortName>cucumber-reports</shortName>") {
 		return fmt.Errorf("expected %s to contain 'cucumber-reports'", body)
 	}
 	return nil
 }
 
-type JenkinsCrumb struct {
-    Crumb string `json:"crumb"`
-    CrumbRequestField string `json: "crumbRequestField"`
-}
+func getNewJenkinsCrumb() {
+	if crumb.Crumb == "" {
+		cookieJar, _ = cookiejar.New(&cookiejar.Options{})
 
-var crumb JenkinsCrumb
+		u := jenkinsHostUrl + "/crumbIssuer/api/json"
+		client := &http.Client{
+			Jar: cookieJar,
+		}
+		resp, err := client.Get(u)
 
-func getJenkinsCrumb() {
-    if crumb.Crumb == "" {
-        u := jenkinsHostUrl + "/crumbIssuer/api/json"
-        resp, err := http.Get(u)
+		defer resp.Body.Close()
 
-        defer resp.Body.Close()
+		if err != nil {
+			fmt.Sprintf("%s", err)
+		}
 
-        if err != nil {
-            fmt.Sprintf("%s", err)
-        }
+		body_bytes, _ := ioutil.ReadAll(resp.Body)
 
-        body_bytes, _ := ioutil.ReadAll(resp.Body)
-
-        json.Unmarshal(body_bytes, &crumb)
-    }
+		json.Unmarshal(body_bytes, &crumb)
+	}
 }
 
 func iHaveLoggedIntoJenkins() error {
-    getJenkinsCrumb()
 
-    loginUrl := jenkinsHostUrl + "/j_acegi_security_check"
+	getNewJenkinsCrumb()
+
+	loginUrl := jenkinsHostUrl + "/j_acegi_security_check"
 	jenkinsPassword := os.Getenv("JENKINS_PASSWORD")
+	client := &http.Client{
+		Jar: cookieJar,
+	}
+	resp, err := client.PostForm(loginUrl,
+		url.Values{"j_username": {"administrator"}, "j_password": {jenkinsPassword}, "Jenkins-Crumb": {crumb.Crumb}})
 
-    resp, err := http.PostForm(loginUrl,
-    url.Values{"j_username": {"admin"}, "j_password": {jenkinsPassword}, "Jenkins-Crumb": {crumb.Crumb}})
+	defer resp.Body.Close()
 
-    if err != nil {
-        fmt.Printf("%s", err)
-    }
+	if err != nil {
+		fmt.Printf("%s", err)
+	}
 
-    body, _ := ioutil.ReadAll(resp.Body)
-    fmt.Println("response Body:", string(body))
+	body, _ := ioutil.ReadAll(resp.Body)
+	fmt.Println("response Body:", string(body))
 
-    return nil
+	return nil
 }
 
 func FeatureContext(s *godog.Suite) {
@@ -119,10 +130,9 @@ func FeatureContext(s *godog.Suite) {
 
 	s.Step(`^I have logged into Jenkins$`, iHaveLoggedIntoJenkins)
 
-    s.Step(`^I access the login screen$`, iAccessTheLoginScreen)
+	s.Step(`^I access the login screen$`, iAccessTheLoginScreen)
 	s.Step(`^jenkins should be unlocked$`, jenkinsShouldBeUnlocked)
 
-    s.Step(`^I access plugin management$`, iAccessPluginManagement)
+	s.Step(`^I access plugin management$`, iAccessPluginManagement)
 	s.Step(`^all the plugins are installed$`, allThePluginsAreInstalled)
 }
-
