@@ -18,7 +18,7 @@ if [[ $(ls /var/vcap/jobs/jenkins-master/init.groovy.d/*.groovy) ]]; then
 fi
 
 echo "Configuring Plugins..."
-unzip /var/vcap/jobs/jenkins-master/packages/jenkins/jenkins/plugins-*.zip -d /var/vcap/store/jenkins-master/plugins
+unzip -o /var/vcap/jobs/jenkins-master/packages/jenkins/jenkins/plugins-*.zip -d /var/vcap/store/jenkins-master/plugins
 # add disabled plugin list
 touch /var/vcap/store/jenkins-master/plugins/windows-slaves.jpi.disabled
 touch /var/vcap/store/jenkins-master/plugins/subversion.jpi.disabled
