@@ -18,6 +18,7 @@ instance_groups:
   vm_extensions:
   - internet-required
   - nexus-pool
+  persistent_disk_pool: 100GB
   vm_type: default
 
 
