@@ -26,6 +26,10 @@ nexus-3.7.1-02-unix.tar.gz:
   size: 112671471
   object_id: 6dafe6ff-b1e5-4331-516e-7d908a6a9c2c
   sha: e15f7b170a13f3f8eef85f4043066d0fd3efe3b7
+nexus/nexus-3.3.1-01-unix.tar.gz:
+  size: 107336558
+  object_id: 1a3319fc-13e1-425b-5999-ac7d3ae0c60c
+  sha: e7859e13622ea7e04474a2719c07b045c5fabb53
 oraclejava/jdk-8u161-linux-x64.tar.gz:
   size: 189756259
   object_id: eb100739-7d1c-48ff-5687-ee2ad4f0209f
