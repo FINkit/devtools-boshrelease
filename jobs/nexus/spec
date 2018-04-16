@@ -14,6 +14,7 @@ templates:
   config/scripts/repositories.json.erb: config/scripts/repositories.json
   config/scripts/update_admin_password.json.erb: config/scripts/update_admin_password.json
   config/scripts/add_deployer_user.json.erb: config/scripts/add_deployer_user.json
+  config/scripts/create_blobstores.json.erb: config/scripts/create_blobstores.json
   helpers/ctl_setup.sh: helpers/ctl_setup.sh
   helpers/ctl_utils.sh: helpers/ctl_utils.sh
 
