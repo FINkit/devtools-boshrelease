@@ -60,7 +60,7 @@ func loginToJenkins(password string) (string, error) {
 }
 
 func iAmLoggedIn() error {
-	if ! strings.Contains(string(validLoginAttemptBody), `<a href="/logout"><b>log out</b></a>`) {
+	if !strings.Contains(string(validLoginAttemptBody), `<a href="/logout"><b>log out</b></a>`) {
 		return fmt.Errorf("expected %s to contain '/logout' link", validLoginAttemptBody)
 	}
 

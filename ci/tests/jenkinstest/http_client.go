@@ -12,7 +12,7 @@ import (
 
 const (
 	LOGIN_FORM_URL string = "/j_acegi_security_check"
-	CRUMB_URL string = "/crumbIssuer/api/json"
+	CRUMB_URL      string = "/crumbIssuer/api/json"
 )
 
 var requestUrl string
@@ -41,10 +41,10 @@ func createNewHttpClient() {
 		Jar: cookieJar,
 	}
 
-	getNewJenkinsCrumb()	
+	getNewJenkinsCrumb()
 }
 
-func getBodyString(resp *http.Response)(string, error) {
+func getBodyString(resp *http.Response) (string, error) {
 	defer resp.Body.Close()
 	body_bytes, err := ioutil.ReadAll(resp.Body)
 
@@ -67,7 +67,7 @@ func getNewJenkinsCrumb() error {
 
 	body_bytes, _ := ioutil.ReadAll(resp.Body)
 
-	if ! strings.Contains(body, `{"_class":"hudson.security.csrf.DefaultCrumbIssuer","crumb":`) {
+	if !strings.Contains(body, `{"_class":"hudson.security.csrf.DefaultCrumbIssuer","crumb":`) {
 		return fmt.Errorf("expected %s to contain a crumb", body)
 	}
 
@@ -76,7 +76,7 @@ func getNewJenkinsCrumb() error {
 	return nil
 }
 
-func jenkinsLogin(username, password string)(string, error) {
+func jenkinsLogin(username, password string) (string, error) {
 	if crumb.Crumb == "" {
 		getNewJenkinsCrumb()
 	}

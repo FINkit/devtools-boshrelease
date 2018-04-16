@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strings"
 )
+
 const (
 	PLUGIN_MANAGER_URL string = "/pluginManager/api/xml?depth=1"
 )
@@ -25,4 +26,3 @@ func allThePluginsAreInstalled() error {
 	}
 	return nil
 }
-
