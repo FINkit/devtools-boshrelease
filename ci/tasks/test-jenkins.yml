@@ -27,6 +27,7 @@ run:
       export JENKINS_HOST="http://localhost:8080"
     popd
 
+    export INSTALLED_PLUGINS_FILE_PATH="${PWD}/devtools-boshrelease/src/jenkins/plugins.txt"
     cp -R devtools-boshrelease/ci/tests/jenkinstest /go/src/
     sleep 10
 
@@ -34,4 +35,4 @@ run:
       go get github.com/DATA-DOG/godog/cmd/godog
       set -e
       godog
-    popd
+	popd

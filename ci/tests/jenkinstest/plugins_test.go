@@ -10,7 +10,8 @@ import (
 )
 
 const (
-	PLUGIN_MANAGER_URL string = "/pluginManager/api/json?depth=1&tree=plugins[shortName,version]"
+	INSTALLED_PLUGINS_FILE_PATH string = "INSTALLED_PLUGINS_FILE_PATH"
+	PLUGIN_MANAGER_URL          string = "/pluginManager/api/json?depth=1&tree=plugins[shortName,version]"
 )
 
 type Plugins struct {
@@ -55,9 +56,8 @@ func getAllInstalledPlugins() (Plugins, error) {
 
 func getAllExpectedPlugins() (Plugins, error) {
 	var plugins Plugins
-	filePath, _ := os.Getwd()
 
-	p, err := ioutil.ReadFile(filePath + "/../../../src/jenkins/plugins.txt")
+	p, err := ioutil.ReadFile(os.Getenv(INSTALLED_PLUGINS_FILE_PATH))
 
 	if err != nil {
 		return Plugins{}, fmt.Errorf("%s", err)
