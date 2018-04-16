@@ -4,6 +4,6 @@ Feature: Jenkins plugin installation and configuration
   I need to be able to install and configure plugins
 
   Scenario: Plugins are installed
-    Given I am logged in
+    Given I login using valid credentials
     When I access plugin management
     Then all the plugins are installed

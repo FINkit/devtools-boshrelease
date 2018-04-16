@@ -1,4 +1,3 @@
-/* file: $GOPATH/src/godogs/godogs.go */
 package main
 
 import (
@@ -19,9 +18,6 @@ func init() {
 	if jenkinsHostUrl == "" {
 		panic("JENKINS_HOST is empty")
 	}
-
-	createNewHttpClient()
-	getNewJenkinsCrumb()
 }
 
 func main() {

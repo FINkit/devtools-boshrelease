@@ -10,12 +10,10 @@ Feature: Jenkins authentication
   
   Scenario: Invalid user can't log in
     Given I access the login screen
-    When I log in using invalid credentials
+    When I login using invalid credentials
     Then I am not logged in
 
   Scenario: Can log in
     Given I access the login screen
-    When I log in using valid credentials
+    When I login using valid credentials
     Then I am logged in
-
-

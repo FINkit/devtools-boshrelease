@@ -7,6 +7,7 @@ import (
 const (
 	PLUGIN_MANAGER_URL string = "/pluginManager/api/xml?depth=1"
 )
+
 func iAccessPluginManagement() error {
 	pluginsResp, err := httpClient.Get(getUrl(PLUGIN_MANAGER_URL))
 

@@ -23,7 +23,7 @@ var crumb JenkinsCrumb
 
 type JenkinsCrumb struct {
 	Crumb             string `json:"crumb"`
-	CrumbRequestField string `json: "crumbRequestField"`
+	CrumbRequestField string `json:"crumbRequestField"`
 }
 
 func getUrl(path string) string {
@@ -40,6 +40,8 @@ func createNewHttpClient() {
 	httpClient = &http.Client{
 		Jar: cookieJar,
 	}
+
+	getNewJenkinsCrumb()	
 }
 
 func getBodyString(resp *http.Response)(string, error) {
@@ -74,7 +76,7 @@ func getNewJenkinsCrumb() error {
 	return nil
 }
 
-func JenkinsLogin(username, password string)(string, error) {
+func jenkinsLogin(username, password string)(string, error) {
 	if crumb.Crumb == "" {
 		getNewJenkinsCrumb()
 	}

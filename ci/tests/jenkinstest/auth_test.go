@@ -50,7 +50,7 @@ func loginToJenkins(password string) (string, error) {
 		return "", fmt.Errorf("%s", "Empty password")
 	}
 
-	body, err := JenkinsLogin("administrator", password)
+	body, err := jenkinsLogin("administrator", password)
 
 	if err != nil {
 		return "ERROR", err
