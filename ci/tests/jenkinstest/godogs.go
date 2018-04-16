@@ -1,7 +1,29 @@
 /* file: $GOPATH/src/godogs/godogs.go */
 package main
 
-// Godogs available to eat
-var Godogs int
+import (
+	"os"
+	"net/http"
+)
 
-func main() { /* usual main func */ }
+const (
+	JENKINS_HOST string = "JENKINS_HOST"
+)
+
+var jenkinsHostUrl string
+var httpClient *http.Client
+
+func init() {
+	jenkinsHostUrl = os.Getenv(JENKINS_HOST)
+
+	if jenkinsHostUrl == "" {
+		panic("JENKINS_HOST is empty")
+	}
+
+	createNewHttpClient()
+	getNewJenkinsCrumb()
+}
+
+func main() {
+
+}
