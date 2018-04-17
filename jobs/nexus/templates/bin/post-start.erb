@@ -25,4 +25,6 @@ run_configure_script create_blobstores ${SCRIPT_DIR}/create_blobstores.json <%= 
 
 run_configure_script repositories ${SCRIPT_DIR}/repositories.json <%= p("nexus.admin.username") %> <%= p("nexus.admin.password") %> http://localhost:${HTTP_PORT}
 
+run_configure_script disable_outreach_management ${SCRIPT_DIR}/disable_outreach_management.json <%= p("nexus.admin.username") %> <%= p("nexus.admin.password") %> http://localhost:${HTTP_PORT}
+
 run_configure_script add_deployer_user ${SCRIPT_DIR}/add_deployer_user.json <%= p("nexus.admin.username") %> <%= p("nexus.admin.password") %> http://localhost:${HTTP_PORT}
