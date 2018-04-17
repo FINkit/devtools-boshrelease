@@ -1,0 +1,5 @@
+{
+  "name": "disable_outreach_management",
+  "type": "groovy",
+  "content": "core.capabilityRegistry.all.each {\r\nif (\"OutreachManagementCapability\".equalsIgnoreCase(it.type().toString())) {\r\nlog.info(\"Disabling {} ({})\", it.type().toString(), it.id())\r\ncore.getCapabilityRegistry().disable(it.id())\r\n}\r\n}"
+}
