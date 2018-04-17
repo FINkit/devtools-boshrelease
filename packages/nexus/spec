@@ -5,4 +5,4 @@ dependencies:
     - oraclejdk
 
 files:
-    - nexus-3.7.1-02-unix.tar.gz
+    - nexus/nexus-3.3.1-01-unix.tar.gz

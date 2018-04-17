@@ -2,6 +2,7 @@
 
 set -e # exit immediately if a simple command exits with a non-zero status
 set -u # report the usage of uninitialized variables
+set -x # debug
 
 # Setup env vars and folders for the webapp_ctl script
 source /var/vcap/jobs/nexus/helpers/ctl_setup.sh 'nexus'
@@ -14,6 +15,14 @@ while [ "`curl -s -o /dev/null -k -I -w "%{http_code}" http://localhost:${HTTP_P
   sleep 5
 done
 
+pwd
+
+ls -a
+
 run_configure_script update_admin_password ${SCRIPT_DIR}/update_admin_password.json <%= p("nexus.admin.username") %> <%= p("nexus.default.admin.password") %> http://localhost:${HTTP_PORT}
+
+run_configure_script create_blobstores ${SCRIPT_DIR}/create_blobstores.json <%= p("nexus.admin.username") %> <%= p("nexus.admin.password") %> http://localhost:${HTTP_PORT}
+
 run_configure_script repositories ${SCRIPT_DIR}/repositories.json <%= p("nexus.admin.username") %> <%= p("nexus.admin.password") %> http://localhost:${HTTP_PORT}
+
 run_configure_script add_deployer_user ${SCRIPT_DIR}/add_deployer_user.json <%= p("nexus.admin.username") %> <%= p("nexus.admin.password") %> http://localhost:${HTTP_PORT}
