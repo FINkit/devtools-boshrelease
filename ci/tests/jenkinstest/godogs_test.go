@@ -17,6 +17,9 @@ func FeatureContext(s *godog.Suite) {
 	s.Step(`^I have job config$`, iHaveJobConfig)
 	s.Step(`^I create the job$`, iCreateTheJob)
 	s.Step(`^the job is created$`, theJobIsCreated)
+	s.Step(`I have added a slave job$`, iCreateTheSlaveJob)
+	s.Step(`^I execute the job$`, iExecuteTheJob)
+	s.Step(`^the job is executed on a slave$`, theJobIsExecuted)
 
 	s.BeforeScenario(func(interface{}) {
 		createNewHttpClient()

@@ -64,7 +64,7 @@ func getNewJenkinsCrumb() error {
 	defer resp.Body.Close()
 
 	body_bytes, _ := ioutil.ReadAll(resp.Body)
-	//HERE And should parse out the crumbRequestField too.
+
 	if !strings.Contains(string(body_bytes[:]), `{"_class":"hudson.security.csrf.DefaultCrumbIssuer","crumb":`) {
 		return fmt.Errorf("expected %s to contain a crumb", body)
 	}
@@ -80,7 +80,7 @@ func jenkinsLogin(username, password string) (string, error) {
 	u := getUrl(LOGIN_FORM_URL)
 
 	resp, err := httpClient.PostForm(u,
-		url.Values{"j_username": {username}, "j_password": {password}, "Jenkins-Crumb": {crumb.Crumb}})
+		url.Values{"j_username": {username}, "j_password": {password}, crumb.CrumbRequestField: {crumb.Crumb}})
 
 	if err != nil {
 		return "Error", fmt.Errorf("%s", err)

@@ -1,10 +1,16 @@
-Feature: Jenkins job creation
-  In order to run a job 
+Feature: Jenkins job management
+  In order to use jobs 
   As an administrator
-  I need to be able to create a job
+  I need to be able to manage jobs
 
   Scenario: Job creation
-    Given I have job config
-    And I login using valid credentials
+    Given I login using valid credentials
+    And I have job config
     When I create the job
     Then the job is created
+
+  Scenario: Slave job execution
+    Given I login using valid credentials
+    And I have added a slave job
+    When I execute the job
+    Then the job is executed on a slave
