@@ -25,7 +25,7 @@ func iCreateTheJob() error {
 
 	req, err := http.NewRequest("POST", getUrl(JOB_CREATION_URL), file)
 	getNewJenkinsCrumb()
-	req.Header.Add("Jenkins-Crumb", crumb.Crumb)
+	req.Header.Add(crumb.CrumbRequestField, crumb.Crumb)
 	req.Header.Add("Content-Type", "text/xml")
 
 	resp, err := httpClient.Do(req)
