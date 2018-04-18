@@ -14,7 +14,8 @@ templates:
   config/scripts/disable_outreach_management.json.erb: config/scripts/disable_outreach_management.json
   config/scripts/repositories.json.erb: config/scripts/repositories.json
   config/scripts/update_admin_password.json.erb: config/scripts/update_admin_password.json
-  config/scripts/add_deployer_user.json.erb: config/scripts/add_deployer_user.json
+  config/scripts/add_deployment_user.json.erb: config/scripts/add_deployment_user.json
+  config/scripts/add_user_roles.json.erb: config/scripts/add_user_roles.json
   config/scripts/create_blobstores.json.erb: config/scripts/create_blobstores.json
   helpers/ctl_setup.sh: helpers/ctl_setup.sh
   helpers/ctl_utils.sh: helpers/ctl_utils.sh
@@ -43,15 +44,15 @@ properties:
     default: admin123
   nexus.deployer.username:
     description: "Username of the deployment user"
-    default: jenkins
+    default: deployment
   nexus.deployer.firstname:
     description: "First name of the deployment user"
-    default: Mr
+    default: Deployment
   nexus.deployer.lastname:
     description: "Last name of the deployment user"
-    default: Jenkins
+    default: User
   nexus.deployer.email:
     description: "Email address of the deployment user"
-    default: jenkins@example.com
+    default: developmentsystems@finkit.com
   nexus.deployer.password:
     description: "Password of the deployment user"

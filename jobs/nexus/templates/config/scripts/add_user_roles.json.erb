@@ -1,0 +1,5 @@
+{
+  "name": "add_user_roles",
+  "type": "groovy",  
+  "content": "privileges = [\r\n    \"nx-search-read\",\r\n    \"nx-repository-view-*-*-read\",\r\n    \"nx-repository-view-*-*-browse\",\r\n    \"nx-repository-view-*-*-add\",\r\n    \"nx-repository-view-*-*-edit\",\r\n    \"nx-apikey-all\"]\r\nsecurity.addRole(\"deployer\", \"deployer\", \"deployment on all repositories\", privileges, [])\r\nsecurity.addRole(\"AC-Nexus-RW\", \"AC-Nexus-RW\", \"Nexus Administrators (Finkit LDAP)\", privileges, [])\r\nsecurity.addRole(\"admin\", \"admin\", \"External mapping for admin (LDAP)\", privileges, [])\r\nsecurity.addRole(\"nx-deployment\", \"nx-deployment\", \"nx-deployment (legacy)\", privileges, [])\r\nsecurity.addRole(\"nx-developer\", \"nx-developer\", \"nx-developer (legacy)\", privileges, [])\r\nsecurity.addRole(\"nx2-anonymous\", \"nx2-anonymous\", \"nx2-anonymous (legacy)\", privileges, [])\r\nsecurity.addRole(\"nx2-repository-any-full\", \"nx2-repository-any-full\", \"nx2-repository-any-full (legacy)\", privileges, [])\r\nsecurity.addRole(\"nx2-repository-any-read\", \"nx2-repository-any-read\", \"nx2-repository-any-read (legacy)\", privileges, [])"
+}
