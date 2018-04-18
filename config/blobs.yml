@@ -14,6 +14,10 @@ jenkins/jenkins_2.107.1.war:
   size: 74525235
   object_id: c1236e38-269a-46fb-4e65-a63a68c497b1
   sha: 67b7a7e199fb225efdb98495b97b564110773c43
+jenkins/jenkins_2.107.2.war:
+  size: 74568464
+  object_id: 5de3e0fe-54ec-4dae-60d5-28597296d2d7
+  sha: ad0de4ca36ae37586c801679838acfe01e29dc09
 jenkins/plugins-201803201413.zip:
   size: 223146774
   object_id: d9f7be5d-cf1e-4eb1-5dd0-2f59be1ba1af
