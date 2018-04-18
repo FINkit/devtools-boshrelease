@@ -1,0 +1,5 @@
+{
+  "name": "add_deployment_user",
+  "type": "groovy",
+  "content": "privileges = [\r\n    \"nx-deployment\",\r\n    \"nx2-repository-any-full\"]\r\nuser = security.addUser('<%= p("nexus.deployer.username") %>', '<%= p("nexus.deployer.firstname") %>', '<%= p("nexus.deployer.lastname") %>', '<%= p("nexus.deployer.email") %>', true, '<%= p("nexus.deployer.password") %>', privileges)"
+}
