@@ -40,8 +40,6 @@ func createNewHttpClient() {
 	httpClient = &http.Client{
 		Jar: cookieJar,
 	}
-
-	getNewJenkinsCrumb()
 }
 
 func getBodyString(resp *http.Response) (string, error) {
@@ -66,8 +64,8 @@ func getNewJenkinsCrumb() error {
 	defer resp.Body.Close()
 
 	body_bytes, _ := ioutil.ReadAll(resp.Body)
-
-	if !strings.Contains(body, `{"_class":"hudson.security.csrf.DefaultCrumbIssuer","crumb":`) {
+	//HERE And should parse out the crumbRequestField too.
+	if !strings.Contains(string(body_bytes[:]), `{"_class":"hudson.security.csrf.DefaultCrumbIssuer","crumb":`) {
 		return fmt.Errorf("expected %s to contain a crumb", body)
 	}
 
@@ -77,9 +75,7 @@ func getNewJenkinsCrumb() error {
 }
 
 func jenkinsLogin(username, password string) (string, error) {
-	if crumb.Crumb == "" {
-		getNewJenkinsCrumb()
-	}
+	getNewJenkinsCrumb()
 
 	u := getUrl(LOGIN_FORM_URL)
 

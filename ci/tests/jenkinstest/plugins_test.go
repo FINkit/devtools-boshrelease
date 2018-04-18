@@ -80,11 +80,14 @@ func getAllExpectedPlugins() (Plugins, error) {
 
 func allThePluginsAreInstalled() error {
 	installedPlugins, err := getAllInstalledPlugins()
+
 	if err != nil {
 		return fmt.Errorf("%s", err)
 	}
+
 	installedPluginsArray := createPluginArray(installedPlugins)
 	expectedPlugins, err := getAllExpectedPlugins()
+
 	if err != nil {
 		return fmt.Errorf("%s", err)
 	}

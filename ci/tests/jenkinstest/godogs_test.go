@@ -14,6 +14,9 @@ func FeatureContext(s *godog.Suite) {
 	s.Step(`^I am logged in$`, iAmLoggedIn)
 	s.Step(`^I access plugin management$`, iAccessPluginManagement)
 	s.Step(`^all the plugins are installed$`, allThePluginsAreInstalled)
+	s.Step(`^I have job config$`, iHaveJobConfig)
+	s.Step(`^I create the job$`, iCreateTheJob)
+	s.Step(`^the job is created$`, theJobIsCreated)
 
 	s.BeforeScenario(func(interface{}) {
 		createNewHttpClient()
