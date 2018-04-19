@@ -20,6 +20,9 @@ func FeatureContext(s *godog.Suite) {
 	s.Step(`I have added a slave job$`, iCreateTheSlaveJob)
 	s.Step(`^I execute the job$`, iExecuteTheJob)
 	s.Step(`^the job is executed on a slave$`, theJobIsExecuted)
+	s.Step(`^I have added a maven job$`, iHaveAddedAMavenJob)
+	s.Step(`^I execute the maven job$`, iExecuteTheMavenJob)
+	s.Step(`^the job artefact is stored in nexus$`, theJobArtefactIsStoredInNexus)
 
 	s.BeforeScenario(func(interface{}) {
 		createNewHttpClient()
