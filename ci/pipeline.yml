@@ -207,9 +207,6 @@ jobs:
       - create-dev-release
       - deploy-bosh
     - get: devtools-tests
-      passed:
-      - create-dev-release
-      - deploy-bosh
     - get: dev-release-tarball
       passed:
       - create-dev-release
