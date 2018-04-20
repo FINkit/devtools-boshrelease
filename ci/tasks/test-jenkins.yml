@@ -5,7 +5,7 @@ image_resource:
     repository: engineerbetter/pcf-ops
 inputs:
 - name: bbl-state
-- name: devtools-boshrelease 
+- name: devtools-tests
 run:
   path: /bin/bash
   args:
@@ -28,10 +28,10 @@ run:
     popd
 
     export INSTALLED_PLUGINS_FILE_PATH="${PWD}/devtools-boshrelease/src/jenkins/plugins.txt"
-    cp -R devtools-boshrelease/ci/tests/jenkinstest /go/src/
+    cp -R devtools-tests/jenkins /go/src/
     sleep 10
 
-    pushd /go/src/jenkinstest
+    pushd /go/src/jenkins
       go get github.com/DATA-DOG/godog/cmd/godog
       set -e
       godog -t @unit -t @jenkins
