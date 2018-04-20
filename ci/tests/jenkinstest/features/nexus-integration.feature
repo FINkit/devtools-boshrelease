@@ -3,8 +3,8 @@ Feature: Nexus integration
   As a developer
   I need to be able to store artefacts
     
-  Scenario: Slave job to nexus
+  Scenario: Slave job to Nexus
     Given I login using valid credentials
-    And I have added a maven job
-    When I execute the maven job
-    Then the job artefact is stored in nexus
+    And I have added a Maven job
+    When I execute the Maven job
+    Then the job artefact is stored in Nexus

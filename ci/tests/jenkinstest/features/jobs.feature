@@ -1,5 +1,5 @@
 Feature: Jenkins job management
-  In order to use jobs 
+  In order to use jobs
   As an administrator
   I need to be able to manage jobs
 

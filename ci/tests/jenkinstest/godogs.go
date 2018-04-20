@@ -7,9 +7,11 @@ import (
 
 const (
 	JENKINS_HOST string = "JENKINS_HOST"
+	NEXUS_HOST   string = "NEXUS_HOST"
 )
 
 var jenkinsHostUrl string
+var nexusHostUrl string
 var httpClient *http.Client
 
 func init() {
@@ -17,6 +19,12 @@ func init() {
 
 	if jenkinsHostUrl == "" {
 		panic("JENKINS_HOST is empty")
+	}
+
+	nexusHostUrl = os.Getenv(NEXUS_HOST)
+
+	if nexusHostUrl == "" {
+		panic("NEXUS_HOST is empty")
 	}
 }
 

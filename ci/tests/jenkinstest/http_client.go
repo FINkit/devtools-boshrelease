@@ -26,7 +26,7 @@ type JenkinsCrumb struct {
 	CrumbRequestField string `json:"crumbRequestField"`
 }
 
-func getUrl(path string) string {
+func getJenkinsUrl(path string) string {
 	return jenkinsHostUrl + path
 }
 
@@ -54,7 +54,7 @@ func getBodyString(resp *http.Response) (string, error) {
 }
 
 func getNewJenkinsCrumb() error {
-	u := getUrl(CRUMB_URL)
+	u := getJenkinsUrl(CRUMB_URL)
 	resp, err := httpClient.Get(u)
 
 	if err != nil {
@@ -77,7 +77,7 @@ func getNewJenkinsCrumb() error {
 func jenkinsLogin(username, password string) (string, error) {
 	getNewJenkinsCrumb()
 
-	u := getUrl(LOGIN_FORM_URL)
+	u := getJenkinsUrl(LOGIN_FORM_URL)
 
 	resp, err := httpClient.PostForm(u,
 		url.Values{"j_username": {username}, "j_password": {password}, crumb.CrumbRequestField: {crumb.Crumb}})

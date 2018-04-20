@@ -69,7 +69,7 @@
   <blockTriggerWhenBuilding>true</blockTriggerWhenBuilding>
   <settings class="jenkins.mvn.DefaultSettingsProvider"/>
   <globalSettings class="jenkins.mvn.FilePathGlobalSettingsProvider">
-    <path>/var/vcap/data/jenkins-slave/settings.xml</path>
+    <path>/var/vcap/packages/apache-maven/conf/settings.xml</path>
   </globalSettings>
   <reporters/>
   <publishers/>

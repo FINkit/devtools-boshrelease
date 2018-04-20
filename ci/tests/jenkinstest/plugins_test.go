@@ -24,7 +24,7 @@ type Plugin struct {
 }
 
 func iAccessPluginManagement() error {
-	pluginsResp, err := httpClient.Get(getUrl(PLUGIN_MANAGER_URL))
+	pluginsResp, err := httpClient.Get(getJenkinsUrl(PLUGIN_MANAGER_URL))
 
 	if err != nil {
 		return err

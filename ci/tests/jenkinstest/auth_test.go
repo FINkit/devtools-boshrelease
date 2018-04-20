@@ -19,7 +19,7 @@ func thereIsAJenkinsInstall() error {
 }
 
 func iAccessTheLoginScreen() error {
-	resp, err := http.Get(getUrl(LOGIN_URL))
+	resp, err := http.Get(getJenkinsUrl(LOGIN_URL))
 	if err != nil {
 		return err
 	}

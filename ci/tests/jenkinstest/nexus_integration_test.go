@@ -7,10 +7,15 @@ import (
 )
 
 const (
-	MAVEN_JOB_FILE_PATH string = "./test-maven-job.xml"
-	MAVEN_JOB_NAME      string = "mavenJob"
-	NEXUS_ARTEFACT_URL  string = "https://nexus.dev-build-create.build.finkit.io/repository/releases-libs/com/example/demo/0.0.1/demo-0.0.1.jar"
+	MAVEN_JOB_FILE_PATH            string        = "./test-maven-job.xml"
+	MAVEN_JOB_NAME                 string        = "mavenTestJob"
+	MAVEN_JOB_WAIT_TIME_IN_SECONDS time.Duration = 40
+	NEXUS_ARTEFACT_PATH            string        = "/repository/releases-libs/com/example/demo/0.0.1/demo-0.0.1.jar"
 )
+
+func getNexusUrl(path string) string {
+	return nexusHostUrl + path
+}
 
 func iHaveAddedAMavenJob() error {
 	body := createJenkinsJob(MAVEN_JOB_NAME, MAVEN_JOB_FILE_PATH)
@@ -41,20 +46,22 @@ func iExecuteTheMavenJob() error {
 }
 
 func theJobArtefactIsStoredInNexus() error {
-	nexusResp, err := httpClient.Get(NEXUS_ARTEFACT_URL)
-
-	fmt.Printf("nexus response from %s to %s .", NEXUS_ARTEFACT_URL, err)
-
-	if nexusResp.StatusCode == http.StatusOK {
-		return fmt.Errorf("returned 200 unexpectedly")
-	}
-
-	time.Sleep(40 * time.Second)
-
-	nexusResp, err = httpClient.Get(NEXUS_ARTEFACT_URL)
+	nexusResp, err := httpClient.Get(getNexusUrl(NEXUS_ARTEFACT_PATH))
 
 	if err != nil {
-		return fmt.Errorf("Failed to retrieve artefact from %s.", NEXUS_ARTEFACT_URL)
+		return fmt.Errorf("Unexpected error pinging %s prior to creation of test Maven job", getNexusUrl(NEXUS_ARTEFACT_PATH))
+	}
+
+	if nexusResp.StatusCode != http.StatusNotFound {
+		return fmt.Errorf("Nexus returned OK response to test Maven job prior to creation")
+	}
+
+	time.Sleep(MAVEN_JOB_WAIT_TIME_IN_SECONDS * time.Second)
+
+	nexusResp, err = httpClient.Get(getNexusUrl(NEXUS_ARTEFACT_PATH))
+
+	if err != nil {
+		return fmt.Errorf("Failed to retrieve artefact from %s.", getNexusUrl(NEXUS_ARTEFACT_PATH))
 	}
 
 	if nexusResp.StatusCode != http.StatusOK {

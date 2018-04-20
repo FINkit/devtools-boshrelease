@@ -9,24 +9,25 @@ import (
 )
 
 const (
-	TEST_JOB_FILE_PATH string = "./test-job-jenkins.xml"
-	JOB_CREATION_URL   string = "/createItem?name="
-	JOB_URL            string = "/job/"
-	BUILD_URL          string = "/build"
-	INITIAL_JOB_NAME   string = "initialJob"
-	SLAVE_JOB_NAME     string = "slaveJob"
+	TEST_JOB_FILE_PATH             string        = "./test-job-jenkins.xml"
+	JOB_CREATION_URL               string        = "/createItem?name="
+	JOB_URL                        string        = "/job/"
+	BUILD_URL                      string        = "/build"
+	INITIAL_JOB_NAME               string        = "initialJob"
+	SLAVE_JOB_NAME                 string        = "slaveJob"
+	SLAVE_JOB_WAIT_TIME_IN_SECONDS time.Duration = 10
 )
 
 func getJobUrl(jobName string) string {
-	return getUrl(JOB_URL + jobName)
+	return getJenkinsUrl(JOB_URL + jobName)
 }
 
 func getJobBuildUrl(jobName string) string {
-	return getUrl(JOB_URL + jobName + BUILD_URL)
+	return getJenkinsUrl(JOB_URL + jobName + BUILD_URL)
 }
 
 func getJobCreateUrl(jobName string) string {
-	return getUrl(JOB_CREATION_URL + jobName)
+	return getJenkinsUrl(JOB_CREATION_URL + jobName)
 }
 
 func iHaveJobConfig() error {
@@ -35,9 +36,11 @@ func iHaveJobConfig() error {
 
 func createJenkinsJob(jobName string, filePath string) string {
 	file, err := os.Open(filePath)
+
 	if err != nil {
 		panic(fmt.Sprintf("Failed to open file: %s.", filePath))
 	}
+
 	req, err := http.NewRequest("POST", getJobCreateUrl(jobName), file)
 	getNewJenkinsCrumb()
 	req.Header.Add(crumb.CrumbRequestField, crumb.Crumb)
@@ -107,9 +110,9 @@ func iExecuteTheJob() error {
 }
 
 func theJobIsExecuted() error {
-	time.Sleep(10 * time.Second)
+	time.Sleep(SLAVE_JOB_WAIT_TIME_IN_SECONDS * time.Second)
 
-	jobResp, err := httpClient.Get(getUrl("/job/" + SLAVE_JOB_NAME + "/1/api/json"))
+	jobResp, err := httpClient.Get(getJenkinsUrl(JOB_URL + SLAVE_JOB_NAME + "/1/api/json"))
 
 	if err != nil {
 		return fmt.Errorf("Failed to create job %s.", INITIAL_JOB_NAME)
