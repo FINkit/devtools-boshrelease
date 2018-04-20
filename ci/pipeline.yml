@@ -55,6 +55,12 @@ resources:
       uri: git@github.com:finkit/devtools-boshrelease
       branch: master
       private_key: ((github-deploy-key.private))
+- name: devtools-tests
+  type: git
+  source:
+      uri: git@github.com:finkit/devtools-tests
+      branch: master
+      private_key: ((github-devtools-tests-key.private))
 - name: dev-release-tarball
   type: google-cloud-storage
   source:
@@ -240,6 +246,10 @@ jobs:
   - tests
   plan:
   - aggregate: *get-test-resources
+    - get: devtools-tests
+      passed:
+      - create-dev-release
+      - deploy-bosh
   - aggregate:
     - do:
       - task: create-jenkins-bosh-config
