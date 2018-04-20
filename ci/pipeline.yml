@@ -206,6 +206,10 @@ jobs:
       passed:
       - create-dev-release
       - deploy-bosh
+    - get: devtools-tests
+      passed:
+      - create-dev-release
+      - deploy-bosh
     - get: dev-release-tarball
       passed:
       - create-dev-release
@@ -246,10 +250,6 @@ jobs:
   - tests
   plan:
   - aggregate: *get-test-resources
-    - get: devtools-tests
-      passed:
-      - create-dev-release
-      - deploy-bosh
   - aggregate:
     - do:
       - task: create-jenkins-bosh-config
