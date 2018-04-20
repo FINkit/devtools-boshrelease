@@ -5,6 +5,7 @@ image_resource:
     repository: engineerbetter/pcf-ops
 inputs:
 - name: bbl-state
+- name: devtools-boshrelease
 - name: devtools-tests
 run:
   path: /bin/bash
@@ -17,13 +18,13 @@ run:
       JUMPBOX_HOST=$(bosh int <(bbl outputs) --path /jumpbox_url | cut -d: -f1); export JUMPBOX_HOST
       # set up jumpbox ssh tunnel
       instance_info=$(bosh --json instances -i); export instance_info
-      ip=$(jq -r .Tables[0].Rows[0].ips <<< "$instance_info")
+      ip=$(jq --raw-output .Tables[0].Rows[0].ips <<< "$instance_info")
       # shellcheck disable=SC2029
       ssh -o StrictHostKeyChecking=no -fNnL "8080:$ip:8080" -i "$JUMPBOX_PRIVATE_KEY" "$JUMPBOX_USER@$JUMPBOX_HOST"
       trap "pkill ssh" EXIT
       credhub api --server=${CREDHUB_SERVER}
       credhub login --username=${CREDHUB_USERNAME} --password=${CREDHUB_PASSWORD}
-      export JENKINS_PASSWORD=$(credhub get --name=/bosh-devtools-boshrelease/jenkins/jenkins_admin_password --output-json | jq -r ".value" | tr -d ' ')
+      export JENKINS_PASSWORD=$(credhub get --name=/bosh-devtools-boshrelease/jenkins/jenkins_admin_password --output-json | jq --raw-output ".value" | tr --delete ' ')
       export JENKINS_HOST="http://localhost:8080"
       export NEXUS_HOST="http://localhost:8081" # TODO Refactor tests to remove dependency on Nexus in Jenkins unit tests.
     popd
