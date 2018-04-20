@@ -3,6 +3,7 @@ Feature: Jenkins plugin installation and configuration
   As an administrator
   I need to be able to install and configure plugins
 
+  @unit,@jenkins
   Scenario: Plugins are installed
     Given I login using valid credentials
     When I access plugin management

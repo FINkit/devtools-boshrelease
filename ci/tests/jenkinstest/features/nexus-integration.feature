@@ -3,6 +3,7 @@ Feature: Nexus integration
   As a developer
   I need to be able to store artefacts
     
+  @integration
   Scenario: Slave job to Nexus
     Given I login using valid credentials
     And I have added a Maven job

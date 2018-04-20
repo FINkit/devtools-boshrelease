@@ -34,5 +34,5 @@ run:
     pushd /go/src/jenkinstest
       go get github.com/DATA-DOG/godog/cmd/godog
       set -e
-      godog
+      godog -t @unit -t @jenkins
     popd
