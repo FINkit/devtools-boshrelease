@@ -25,6 +25,7 @@ run:
       credhub login --username=${CREDHUB_USERNAME} --password=${CREDHUB_PASSWORD}
       export JENKINS_PASSWORD=$(credhub get --name=/bosh-devtools-boshrelease/jenkins/jenkins_admin_password --output-json | jq -r ".value" | tr -d ' ')
       export JENKINS_HOST="http://localhost:8080"
+      export NEXUS_HOST="http://localhost:8081" # TODO Refactor tests to remove dependency on Nexus in Jenkins unit tests.
     popd
 
     export INSTALLED_PLUGINS_FILE_PATH="${PWD}/devtools-boshrelease/src/jenkins/plugins.txt"
