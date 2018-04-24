@@ -267,14 +267,15 @@ jobs:
         file: devtools-boshrelease/ci/tasks/test-jenkins.yml
         params:
           BOSH_DEPLOYMENT: *jenkins-deployment-name
-      - put: bosh-deployment # Destroy Jenkins instance
-        params:
-          source_file: source/source.yml
-          delete:
-            enabled: true
-            force: true
-          vars:
-            deployment_name: *jenkins-deployment-name
+        ensure:
+          put: bosh-deployment # Destroy Jenkins instance
+          params:
+            source_file: source/source.yml
+            delete:
+              enabled: true
+              force: true
+            vars:
+              deployment_name: *jenkins-deployment-name
   <<: *slack-alert
 
 - name: test-nexus
