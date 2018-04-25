@@ -36,6 +36,7 @@ git-client:2.7.1
 github:1.29.0
 github-api:1.90
 github-branch-source:2.3.3
+github-oauth:0.29
 github-organization-folder:1.6
 git-server:1.7
 gradle:1.28

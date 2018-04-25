@@ -22,6 +22,10 @@ jenkins/plugins-201803201413.zip:
   size: 223146774
   object_id: d9f7be5d-cf1e-4eb1-5dd0-2f59be1ba1af
   sha: 1df4c93b539a78e8925b483f68639c1534c9f290
+jenkins/plugins-201804251332.zip:
+  size: 223213245
+  object_id: e67a7fd1-2825-4675-7c02-0dab27cd2caa
+  sha: c7874645b4b1870bc787e330a0a48c97530f6074
 jenkins/swarm-client-3.6.jar:
   size: 1620623
   object_id: 7960ab0b-6580-41ce-5139-43ebd3b390fa
