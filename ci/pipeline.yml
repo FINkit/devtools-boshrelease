@@ -232,14 +232,15 @@ jobs:
         file: devtools-boshrelease/ci/tasks/test-gerrit.yml
         params:
           BOSH_DEPLOYMENT: *gerrit-deployment-name
-      - put: bosh-deployment # Destroy Gerrit instance
-        params:
-          source_file: source/source.yml
-          delete:
-            enabled: true
-            force: true
-          vars:
-            deployment_name: *gerrit-deployment-name
+        ensure:
+          put: bosh-deployment # Destroy Gerrit instance
+          params:
+            source_file: source/source.yml
+            delete:
+              enabled: true
+              force: true
+            vars:
+              deployment_name: *gerrit-deployment-name
   <<: *slack-alert
 
 - name: test-jenkins
@@ -303,14 +304,15 @@ jobs:
         file: devtools-boshrelease/ci/tasks/test-nexus.yml
         params:
           BOSH_DEPLOYMENT: *nexus-deployment-name
-      - put: bosh-deployment # Destroy Nexus instance
-        params:
-          source_file: source/source.yml
-          delete:
-            enabled: true
-            force: true
-          vars:
-            deployment_name: *nexus-deployment-name
+        ensure:
+          put: bosh-deployment # Destroy Nexus instance
+          params:
+            source_file: source/source.yml
+            delete:
+              enabled: true
+              force: true
+            vars:
+              deployment_name: *nexus-deployment-name
   <<: *slack-alert
 
 - name: test-sonarqube
@@ -338,14 +340,15 @@ jobs:
         file: devtools-boshrelease/ci/tasks/test-sonarqube.yml
         params:
           BOSH_DEPLOYMENT: *sonarqube-deployment-name
-      - put: bosh-deployment # Destroy sonarqube instance
-        params:
-          source_file: source/source.yml
-          delete:
-            enabled: true
-            force: true
-          vars:
-            deployment_name: *sonarqube-deployment-name
+        ensure:
+          put: bosh-deployment # Destroy sonarqube instance
+          params:
+            source_file: source/source.yml
+            delete:
+              enabled: true
+              force: true
+            vars:
+              deployment_name: *sonarqube-deployment-name
   <<: *slack-alert
 
 - name: destroy-bosh
