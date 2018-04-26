@@ -7,6 +7,32 @@
   <numExecutors>0</numExecutors>
   <mode>NORMAL</mode>
   <useSecurity>true</useSecurity>
+  <authorizationStrategy class="org.jenkinsci.plugins.GithubAuthorizationStrategy" plugin="github-oauth@0.29">
+    <rootACL>
+      <organizationNameList class="linked-list">
+        <string>((github-oauth-org-name))</string>
+      </organizationNameList>
+      <adminUserNameList class="linked-list">
+        <string>((jenkins-oauth-admin-user-1))</string>
+        <string>((jenkins-oauth-admin-user-2))</string>
+        <string>((jenkins-oauth-admin-user-3))</string>
+      </adminUserNameList>
+      <authenticatedUserReadPermission>false</authenticatedUserReadPermission>
+      <useRepositoryPermissions>false</useRepositoryPermissions>
+      <authenticatedUserCreateJobPermission>false</authenticatedUserCreateJobPermission>
+      <allowGithubWebHookPermission>false</allowGithubWebHookPermission>
+      <allowCcTrayPermission>false</allowCcTrayPermission>
+      <allowAnonymousReadPermission>false</allowAnonymousReadPermission>
+      <allowAnonymousJobStatusPermission>false</allowAnonymousJobStatusPermission>
+    </rootACL>
+  </authorizationStrategy>
+  <securityRealm class="org.jenkinsci.plugins.GithubSecurityRealm">
+    <githubWebUri>((jenkins-oauth-github-web-ui))</githubWebUri>
+    <githubApiUri>((jenkins-oauth-github-api-ui))</githubApiUri>
+    <clientID>((jenkins-oauth-clientID))</clientID>
+    <clientSecret>((jenkins-oauth-clientSecret))</clientSecret>
+    <oauthScopes>read:org,user:email</oauthScopes>
+  </securityRealm>
   <disableRememberMe>true</disableRememberMe>
   <projectNamingStrategy class="jenkins.model.ProjectNamingStrategy$DefaultProjectNamingStrategy"/>
   <workspaceDir>${ITEM_ROOTDIR}/workspace</workspaceDir>
