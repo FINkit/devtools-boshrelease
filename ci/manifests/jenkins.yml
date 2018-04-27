@@ -9,7 +9,7 @@ instance_groups:
     properties:
       github:
         oauth:
-          org-name: ((github_oauth_org_name))
+          org_name: ((github_oauth_org_name))
           admins:
           user1: ((jenkins_oauth_admin_user_1))
           admin2: ((jenkins_oauth_admin_user_2))
