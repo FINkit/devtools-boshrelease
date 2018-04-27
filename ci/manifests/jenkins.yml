@@ -19,7 +19,7 @@ instance_groups:
           oauth:
             org_name: ((github_oauth_org_name))
             admins:
-              user1: ((jenkins_oauth_admin_user_1))
+              admin1: ((jenkins_oauth_admin_user_1))
               admin2: ((jenkins_oauth_admin_user_2))
               admin3: ((jenkins_oauth_admin_user_3))
             url:
