@@ -20,7 +20,6 @@ templates:
   bin/restore.sh.erb: bin/bbr/restore
   config/branding.css.erb: config/branding.css
   config/config.xml.erb: config/config.xml
-  config/config-oauth.xml.erb: config/config-oauth.xml
   config/configure-access.groovy.erb: init.groovy.d/configure-access.groovy
   config/configure-master-access-control.groovy.erb: init.groovy.d/configure-master-access-control.groovy
   config/configure-maven.groovy.erb: init.groovy.d/configure-maven.groovy
