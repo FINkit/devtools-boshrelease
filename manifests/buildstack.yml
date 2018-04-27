@@ -5,6 +5,16 @@ instance_groups:
   jobs:
   - name: jenkins-master
     properties:
+      github:
+        oauth:
+          org-name: ((github-oauth-org-name))
+          admin-user-1: ((jenkins-oauth-admin-user-1))
+          admin-user-2: ((jenkins-oauth-admin-user-2))
+          admin-user-3: ((jenkins-oauth-admin-user-3))
+          web-ui: ((jenkins-oauth-github-web-ui))
+          api-ui: ((jenkins-oauth-github-api-ui))
+          clientID: ((jenkins-oauth-clientID))
+          clientSecret: ((jenkins-oauth-clientSecret))
       jenkins:
         admin:
           email: admin@localhost
