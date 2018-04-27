@@ -45,3 +45,20 @@ properties:
     description: "Password for the admin user"
   jenkins.agent.password:
     description: "Password for the agent user"
+  jenkins.github.oauth.org_name:
+    description: "Github oAuth org name"
+  jenkins.github.oauth.admins.admin1:
+    description: "Github admin username"
+  jenkins.github.oauth.admins.admin2:
+    description: "Github admin username"
+  jenkins.github.oauth.admins.admin3:
+    description: "Github admin username"
+  jenkins.github.oauth.url.web:
+    description: "Github web url"
+  jenkins.github.oauth.url.api:
+    description: "Github api url"
+  jenkins.github.oauth.client.id:
+    description: "Github client ID"
+  jenkins.github.oauth.client.secret:
+    description: "Github client.secret"
+
