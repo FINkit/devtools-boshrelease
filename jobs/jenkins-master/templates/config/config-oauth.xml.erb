@@ -7,6 +7,32 @@
   <numExecutors>0</numExecutors>
   <mode>NORMAL</mode>
   <useSecurity>true</useSecurity>
+  <authorizationStrategy class="org.jenkinsci.plugins.GithubAuthorizationStrategy" plugin="github-oauth@0.29">
+    <rootACL>
+      <organizationNameList class="linked-list">
+        <string><%= p('jenkins.github.oauth.org_name')  %></string>
+      </organizationNameList>
+      <adminUserNameList class="linked-list">
+        <string><%= p('jenkins.github.oauth.admins.admin1') %></string>
+        <string><%= p('jenkins.github.oauth.admins.admin2') %></string>
+        <string><%= p('jenkins.github.oauth.admins.admin3') %></string>
+      </adminUserNameList>
+      <authenticatedUserReadPermission>false</authenticatedUserReadPermission>
+      <useRepositoryPermissions>false</useRepositoryPermissions>
+      <authenticatedUserCreateJobPermission>false</authenticatedUserCreateJobPermission>
+      <allowGithubWebHookPermission>false</allowGithubWebHookPermission>
+      <allowCcTrayPermission>false</allowCcTrayPermission>
+      <allowAnonymousReadPermission>false</allowAnonymousReadPermission>
+      <allowAnonymousJobStatusPermission>false</allowAnonymousJobStatusPermission>
+    </rootACL>
+  </authorizationStrategy>
+  <securityRealm class="org.jenkinsci.plugins.GithubSecurityRealm">
+    <githubWebUri><%= p('jenkins.github.oauth.url.web') %></githubWebUri>
+    <githubApiUri><%= p('jenkins.github.oauth.url.api') %></githubApiUri>
+    <clientID><%= p('jenkins.github.oauth.client.id') %></clientID>
+    <clientSecret><%= p('jenkins.github.oauth.client.secret') %></clientSecret>
+    <oauthScopes>read:org,user:email</oauthScopes>
+  </securityRealm>
   <disableRememberMe>true</disableRememberMe>
   <projectNamingStrategy class="jenkins.model.ProjectNamingStrategy$DefaultProjectNamingStrategy"/>
   <workspaceDir>${ITEM_ROOTDIR}/workspace</workspaceDir>
