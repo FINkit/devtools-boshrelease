@@ -62,4 +62,5 @@ properties:
     description: "Github client ID"
   jenkins.github.oauth.client.secret:
     description: "Github client.secret"
-
+  jenkins.config:
+    description: "Jenkins config xml"
