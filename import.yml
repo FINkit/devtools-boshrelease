@@ -1,0 +1,25 @@
+credentials:
+- name: bosh-dev-build-create/buildstack/github-oauth-org-name
+  type: value
+  value: FinKit
+- name: bosh-dev-build-create/buildstack/jenkins-oauth-admin-user-1
+  type: value
+  value: administrator
+- name: bosh-dev-build-create/buildstack/jenkins-oauth-admin-user-2
+  type: value
+  value: djones
+- name: bosh-dev-build-create/buildstack/jenkins-oauth-admin-user-3
+  type: value
+  value: admin
+- name: bosh-dev-build-create/buildstack/jenkins-oauth-github-web-ui
+  type: value
+  value: https://github-dev.build.finkit.io
+- name: bosh-dev-build-create/buildstack/jenkins-oauth-github-api-ui
+  type: value
+  value: https://github-dev.build.finkit.io/api/v3
+- name: bosh-dev-build-create/buildstack/jenkins-oauth-clientID
+  type: value
+  value: ae3bb34abcdb0a58fb68
+- name: bosh-dev-build-create/buildstack/jenkins-oauth-clientSecret
+  type: value
+  value: 05817054659b5e20af49ecd8583f20e44599cbc9
