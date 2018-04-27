@@ -7,19 +7,6 @@ instance_groups:
   - name: jenkins-master
     release: devtools
     properties:
-      github:
-        oauth:
-          org_name: ((github_oauth_org_name))
-          admins:
-          user1: ((jenkins_oauth_admin_user_1))
-          admin2: ((jenkins_oauth_admin_user_2))
-          admin3: ((jenkins_oauth_admin_user_3))
-          url:
-            web: ((jenkins_oauth_github_web_ui))
-            api: ((jenkins_oauth_github_api_ui))
-          client:
-            id: ((jenkins_oauth_clientID))
-            secret: ((jenkins_oauth_clientSecret))
       jenkins:
         admin:
           email: admin@localhost
@@ -28,6 +15,19 @@ instance_groups:
           password: ((jenkins_agent_password))
         server:
           address: http://localhost:8080/
+        github:
+          oauth:
+            org_name: ((github_oauth_org_name))
+            admins:
+              user1: ((jenkins_oauth_admin_user_1))
+              admin2: ((jenkins_oauth_admin_user_2))
+              admin3: ((jenkins_oauth_admin_user_3))
+            url:
+              web: ((jenkins_oauth_github_web_ui))
+              api: ((jenkins_oauth_github_api_ui))
+            client:
+              id: ((jenkins_oauth_clientID))
+              secret: ((jenkins_oauth_clientSecret))
   networks:
   - name: default
   persistent_disk_pool: 10GB

@@ -10,12 +10,12 @@
   <authorizationStrategy class="org.jenkinsci.plugins.GithubAuthorizationStrategy" plugin="github-oauth@0.29">
     <rootACL>
       <organizationNameList class="linked-list">
-        <string><%= p('github.oauth.org_name')  %></string>
+        <string><%= p('jenkins.github.oauth.org_name')  %></string>
       </organizationNameList>
       <adminUserNameList class="linked-list">
-        <string><%= p('github.oauth.admin.user1') %></string>
-        <string><%= p('github.oauth.admin.user2') %></string>
-        <string><%= p('github.oauth.admin.user3') %></string>
+        <string><%= p('jenkins.github.oauth.admin.user1') %></string>
+        <string><%= p('jenkins.github.oauth.admin.user2') %></string>
+        <string><%= p('jenkins.github.oauth.admin.user3') %></string>
       </adminUserNameList>
       <authenticatedUserReadPermission>false</authenticatedUserReadPermission>
       <useRepositoryPermissions>false</useRepositoryPermissions>
@@ -27,10 +27,10 @@
     </rootACL>
   </authorizationStrategy>
   <securityRealm class="org.jenkinsci.plugins.GithubSecurityRealm">
-    <githubWebUri><%= p('github.oauth.url.web') %></githubWebUri>
-    <githubApiUri><%= p('github.oauth.url.api') %></githubApiUri>
-    <clientID><%= p('github.oauth.client.id') %></clientID>
-    <clientSecret><%= p('github.oauth.client.secret') %></clientSecret>
+    <githubWebUri><%= p('jenkins.github.oauth.url.web') %></githubWebUri>
+    <githubApiUri><%= p('jenkins.github.oauth.url.api') %></githubApiUri>
+    <clientID><%= p('jenkins.github.oauth.client.id') %></clientID>
+    <clientSecret><%= p('jenkins.github.oauth.client.secret') %></clientSecret>
     <oauthScopes>read:org,user:email</oauthScopes>
   </securityRealm>
   <disableRememberMe>true</disableRememberMe>
