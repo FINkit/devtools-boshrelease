@@ -7,7 +7,7 @@ mkdir -p /var/vcap/store/jenkins-master
 mkdir -p /var/vcap/store/jenkins-master/init.groovy.d	
 mkdir -p /var/vcap/store/jenkins-master/plugins
 
-JENKINS_CONFIG="<% p('jenkins.config') %>"
+JENKINS_CONFIG="<%= p('jenkins.config') %>"
 
 if [[ $(ls /var/vcap/jobs/jenkins-master/config/*.xml) ]]; then
     echo "Copying Config..."
