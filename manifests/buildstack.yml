@@ -7,14 +7,17 @@ instance_groups:
     properties:
       github:
         oauth:
-          org-name: ((github-oauth-org-name))
-          admin-user-1: ((jenkins-oauth-admin-user-1))
-          admin-user-2: ((jenkins-oauth-admin-user-2))
-          admin-user-3: ((jenkins-oauth-admin-user-3))
-          web-ui: ((jenkins-oauth-github-web-ui))
-          api-ui: ((jenkins-oauth-github-api-ui))
-          clientID: ((jenkins-oauth-clientID))
-          clientSecret: ((jenkins-oauth-clientSecret))
+          org-name: ((github_oauth_org_name))
+          admins:
+          user1: ((jenkins_oauth_admin_user_1))
+          admin2: ((jenkins_oauth_admin_user_2))
+          admin3: ((jenkins_oauth_admin_user_3))
+          url:
+            web: ((jenkins_oauth_github_web_ui))
+            api: ((jenkins_oauth_github_api_ui))
+          client:
+            id: ((jenkins_oauth_clientID))
+            secret: ((jenkins_oauth_clientSecret))
       jenkins:
         admin:
           email: admin@localhost
