@@ -5,3 +5,10 @@ set -u # report the usage of uninitialized variables
 
 cp /var/vcap/jobs/sonarqube/config/sonar.properties /var/vcap/packages/sonarqube/conf/sonar.properties
 chown vcap:vcap -R /var/vcap/packages/sonarqube/*
+
+export GROOVY_HOME="/var/vcap/packages/groovy"
+export GROOVY="${GROOVY_HOME}/bin/groovy"
+
+cd /var/vcap/jobs/jenkins-master/config
+
+${GROOVY} configure-github-auth-plugin.groovy
