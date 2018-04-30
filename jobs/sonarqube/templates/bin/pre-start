@@ -11,4 +11,5 @@ export GROOVY="${GROOVY_HOME}/bin/groovy"
 
 cd /var/vcap/jobs/jenkins-master/config
 
-${GROOVY} configure-github-auth-plugin.groovy
+${GROOVY} configure-settings.groovy
+${GROOVY} configure-groups.groovy
