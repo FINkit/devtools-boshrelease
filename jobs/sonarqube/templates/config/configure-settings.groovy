@@ -10,7 +10,10 @@ def keySingleValuePairs = [
 ]
 
 for (pair in keySingleValuePairs) {
-    def queryString = SonarApiClient.buildSingleValuedQueryString(pair.first, pair.second)
+    def key = SonarApiClient.buildSingleValuedKeyPair('key', pair.first)
+    def value = SonarApiClient.buildSingleValuedKeyPair('value', pair.second)
+    def keyValues = [key, value]
+    def queryString = SonarApiClient.buildQueryString(keyValues.iterator())
     def querySucceeded = SonarApiClient.postQueryString(sonarApiSettingsUrl, queryString)
 
     if (!querySucceeded) {

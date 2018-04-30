@@ -11,7 +11,9 @@ templates:
   bin/monit_debugger: bin/monit_debugger
   bin/pre-start: bin/pre-start
   config/sonar.properties: config/sonar.properties
-  config/configure-github-auth-plugin.groovy: config/configure-github-auth-plugin.groovy
+  config/configure-groups.groovy: config/configure-groups.groovy
+  config/configure-settings.groovy: config/configure-settings.groovy
+  config/group-permissions.json: config/group-permissions.json
   config/SonarApiClient.groovy: config/SonarApiClient.groovy
   data/properties.sh.erb: data/properties.sh
   helpers/ctl_setup.sh: helpers/ctl_setup.sh

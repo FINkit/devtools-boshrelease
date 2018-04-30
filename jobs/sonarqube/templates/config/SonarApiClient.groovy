@@ -8,24 +8,40 @@ class SonarApiClient
         return URLEncoder.encode(value, 'UTF-8')
     }
 
-    static def buildSingleValuedQueryString(String key, String value) {
-        return 'key=' + encode(key) + '&value=' + encode(value)
+    static def buildSingleValuedKeyPair(String key, String value) {
+        return encode(key) + '=' + encode(value)
     }
-    
-    static def buildMultiValuedQueryString(String key, List<String> values) {
-        if (values.count == 1) {
-            return buildQueryString(key, values.first)
+
+    static def buildMultiValuedKeyPair(String key, Iterator<String> values) {
+        if (!values.hasNext()) {
+            return buildSingleValuedKeyPair(key, values.first)
         }
     
-        def queryString = 'key='
-    
+        def keyPair = encode(key) + '=' + encode(values.first)
+
+        values.next
+
         for (value in values) {
-          queryString += 'key=' + encode(key) + '&values=' + encode(value)
+            keyPair += '&' + encode(key) + '=' + encode(value)
         }
     
-        return queryString
+        return keyPair
     }
-    
+
+    static def buildQueryString(Iterator<String> keyValuePairs) {
+        if (!keyValuePairs.hasNext()) {
+            return ''
+        }
+
+        def pair = keyValuePairs.next()
+
+        for (keyValuePair in keyValuePairs) {
+            pair += '&' + keyValuePair
+        }
+
+        return pair
+    }
+
     private static String generateAuthValue() {
         def username = 'admin'
         def password = 'admin'
