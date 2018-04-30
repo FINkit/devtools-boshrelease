@@ -12,14 +12,26 @@ templates:
   bin/pre-start: bin/pre-start
   config/sonar.properties: config/sonar.properties
   config/configure-groups.groovy: config/configure-groups.groovy
-  config/configure-settings.groovy: config/configure-settings.groovy
+  config/configure-settings.groovy.erb: config/configure-settings.groovy
   config/group-permissions.json: config/group-permissions.json
-  config/SonarApiClient.groovy: config/SonarApiClient.groovy
+  config/SonarApiClient.groovy.erb: config/SonarApiClient.groovy
   data/properties.sh.erb: data/properties.sh
   helpers/ctl_setup.sh: helpers/ctl_setup.sh
   helpers/ctl_utils.sh: helpers/ctl_utils.sh
 
 properties:
+  github.server.url:
+	description: "URL for the github instance"
+  sonar.admin.password:
+	description: "Admin password for the Sonar application"
+    default: admin
+  sonar.admin.username:
+	description: "Admin username for the Sonar application"
+    default: admin
+  sonar.client.id:
+	description: "Client ID for github integration"
+  sonar.client.secret:
+    description: "Client secret for github integration"
   sonar.server.address:
     description: "Fully qualified address of Sonar server"
     default: 127.0.0.1
@@ -37,3 +49,6 @@ properties:
   sonar.database.type:
     description: "Database type, e.g. H2, MYSQL"
     default: H2
+  sonar.server.url:
+	description: "sonar base URL"
+	default: http://127.0.0.1:9000

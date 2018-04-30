@@ -2,7 +2,11 @@ import java.net.URLEncoder
 
 class SonarApiClient
 {
-    static def sonarApiUrl = 'https://sonar.dev-build-create.build.finkit.io/api/'
+    static def sonarUrl = '<%= p('sonar.server.url') %>'
+    static def sonarApiUrl = sonarUrl + '/api/'
+
+    static def username = '<%= p('sonar.admin.username') %>'
+    static def password = '<%= p('sonar.admin.password') %>'
 
     private static String encode(value) {
         return URLEncoder.encode(value, 'UTF-8')
@@ -43,9 +47,6 @@ class SonarApiClient
     }
 
     private static String generateAuthValue() {
-        def username = 'admin'
-        def password = 'admin'
-    
         return "${username}:${password}".getBytes().encodeBase64().toString()
     }
     
@@ -53,7 +54,7 @@ class SonarApiClient
         def connection = new URL(url).openConnection() as HttpURLConnection
     
         connection.setRequestProperty('Accept', 'application/json')
-        connection.setRequestProperty('Authorization', "Basic ${generateAuthValue()}")
+        connection.setRequestProperty('Authorization', "Basic ${getAuthValue()}")
         connection.setRequestMethod('POST')
         connection.doOutput = true
     

@@ -11,8 +11,8 @@ List<Tuple> buildGroupPermissionsData() {
 
     List<Tuple> groupPermissions = []
 
-    data.groupPermissions.each { 
-        Tuple groupPermissionsTuple = new Tuple(it.name, it.description, it.permissions)    
+    data.groupPermissions.each {
+        Tuple groupPermissionsTuple = new Tuple(it.name, it.description, it.permissions)
         System.out.println("Adding group permissions ${groupPermissionsTuple}")
         groupPermissions << groupPermissionsTuple
     }
