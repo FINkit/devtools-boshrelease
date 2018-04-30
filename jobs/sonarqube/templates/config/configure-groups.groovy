@@ -3,7 +3,6 @@ import groovy.json.JsonSlurper
 // Script must be called from the script directory to pick up the imported Class.
 import SonarApiClient
 
-
 List<Tuple> buildGroupPermissionsData() {
     def jsonSlurper = new JsonSlurper()
     def reader = new BufferedReader(new InputStreamReader(new FileInputStream("group-permissions.json"), "UTF-8"))
