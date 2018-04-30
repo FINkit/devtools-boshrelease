@@ -13,9 +13,6 @@ instance_groups:
         client:
           id: 00000000000000000000
           secret: 0000000000000000000000000000000000000000
-        database:
-          host: ((buildstack_db_instance_ip))
-          password: ((sonar_database_password))
     release: devtools
   networks:
   - name: default
