@@ -12,7 +12,10 @@ JENKINS_CONFIG="<%= p('jenkins.config') %>"
 if [[ $(ls /var/vcap/jobs/jenkins-master/config/*.xml) ]]; then
     echo "Copying Config..."
     cp /var/vcap/jobs/jenkins-master/config/*.xml /var/vcap/store/jenkins-master
-    cp /var/vcap/jobs/jenkins-master/config/${JENKINS_CONFIG} /var/vcap/store/jenkins-master/config.xml
+
+    if [ ${JENKINS_CONFIG} != "config.xml" ]; then
+        cp /var/vcap/jobs/jenkins-master/config/${JENKINS_CONFIG} /var/vcap/store/jenkins-master/config.xml
+    fi
 fi
 
 if [[ $(ls /var/vcap/jobs/jenkins-master/init.groovy.d/*.groovy) ]]; then
