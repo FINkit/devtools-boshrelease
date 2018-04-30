@@ -21,15 +21,15 @@ templates:
 
 properties:
   github.server.url:
-	description: "URL for the github instance"
+    description: "URL for the github instance"
   sonar.admin.password:
-	description: "Admin password for the Sonar application"
+    description: "Admin password for the Sonar application"
     default: admin
   sonar.admin.username:
-	description: "Admin username for the Sonar application"
+    description: "Admin username for the Sonar application"
     default: admin
   sonar.client.id:
-	description: "Client ID for github integration"
+    description: "Client ID for github integration"
   sonar.client.secret:
     description: "Client secret for github integration"
   sonar.server.address:
@@ -50,5 +50,5 @@ properties:
     description: "Database type, e.g. H2, MYSQL"
     default: H2
   sonar.server.url:
-	description: "sonar base URL"
-	default: http://127.0.0.1:9000
+    description: "sonar base URL"
+    default: http://127.0.0.1:9000
