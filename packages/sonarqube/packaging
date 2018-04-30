@@ -12,4 +12,5 @@ export DOWNLOADED_PLUGINS_TARGET="${HOME}/jobs/sonarqube/packages/sonarqube/exte
 cd ${BOSH_COMPILE_TARGET}/sonarqube
 unzip sonarqube*.zip
 mv sonarqube-6.5/* ${BOSH_INSTALL_TARGET}
+mkdir --parents ${DOWNLOADED_PLUGINS_TARGET}
 mv *.jar ${DOWNLOADED_PLUGINS_TARGET}
