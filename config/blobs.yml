@@ -6,6 +6,10 @@ git/git-2.14.1.tar.gz:
   size: 6987933
   object_id: 4c11f3bb-d077-4a0d-6a81-2cb433fb2964
   sha: e173270a5f224078e3f6c639937da5bd84045225
+groovy/apache-groovy-binary-2.4.13.zip:
+  size: 36587726
+  object_id: 533334f0-f6e8-4959-6ce5-90687aa938c0
+  sha: d14bba275221389cbc4726a8c8c14f5a0f9e891d
 jenkins/apache-maven-3.5.2-bin.tar.gz:
   size: 8738691
   object_id: 2e476708-9b9f-4973-6f39-ee38965cd9ee
@@ -42,6 +46,10 @@ oraclejava/jdk-8u161-linux-x64.tar.gz:
   size: 189756259
   object_id: eb100739-7d1c-48ff-5687-ee2ad4f0209f
   sha: 9662b358ec90ecdc2c06acc2e326fbf25eaf567d
+sonarqube/sonar-auth-github-plugin-1.3.jar:
+  size: 283151
+  object_id: 8841da3f-2f5b-4e49-64eb-809d1d54ee07
+  sha: 453b56e3c33143931567b8a89a9bbf25160feeb8
 sonarqube/sonarqube-6.5.zip:
   size: 143286376
   object_id: 930ff2af-98ee-4b10-64dd-ba88bf0244f2

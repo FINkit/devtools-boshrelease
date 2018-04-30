@@ -82,10 +82,16 @@ instance_groups:
   jobs:
   - name: sonarqube
     properties:
+      github:
+        server:
+          url: http://127.0.0.1/wont_work
       sonar:
-        mysql:
+        client:
+          id: 00000000000000000000
+          secret: 0000000000000000000000000000000000000000
+        database:
           host: ((buildstack_db_instance_ip))
-          password: ((sonar_mysql_password))
+          password: ((sonar_database_password))
     release: devtools
   name: sonarqube
   networks:
@@ -220,7 +226,7 @@ variables:
   type: password
 - name: nexus_deployer_password
   type: password
-- name: sonar_mysql_password
+- name: sonar_database_password
   type: password
 - name: gerrit_mysql_password
   type: password
