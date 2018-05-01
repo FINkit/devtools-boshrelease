@@ -10,6 +10,7 @@ templates:
   bin/sonarqube_ctl: bin/sonarqube_ctl
   bin/monit_debugger: bin/monit_debugger
   bin/pre-start: bin/pre-start
+  bin/post-deploy: bin/post-deploy
   config/sonar.properties: config/sonar.properties
   config/configure-groups.groovy: config/configure-groups.groovy
   config/configure-settings.groovy.erb: config/configure-settings.groovy
