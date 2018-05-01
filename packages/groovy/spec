@@ -1,7 +1,8 @@
 ---
 name: groovy
 
-dependencies: []
+dependencies:
+- oraclejdk
 
 files:
 - groovy/apache-groovy-binary-2.4.13.zip

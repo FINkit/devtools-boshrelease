@@ -48,37 +48,69 @@ class SonarApiClient
 
     private static String generateAuthValue() {
         return "${username}:${password}".getBytes().encodeBase64().toString()
-    }
-    
-    static boolean postQueryString(String url, String queryString) {
+    }   
+
+    private static HttpURLConnection openPostConnection(String url) {
         def connection = new URL(url).openConnection() as HttpURLConnection
-    
+
         connection.setRequestProperty('Accept', 'application/json')
-        connection.setRequestProperty('Authorization', "Basic ${getAuthValue()}")
+        connection.setRequestProperty('Authorization', "Basic ${generateAuthValue()}")
         connection.setRequestMethod('POST')
         connection.doOutput = true
-    
-        def writer = new OutputStreamWriter(connection.outputStream)
-        
-        try {
-            writer.write(queryString)
-            writer.flush()
-        
-            if (connection.responseCode == HttpURLConnection.HTTP_OK ||
-                connection.responseCode == HttpURLConnection.HTTP_NO_CONTENT) {
-                println "Request to ${url} with query string ${queryString} succeeded"
-            } else {
-                println "Request to ${url} with query string ${queryString} failed with status " +
-                        "${connection.responseCode} and response ${connection.responseMessage}"
+
+        return connection
+    }
+
+    static boolean postQueryString(
+                    String url,
+                    String queryString,
+                    int numberOfTimesToRetry = 60,
+                    int delayBetweenRetriesInMilliseconds = 1000) {
+
+        def finalResponseReceived = false
+
+        while ((!finalResponseReceived) && (numberOfTimesToRetry-- > 0)) {
+
+            def connection
+            def writer
+
+            try {
+                connection = openPostConnection(url)
+                writer = new OutputStreamWriter(connection.outputStream)
+
+                writer.write(queryString)
+                writer.flush()
+
+                def responseCode = connection.responseMessage
+
+                if (responseCode == HttpURLConnection.HTTP_NOT_FOUND) {
+                    sleep(delayBetweenRetriesInMilliseconds)
+                    println "Waiting ${delayBetweenRetriesInMilliseconds} milliseconds to post to ${url} with " + 
+                            "${numberOfTimesToRetry} retries remaining"
+                } else if (responseCode == HttpURLConnection.HTTP_OK ||
+                           responseCode == HttpURLConnection.HTTP_NO_CONTENT) {
+                    println "Request to ${url} with query string ${queryString} succeeded"
+                    finalResponseReceived = true
+                } else {
+                    println "Request to ${url} with query string ${queryString} failed with status " +
+                            "${responseCode} and response ${connection.responseMessage}"
+                    finalResponseReceived = true
+                }
+            } catch (IOException ioe) {
+                println "Request failed with error: ${ioe}"
                 return false
+            } finally {
+                writer.close()
+                connection.disconnect()
             }
-        } catch (IOException ioe) {
-            println "Request failed with error: ${ioe}"
-            return false
-        } finally {
-            writer.close()
         }
-    
+
+        if (!finalResponseReceived) {
+            println "Timed out waiting for response from ${url}"
+            return false
+        }
+
         return true
     }
 }
+
