@@ -100,8 +100,8 @@ class SonarApiClient
                 println "Request failed with error: ${ioe}"
                 return false
             } finally {
-                writer.close()
-                connection.disconnect()
+                if (writer != null) writer.close()
+                if (connection != null) connection.disconnect()
             }
         }
 
