@@ -9,7 +9,7 @@ chown vcap:vcap -R /var/vcap/packages/sonarqube/*
 export GROOVY_HOME="/var/vcap/packages/groovy"
 export GROOVY="${GROOVY_HOME}/bin/groovy"
 
-cd /var/vcap/jobs/jenkins-master/config
+cd /var/vcap/jobs/sonarqube/config
 
 ${GROOVY} configure-settings.groovy
 ${GROOVY} configure-groups.groovy
