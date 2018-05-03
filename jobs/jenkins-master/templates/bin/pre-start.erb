@@ -12,7 +12,6 @@ JENKINS_CONFIG="<%= p('jenkins.config') %>"
 if [[ $(ls /var/vcap/jobs/jenkins-master/config/*.xml) ]]; then
     echo "Copying Config..."
     cp /var/vcap/jobs/jenkins-master/config/*.xml /var/vcap/store/jenkins-master
-
 fi
 
 if [ ${JENKINS_CONFIG} != "config.xml" ]; then
@@ -22,6 +21,11 @@ fi
 if [[ $(ls /var/vcap/jobs/jenkins-master/init.groovy.d/*.groovy) ]]; then
     echo "Copying Groovy..."
     cp /var/vcap/jobs/jenkins-master/init.groovy.d/*.groovy /var/vcap/store/jenkins-master/init.groovy.d/
+fi
+
+if [ ${JENKINS_CONFIG} == "config-oauth.xml" ]; then
+    # This is temporary until we use this groovy script to construct the config
+    rm /var/vcap/store/jenkins-master/init.d/configure-access.groovy
 fi
 
 echo "Configuring Plugins..."
