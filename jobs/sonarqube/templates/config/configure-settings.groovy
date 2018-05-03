@@ -4,7 +4,7 @@ import SonarApiClient
 def sonarApiSettingsUrl = SonarApiClient.sonarApiUrl + 'settings/set'
 // Could connect to 'settings/get' after to test without exercising functionality.
 
-def gitHubUrl = '<%= p('github.server.url') %>'
+def gitHubUrl = SonarApiClient.gitHubUrl
 
 def keySingleValuePairs = [
     new Tuple2('sonar.core.serverBaseURL', SonarApiClient.sonarUrl),
@@ -12,9 +12,9 @@ def keySingleValuePairs = [
     new Tuple2('sonar.auth.github.apiUrl', gitHubUrl + '/api/v3/'),
     new Tuple2('sonar.auth.github.allowUsersToSignUp', 'true'),
     new Tuple2('sonar.auth.github.webUrl', gitHubUrl),
-	new Tuple2('sonar.auth.github.clientSecret.secured', '<%= p('sonar.client.secret') %>'),
+	new Tuple2('sonar.auth.github.clientSecret.secured', SonarApiClient.clientSecret),
     new Tuple2('sonar.auth.github.loginStrategy', 'Same as GitHub login'),
-    new Tuple2('sonar.auth.github.clientId.secured', '<%= p('sonar.client.id') %>')
+    new Tuple2('sonar.auth.github.clientId.secured', SonarApiClient.clientId)
 ]
 
 for (pair in keySingleValuePairs) {
