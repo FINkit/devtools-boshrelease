@@ -1,5 +1,0 @@
-set -e
-set -u
-
-export HOME=/var/vcap
-cp -a ./* ${BOSH_INSTALL_TARGET}

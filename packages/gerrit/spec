@@ -1,9 +1,0 @@
----
-name: gerrit
-
-dependencies:
-  - oraclejdk
-  - git-client
-
-files:
-  - gerrit/gerrit-2.14.3.war
