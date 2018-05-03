@@ -30,7 +30,6 @@ envinject-api:1.5
 extended-read-permission:2.0
 external-monitor-job:1.7
 gatling:1.2.2
-gerrit-trigger:2.27.5
 git:3.8.0
 git-client:2.7.1
 github:1.29.0

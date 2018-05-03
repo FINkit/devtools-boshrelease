@@ -161,7 +161,6 @@ jobs:
       GIT_COMMIT_EMAIL: ((bbl-state.email))
       TERRAFORM_CUSTOMISATIONS: |
         ci/terraform/test-jenkins.tf
-        ci/terraform/test-gerrit.tf
         ci/terraform/test-nexus.tf
         ci/terraform/test-sonarqube.tf
     input_mapping:
@@ -194,7 +193,7 @@ jobs:
         rebase: true
   <<: *slack-alert
 
-- name: test-gerrit
+- name: test-jenkins
   serial_groups:
   - tests
   plan:
@@ -213,42 +212,6 @@ jobs:
       - create-dev-release
       trigger: true
     - get: warden-stemcell
-  - aggregate:
-    - do:
-      - task: create-gerrit-bosh-config
-        file: devtools-boshrelease/ci/tasks/create-bosh-config.yml
-        params:
-          BOSH_DEPLOYMENT: &gerrit-deployment-name gerrit
-      - put: bosh-deployment # Deploy Gerrit instance
-        params:
-          source_file: source/source.yml
-          manifest: devtools-boshrelease/ci/manifests/gerrit.yml
-          releases:
-          - dev-release-tarball/dev-release.tgz
-          stemcells:
-          - warden-stemcell/stemcell.tgz
-          vars:
-            deployment_name: *gerrit-deployment-name
-      - task: test-gerrit
-        file: devtools-boshrelease/ci/tasks/test-gerrit.yml
-        params:
-          BOSH_DEPLOYMENT: *gerrit-deployment-name
-        ensure:
-          put: bosh-deployment # Destroy Gerrit instance
-          params:
-            source_file: source/source.yml
-            delete:
-              enabled: true
-              force: true
-            vars:
-              deployment_name: *gerrit-deployment-name
-  <<: *slack-alert
-
-- name: test-jenkins
-  serial_groups:
-  - tests
-  plan:
-  - aggregate: *get-test-resources
   - aggregate:
     - do:
       - task: create-jenkins-bosh-config
@@ -359,7 +322,6 @@ jobs:
   - aggregate:
     - get: bbl-state
       passed: &tests
-      - test-gerrit
       - test-jenkins
       - test-nexus
       - test-sonarqube

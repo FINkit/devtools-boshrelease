@@ -1,5 +1,0 @@
-check process gerrit
-  with pidfile /var/vcap/sys/run/gerrit/gerrit.pid
-  start program "/var/vcap/jobs/gerrit/bin/monit_debugger gerrit_ctl '/var/vcap/jobs/gerrit/bin/gerrit_ctl start'" with timeout 180 seconds
-  stop program "/var/vcap/jobs/gerrit/bin/monit_debugger gerrit_ctl '/var/vcap/jobs/gerrit/bin/gerrit_ctl stop'"
-  group vcap
