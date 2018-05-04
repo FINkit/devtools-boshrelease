@@ -22,6 +22,7 @@ templates:
   config/config.xml.erb: config/config.xml
   config/config-oauth.xml.erb: config/config-oauth.xml
   config/configure-access.groovy.erb: init.groovy.d/configure-access.groovy
+  config/configure-github-access.groovy.erb: init.groovy.d/configure-github-access.groovy
   config/configure-master-access-control.groovy.erb: init.groovy.d/configure-master-access-control.groovy
   config/configure-maven.groovy.erb: init.groovy.d/configure-maven.groovy
   config/envInject.xml.erb: config/envInject.xml
