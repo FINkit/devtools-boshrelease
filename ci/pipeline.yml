@@ -36,6 +36,11 @@ resources:
     branch: master
     uri: https://github.com/cloudfoundry/bosh-bootloader.git
     tag_filter: "v6.6.4"
+- name: buildstack-deployment
+  type: git
+  source:
+    branch: master
+    uri: https://github.com/FINkit/buildstack-deployment.git
 - name: bosh-deployment
   type: bosh-deployment
 - name: cf-deployment-concourse-tasks
@@ -201,6 +206,7 @@ jobs:
     - get: bbl-state
       passed:
       - deploy-bosh
+    - get: buildstack-deployment
     - get: cf-deployment-concourse-tasks
     - get: devtools-boshrelease
       passed:
@@ -220,8 +226,10 @@ jobs:
           BOSH_DEPLOYMENT: &jenkins-deployment-name jenkins
       - put: bosh-deployment # Deploy Jenkins instance
         params:
+          ops_files:
+          - just-jenkins.yml
           source_file: source/source.yml
-          manifest: devtools-boshrelease/ci/manifests/jenkins.yml
+          manifest: buildstack-deployment/buildstack.yml
           releases:
           - dev-release-tarball/dev-release.tgz
           stemcells:
@@ -256,8 +264,10 @@ jobs:
         file: devtools-boshrelease/ci/tasks/create-bosh-config.yml
       - put: bosh-deployment # Deploy Nexus instance
         params:
+          ops_files:
+          - just-nexus.yml
           source_file: source/source.yml
-          manifest: devtools-boshrelease/ci/manifests/nexus.yml
+          manifest: buildstack-deployment/buildstack.yml
           releases:
           - dev-release-tarball/dev-release.tgz
           stemcells:
@@ -292,8 +302,10 @@ jobs:
         file: devtools-boshrelease/ci/tasks/create-bosh-config.yml
       - put: bosh-deployment # Deploy sonarqube instance
         params:
+          ops_files:
+          - just-sonarqube.yml
           source_file: source/source.yml
-          manifest: devtools-boshrelease/ci/manifests/sonarqube.yml
+          manifest: buildstack-deployment/buildstack.yml
           releases:
           - dev-release-tarball/dev-release.tgz
           stemcells:
