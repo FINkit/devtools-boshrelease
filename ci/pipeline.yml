@@ -223,7 +223,7 @@ jobs:
       - task: create-jenkins-bosh-config
         file: devtools-boshrelease/ci/tasks/create-bosh-config.yml
         params:
-          BOSH_DEPLOYMENT: &jenkins-deployment-name jenkins
+          BOSH_DEPLOYMENT: &deployment-name buildstack
       - put: bosh-deployment # Deploy Jenkins instance
         params:
           ops_files:
@@ -235,11 +235,11 @@ jobs:
           stemcells:
           - warden-stemcell/stemcell.tgz
           vars:
-            deployment_name: *jenkins-deployment-name
+            deployment_name: *deployment-name
       - task: test-jenkins
         file: devtools-boshrelease/ci/tasks/test-jenkins.yml
         params:
-          BOSH_DEPLOYMENT: *jenkins-deployment-name
+          BOSH_DEPLOYMENT: *deployment-name
         ensure:
           put: bosh-deployment # Destroy Jenkins instance
           params:
@@ -248,7 +248,7 @@ jobs:
               enabled: true
               force: true
             vars:
-              deployment_name: *jenkins-deployment-name
+              deployment_name: *deployment-name
   <<: *slack-alert
 
 - name: test-nexus
@@ -260,7 +260,7 @@ jobs:
     - do:
       - task: create-nexus-bosh-config
         params:
-          BOSH_DEPLOYMENT: &nexus-deployment-name nexus
+          BOSH_DEPLOYMENT: *deployment-name
         file: devtools-boshrelease/ci/tasks/create-bosh-config.yml
       - put: bosh-deployment # Deploy Nexus instance
         params:
@@ -273,11 +273,11 @@ jobs:
           stemcells:
           - warden-stemcell/stemcell.tgz
           vars:
-            deployment_name: *nexus-deployment-name
+            deployment_name: *deployment-name
       - task: test-nexus
         file: devtools-boshrelease/ci/tasks/test-nexus.yml
         params:
-          BOSH_DEPLOYMENT: *nexus-deployment-name
+          BOSH_DEPLOYMENT: *deployment-name
         ensure:
           put: bosh-deployment # Destroy Nexus instance
           params:
@@ -286,7 +286,7 @@ jobs:
               enabled: true
               force: true
             vars:
-              deployment_name: *nexus-deployment-name
+              deployment_name: *deployment-name
   <<: *slack-alert
 
 - name: test-sonarqube
@@ -298,7 +298,7 @@ jobs:
     - do:
       - task: create-sonarqube-bosh-config
         params:
-          BOSH_DEPLOYMENT: &sonarqube-deployment-name sonarqube
+          BOSH_DEPLOYMENT: *deployment-name
         file: devtools-boshrelease/ci/tasks/create-bosh-config.yml
       - put: bosh-deployment # Deploy sonarqube instance
         params:
@@ -311,11 +311,11 @@ jobs:
           stemcells:
           - warden-stemcell/stemcell.tgz
           vars:
-            deployment_name: *sonarqube-deployment-name
+            deployment_name: *deployment-name
       - task: test-sonarqube
         file: devtools-boshrelease/ci/tasks/test-sonarqube.yml
         params:
-          BOSH_DEPLOYMENT: *sonarqube-deployment-name
+          BOSH_DEPLOYMENT: *deployment-name
         ensure:
           put: bosh-deployment # Destroy sonarqube instance
           params:
@@ -324,7 +324,7 @@ jobs:
               enabled: true
               force: true
             vars:
-              deployment_name: *sonarqube-deployment-name
+              deployment_name: *deployment-name
   <<: *slack-alert
 
 - name: destroy-bosh
