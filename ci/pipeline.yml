@@ -227,7 +227,7 @@ jobs:
       - put: bosh-deployment # Deploy Jenkins instance
         params:
           ops_files:
-          - just-jenkins.yml
+          - buildstack-deployment/operations/just-jenkins.yml
           source_file: source/source.yml
           manifest: buildstack-deployment/buildstack.yml
           releases:
@@ -265,7 +265,7 @@ jobs:
       - put: bosh-deployment # Deploy Nexus instance
         params:
           ops_files:
-          - just-nexus.yml
+          - buildstack-deployment/operations/just-nexus.yml
           source_file: source/source.yml
           manifest: buildstack-deployment/buildstack.yml
           releases:
@@ -303,7 +303,7 @@ jobs:
       - put: bosh-deployment # Deploy sonarqube instance
         params:
           ops_files:
-          - just-sonarqube.yml
+          - buildstack-deployment/operations/just-sonarqube.yml
           source_file: source/source.yml
           manifest: buildstack-deployment/buildstack.yml
           releases:
