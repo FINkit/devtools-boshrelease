@@ -160,24 +160,6 @@ jobs:
       passed:
       - set-pipeline
       trigger: true
-  - task: customise-terraform
-    file: concourse-tasks/tasks/customise-deployment/task.yml
-    params:
-      GIT_COMMIT_USERNAME: ((bbl-state.username))
-      GIT_COMMIT_EMAIL: ((bbl-state.email))
-      TERRAFORM_CUSTOMISATIONS: |
-        ci/terraform/test-jenkins.tf
-        ci/terraform/test-nexus.tf
-        ci/terraform/test-sonarqube.tf
-    input_mapping:
-      env-repo: bbl-state
-      terraform-customisations: devtools-boshrelease
-      cloud-config-customisations: devtools-boshrelease
-    ensure:
-      put: bbl-state
-      params:
-        repository: updated-env-repo
-        rebase: true
   - task: bbl-up
     file: cf-deployment-concourse-tasks/bbl-up/task.yml
     input_mapping:
