@@ -49,19 +49,22 @@ properties:
     description: "Password for the agent user"
   jenkins.github.oauth.org_name:
     description: "Github oAuth org name"
-  jenkins.github.oauth.admins.admin1:
-    description: "Github admin username"
-  jenkins.github.oauth.admins.admin2:
-    description: "Github admin username"
-  jenkins.github.oauth.admins.admin3:
-    description: "Github admin username"
+    default: "FinKit"
+  jenkins.github.oauth.admins:
+    description: "Github admin usernames"
+    default: "administrator"
   jenkins.github.oauth.url.web:
     description: "Github web url"
+    default: "https://github.com"
   jenkins.github.oauth.url.api:
     description: "Github api url"
+    default: "https://github.com/api/v3"
   jenkins.github.oauth.client.id:
     description: "Github client ID"
+    default: "placeholder_client_id"
   jenkins.github.oauth.client.secret:
     description: "Github client.secret"
+    default: "placeholder_client_secret"
   jenkins.config:
     description: "Jenkins config xml"
+    default: "config.xml"
