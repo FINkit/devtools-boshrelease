@@ -16,7 +16,7 @@ if(!github_realm.equals(Jenkins.instance.getSecurityRealm())) {
     Jenkins.instance.save()
 }
 
-String adminUserNames = '<%= p('jenkins.github.oauth.admins.admin1') %>,<%= p('jenkins.github.oauth.admins.admin2') %>,<%= p('jenkins.github.oauth.admins.admin3') %>'
+String adminUserNames = '<%= p('jenkins.github.oauth.admins') %>'
 String organizationNames = '<%= p('jenkins.github.oauth.org_name')  %>'
 boolean useRepositoryPermissions = true
 boolean authenticatedUserReadPermission = false
