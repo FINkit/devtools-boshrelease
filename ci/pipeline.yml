@@ -36,6 +36,11 @@ resources:
     branch: master
     uri: https://github.com/cloudfoundry/bosh-bootloader.git
     tag_filter: "v6.6.4"
+- name: buildstack-deployment
+  type: git
+  source:
+    branch: master
+    uri: https://github.com/FINkit/buildstack-deployment.git
 - name: bosh-deployment
   type: bosh-deployment
 - name: cf-deployment-concourse-tasks
@@ -108,6 +113,23 @@ resources:
     initial_version: 0.0.0
     key: version
 
+groups:
+- name: create
+  jobs:
+  - set-pipeline
+  - setup-infrastructure
+  - create-dev-release
+  - test-nexus
+  - test-jenkins
+  - test-sonarqube
+  - prerelease-patch
+  - prerelease-minor
+  - prerelease-major
+  - release-final
+- name: destroy
+  jobs:
+  - destroy-bosh
+
 jobs:
 - name: set-pipeline
   plan:
@@ -141,46 +163,29 @@ jobs:
     params: { file: dev-release-tarball/dev-release.tgz }
   <<: *slack-alert
 
-- name: deploy-bosh
+- name: setup-infrastructure
   serial_groups:
   - bbl
   plan:
   - aggregate:
     - get: bbl-state
     - get: bosh-bootloader
+    - get: buildstack-deployment
     - get: cf-deployment-concourse-tasks
     - get: concourse-tasks
     - get: devtools-boshrelease
       passed:
       - set-pipeline
       trigger: true
-  - task: customise-terraform
-    file: concourse-tasks/tasks/customise-deployment/task.yml
-    params:
-      GIT_COMMIT_USERNAME: ((bbl-state.username))
-      GIT_COMMIT_EMAIL: ((bbl-state.email))
-      TERRAFORM_CUSTOMISATIONS: |
-        ci/terraform/test-jenkins.tf
-        ci/terraform/test-nexus.tf
-        ci/terraform/test-sonarqube.tf
-    input_mapping:
-      env-repo: bbl-state
-      terraform-customisations: devtools-boshrelease
-      cloud-config-customisations: devtools-boshrelease
-    ensure:
-      put: bbl-state
-      params:
-        repository: updated-env-repo
-        rebase: true
   - task: bbl-up
     file: cf-deployment-concourse-tasks/bbl-up/task.yml
     input_mapping:
-      bbl-config: bosh-bootloader
+      bbl-config: buildstack-deployment
       bbl-state: bbl-state
     output_mapping:
       updated-bbl-state: updated-bbl-state
     params:
-      BBL_CONFIG_DIR: plan-patches/bosh-lite-gcp
+      BBL_CONFIG_DIR: iaas-support/bosh-lite-gcp
       BBL_ENV_NAME: devtools-boshrelease
       BBL_GCP_REGION: ((gcp.region))
       BBL_GCP_SERVICE_ACCOUNT_KEY: ((gcp.key))
@@ -200,12 +205,15 @@ jobs:
   - aggregate: &get-test-resources
     - get: bbl-state
       passed:
-      - deploy-bosh
+      - setup-infrastructure
+    - get: buildstack-deployment
+      passed:
+      - setup-infrastructure
     - get: cf-deployment-concourse-tasks
     - get: devtools-boshrelease
       passed:
       - create-dev-release
-      - deploy-bosh
+      - setup-infrastructure
     - get: devtools-tests
     - get: dev-release-tarball
       passed:
@@ -217,21 +225,23 @@ jobs:
       - task: create-jenkins-bosh-config
         file: devtools-boshrelease/ci/tasks/create-bosh-config.yml
         params:
-          BOSH_DEPLOYMENT: &jenkins-deployment-name jenkins
+          BOSH_DEPLOYMENT: &deployment-name buildstack
       - put: bosh-deployment # Deploy Jenkins instance
         params:
+          ops_files:
+          - buildstack-deployment/operations/just-jenkins.yml
           source_file: source/source.yml
-          manifest: devtools-boshrelease/ci/manifests/jenkins.yml
+          manifest: buildstack-deployment/buildstack.yml
           releases:
           - dev-release-tarball/dev-release.tgz
           stemcells:
           - warden-stemcell/stemcell.tgz
           vars:
-            deployment_name: *jenkins-deployment-name
+            deployment_name: *deployment-name
       - task: test-jenkins
         file: devtools-boshrelease/ci/tasks/test-jenkins.yml
         params:
-          BOSH_DEPLOYMENT: *jenkins-deployment-name
+          BOSH_DEPLOYMENT: *deployment-name
         ensure:
           put: bosh-deployment # Destroy Jenkins instance
           params:
@@ -240,7 +250,7 @@ jobs:
               enabled: true
               force: true
             vars:
-              deployment_name: *jenkins-deployment-name
+              deployment_name: *deployment-name
   <<: *slack-alert
 
 - name: test-nexus
@@ -252,22 +262,24 @@ jobs:
     - do:
       - task: create-nexus-bosh-config
         params:
-          BOSH_DEPLOYMENT: &nexus-deployment-name nexus
+          BOSH_DEPLOYMENT: *deployment-name
         file: devtools-boshrelease/ci/tasks/create-bosh-config.yml
       - put: bosh-deployment # Deploy Nexus instance
         params:
+          ops_files:
+          - buildstack-deployment/operations/just-nexus.yml
           source_file: source/source.yml
-          manifest: devtools-boshrelease/ci/manifests/nexus.yml
+          manifest: buildstack-deployment/buildstack.yml
           releases:
           - dev-release-tarball/dev-release.tgz
           stemcells:
           - warden-stemcell/stemcell.tgz
           vars:
-            deployment_name: *nexus-deployment-name
+            deployment_name: *deployment-name
       - task: test-nexus
         file: devtools-boshrelease/ci/tasks/test-nexus.yml
         params:
-          BOSH_DEPLOYMENT: *nexus-deployment-name
+          BOSH_DEPLOYMENT: *deployment-name
         ensure:
           put: bosh-deployment # Destroy Nexus instance
           params:
@@ -276,7 +288,7 @@ jobs:
               enabled: true
               force: true
             vars:
-              deployment_name: *nexus-deployment-name
+              deployment_name: *deployment-name
   <<: *slack-alert
 
 - name: test-sonarqube
@@ -288,22 +300,24 @@ jobs:
     - do:
       - task: create-sonarqube-bosh-config
         params:
-          BOSH_DEPLOYMENT: &sonarqube-deployment-name sonarqube
+          BOSH_DEPLOYMENT: *deployment-name
         file: devtools-boshrelease/ci/tasks/create-bosh-config.yml
       - put: bosh-deployment # Deploy sonarqube instance
         params:
+          ops_files:
+          - buildstack-deployment/operations/just-sonarqube.yml
           source_file: source/source.yml
-          manifest: devtools-boshrelease/ci/manifests/sonarqube.yml
+          manifest: buildstack-deployment/buildstack.yml
           releases:
           - dev-release-tarball/dev-release.tgz
           stemcells:
           - warden-stemcell/stemcell.tgz
           vars:
-            deployment_name: *sonarqube-deployment-name
+            deployment_name: *deployment-name
       - task: test-sonarqube
         file: devtools-boshrelease/ci/tasks/test-sonarqube.yml
         params:
-          BOSH_DEPLOYMENT: *sonarqube-deployment-name
+          BOSH_DEPLOYMENT: *deployment-name
         ensure:
           put: bosh-deployment # Destroy sonarqube instance
           params:
@@ -312,7 +326,7 @@ jobs:
               enabled: true
               force: true
             vars:
-              deployment_name: *sonarqube-deployment-name
+              deployment_name: *deployment-name
   <<: *slack-alert
 
 - name: destroy-bosh
@@ -321,10 +335,6 @@ jobs:
   plan:
   - aggregate:
     - get: bbl-state
-      passed: &tests
-      - test-jenkins
-      - test-nexus
-      - test-sonarqube
     - get: cf-deployment-concourse-tasks
   - task: bbl-destroy
     file: cf-deployment-concourse-tasks/bbl-destroy/task.yml
@@ -351,7 +361,10 @@ jobs:
   - do: &do-release
     - aggregate:
       - get: devtools-boshrelease
-        passed: *tests
+        passed: &tests
+        - test-jenkins
+        - test-nexus
+        - test-sonarqube
     - task: create-release
       file: devtools-boshrelease/ci/tasks/create-final-release.yml
     - put: github-release
