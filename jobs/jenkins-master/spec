@@ -41,6 +41,7 @@ templates:
 properties:
   jenkins.server.address:
     description: "Fully qualified address of Jenkins server"
+    default: "127.0.0.1:8080"
   jenkins.admin.email:
     description: "Email address to send all emails from"
   jenkins.admin.password:
