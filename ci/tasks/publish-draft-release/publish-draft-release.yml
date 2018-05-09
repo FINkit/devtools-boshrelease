@@ -12,4 +12,4 @@ run:
   - | 
     cp -R devtools-boshrelease/ci/tasks/publish-draft-release /go/src/
     cd /go/src/publish-draft-release
-    go run publish-draft-release.go owner repo id version branch
+    go run publish-draft-release.go ${OWNER} ${REPO} ${VERSION} ${BRANCH}
