@@ -5,27 +5,34 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"net/http"
 	"os"
 )
 
 const (
-	gitHubUrl                      string = "https://github.com/"
+	gitHubUrl                      string = "https://api.github.com/repos/"
 	gitHubCredentialsVariable      string = "GITHUB_ACCESS_KEY"
+	getReleasesMethodType          string = "GET"
+	editReleaseMethodType          string = "PATCH"
 	defaultVersion                 string = "latest"
 	defaultBranch                  string = "master"
 	minimumNumberOfCommandLineArgs int    = 3
 )
 
 var (
-	releaseApiUrl string = gitHubUrl + "repos/" + owner + "/" + repo + "/releases/"
-	owner         string
-	repo          string
-	branch        string
-	version       string
-	description   string
-	credentials   string = os.Getenv(gitHubCredentialsVariable)
+	owner       string
+	repo        string
+	branch      string
+	version     string
+	description string
+	credentials string = os.Getenv(gitHubCredentialsVariable)
 )
+
+type IdAndTag struct {
+	Id      int64  `json:"id"`
+	TagName string `json:"tag_name"`
+}
 
 type Release struct {
 	TagName    string `json:"tag_name"`
@@ -37,14 +44,18 @@ type Release struct {
 }
 
 func getReleaseApiUrl() string {
-	return releaseApiUrl + version
+	return fmt.Sprintf("%s%s/%s/releases", gitHubUrl, owner, repo)
 }
 
-func sendRequest(body io.Reader, bodySize int64) (*http.Response, error) {
-	req, err := http.NewRequest("PATCH", getReleaseApiUrl(), body)
+func getEditReleaseApiUrl(id int64) string {
+	return fmt.Sprintf("%s/%d", getReleaseApiUrl(), id)
+}
+
+func sendRequest(methodType string, url string, body io.Reader, bodySize int64) (int, []byte, error) {
+	req, err := http.NewRequest(methodType, url, body)
 
 	if err != nil {
-		return nil, err
+		return 0, nil, err
 	}
 
 	req.Header.Set("Authorization", fmt.Sprintf("token %s", credentials))
@@ -52,19 +63,62 @@ func sendRequest(body io.Reader, bodySize int64) (*http.Response, error) {
 	req.Header.Set("Accept", "application/vnd.github.v3+json")
 	req.ContentLength = bodySize
 
-	os.Stdout.WriteString(fmt.Sprintf("Sending request to %s with data %s", getReleaseApiUrl(), body))
-
-	resp, err := http.DefaultClient.Do(req)
-	defer resp.Body.Close()
-
-	if err != nil {
-		return resp, err
+	if body == nil {
+		os.Stdout.WriteString(fmt.Sprintf("Sending request to %s: %+v\n", url, req))
+	} else {
+		os.Stdout.WriteString(fmt.Sprintf("Sending request to %s with data %s: %+v\n", url, body, req))
 	}
 
-	return resp, err
+	resp, err := http.DefaultClient.Do(req)
+
+	if err != nil {
+		return 0, nil, err
+	}
+
+	defer resp.Body.Close()
+
+	bodyBytes, err := ioutil.ReadAll(resp.Body)
+
+	return resp.StatusCode, bodyBytes, err
+}
+
+func getReleaseId() (int64, error) {
+	code, bodyBytes, err := sendRequest(getReleasesMethodType, getReleaseApiUrl(), bytes.NewBuffer([]byte{}), 0)
+
+	if err != nil {
+		return 0, err
+	}
+
+	if code == http.StatusOK {
+		fmt.Printf(fmt.Sprintf("Got releases on branch %s: %s\n", branch, string(bodyBytes)))
+	} else {
+		return 0, fmt.Errorf("error getting releases for version %s with response code %d", getReleaseApiUrl(), code)
+	}
+
+	var releases []IdAndTag
+	json.Unmarshal(bodyBytes, &releases)
+	os.Stdout.WriteString(fmt.Sprintf("Response from %s: %v\n", getReleaseApiUrl(), releases))
+
+	for _, release := range releases {
+		if release.TagName == version {
+			return release.Id, err
+		}
+	}
+
+	return 0, err
+}
+
+func editRelease(id int64, body io.Reader, bodySize int64) (int, []byte, error) {
+	return sendRequest(editReleaseMethodType, getEditReleaseApiUrl(id), body, bodySize)
 }
 
 func publishDraftRelease() error {
+	id, err := getReleaseId()
+
+	if err != nil {
+		return fmt.Errorf("error getting releases on %s", getReleaseApiUrl())
+	}
+
 	release := Release{
 		TagName:    version,
 		Branch:     branch,
@@ -80,21 +134,19 @@ func publishDraftRelease() error {
 		return fmt.Errorf("error setting JSON data %s when publishing draft release to %s due to %s", releaseData, getReleaseApiUrl(), err)
 	}
 
+	fmt.Printf(fmt.Sprintf("Publishing draft release of version %s on branch %s\n", version, branch))
+
 	releaseBuffer := bytes.NewBuffer(releaseData)
 
-	resp, err := sendRequest(releaseBuffer, int64(releaseBuffer.Len()))
+	code, _, err := editRelease(id, releaseBuffer, int64(releaseBuffer.Len()))
 
 	if err != nil {
-		return fmt.Errorf("error publishing draft release to %s with response %s", getReleaseApiUrl(), resp)
+		return fmt.Errorf("error publishing draft release to %s", getReleaseApiUrl())
 	}
 
-	if resp == nil {
-		return fmt.Errorf("error publishing draft release to %s with nil response", getReleaseApiUrl())
-	}
-
-	code := resp.StatusCode
-
-	if code != http.StatusOK {
+	if code == http.StatusOK {
+		fmt.Printf(fmt.Sprintf("Published draft release of id %d for version %s on branch %s\n", id, version, branch))
+	} else {
 		return fmt.Errorf("error publishing draft release to %s with response code %d", getReleaseApiUrl(), code)
 	}
 
@@ -103,20 +155,19 @@ func publishDraftRelease() error {
 
 func main() {
 	if credentials == "" {
-		os.Stderr.WriteString("Must provide GitHub credentials via GITHUB_CREDENTIALS\n")
+		os.Stderr.WriteString("Must provide GitHub credentials via GITHUB_ACCESS_KEY\n")
 		os.Exit(1)
 	}
 
-	if len(os.Args) != minimumNumberOfCommandLineArgs {
-		os.Stderr.WriteString(fmt.Sprintf("Only found %d arguments - Must provide owner and repo\n", len(os.Args)))
+	numberOfCommandLineArgs := len(os.Args)
+
+	if numberOfCommandLineArgs < minimumNumberOfCommandLineArgs {
+		os.Stderr.WriteString(fmt.Sprintf("Only found %d arguments - Must provide owner and repo\n", numberOfCommandLineArgs))
 		os.Exit(1)
 	}
 
 	owner = os.Args[1]
 	repo = os.Args[2]
-	version = os.Args[3]
-	branch = os.Args[4]
-	description = os.Args[5]
 
 	if owner == "" {
 		os.Stderr.WriteString("Must provide owner as the first argument\n")
@@ -128,16 +179,22 @@ func main() {
 		os.Exit(1)
 	}
 
-	if version == "" {
+	if numberOfCommandLineArgs < 4 {
 		version = defaultVersion
+	} else {
+		version = os.Args[3]
 	}
 
-	if branch == "" {
+	if numberOfCommandLineArgs < 5 {
 		branch = defaultBranch
+	} else {
+		branch = os.Args[4]
 	}
 
-	if description == "" {
+	if numberOfCommandLineArgs < 6 {
 		description = version
+	} else {
+		description = os.Args[5]
 	}
 
 	err := publishDraftRelease()
