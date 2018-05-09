@@ -20,7 +20,6 @@ templates:
   bin/restore.sh.erb: bin/bbr/restore
   config/branding.css.erb: config/branding.css
   config/config.xml.erb: config/config.xml
-  config/config-oauth.xml.erb: config/config-oauth.xml
   config/configure-access.groovy.erb: init.groovy.d/configure-access.groovy
   config/configure-github-access.groovy.erb: init.groovy.d/configure-github-access.groovy
   config/configure-master-access-control.groovy.erb: init.groovy.d/configure-master-access-control.groovy
@@ -66,6 +65,6 @@ properties:
   jenkins.github.oauth.client.secret:
     description: "Github client.secret"
     default: "placeholder_client_secret"
-  jenkins.config:
-    description: "Jenkins config xml"
-    default: "config.xml"
+  jenkins.use_github_auth:
+    description: "Jenkins github auth"
+    default: "false"
