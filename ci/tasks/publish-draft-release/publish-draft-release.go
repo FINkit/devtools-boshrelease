@@ -8,11 +8,13 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
+	"strconv"
 )
 
 const (
 	gitHubUrl                      string = "https://api.github.com/repos/"
 	gitHubCredentialsVariable      string = "GITHUB_ACCESS_KEY"
+	debugMessagesVariable          string = "DEBUG_MESSAGES_ENABLED"
 	getReleasesMethodType          string = "GET"
 	editReleaseMethodType          string = "PATCH"
 	defaultVersion                 string = "latest"
@@ -21,12 +23,13 @@ const (
 )
 
 var (
-	owner       string
-	repo        string
-	branch      string
-	version     string
-	description string
-	credentials string = os.Getenv(gitHubCredentialsVariable)
+	owner         string
+	repo          string
+	branch        string
+	version       string
+	description   string
+	credentials   string = os.Getenv(gitHubCredentialsVariable)
+	debugMessages bool
 )
 
 type IdAndTag struct {
@@ -63,10 +66,12 @@ func sendRequest(methodType string, url string, body io.Reader, bodySize int64) 
 	req.Header.Set("Accept", "application/vnd.github.v3+json")
 	req.ContentLength = bodySize
 
-	if body == nil {
-		os.Stdout.WriteString(fmt.Sprintf("Sending request to %s: %+v\n", url, req))
-	} else {
-		os.Stdout.WriteString(fmt.Sprintf("Sending request to %s with data %s: %+v\n", url, body, req))
+	if debugMessages {
+		if body == nil {
+			os.Stdout.WriteString(fmt.Sprintf("Sending request to %s: %+v\n", url, req))
+		} else {
+			os.Stdout.WriteString(fmt.Sprintf("Sending request to %s with data %s: %+v\n", url, body, req))
+		}
 	}
 
 	resp, err := http.DefaultClient.Do(req)
@@ -83,7 +88,8 @@ func sendRequest(methodType string, url string, body io.Reader, bodySize int64) 
 }
 
 func getReleaseId() (int64, error) {
-	code, bodyBytes, err := sendRequest(getReleasesMethodType, getReleaseApiUrl(), bytes.NewBuffer([]byte{}), 0)
+	url := getReleaseApiUrl()
+	code, bodyBytes, err := sendRequest(getReleasesMethodType, url, bytes.NewBuffer([]byte{}), 0)
 
 	if err != nil {
 		return 0, err
@@ -92,12 +98,12 @@ func getReleaseId() (int64, error) {
 	if code == http.StatusOK {
 		fmt.Printf(fmt.Sprintf("Got releases on branch %s: %s\n", branch, string(bodyBytes)))
 	} else {
-		return 0, fmt.Errorf("error getting releases for version %s with response code %d", getReleaseApiUrl(), code)
+		return 0, fmt.Errorf("error getting releases for version %s with response code %d", url, code)
 	}
 
 	var releases []IdAndTag
 	json.Unmarshal(bodyBytes, &releases)
-	os.Stdout.WriteString(fmt.Sprintf("Response from %s: %v\n", getReleaseApiUrl(), releases))
+	os.Stdout.WriteString(fmt.Sprintf("Response from %s: %v\n", url, releases))
 
 	for _, release := range releases {
 		if release.TagName == version {
@@ -105,7 +111,7 @@ func getReleaseId() (int64, error) {
 		}
 	}
 
-	return 0, err
+	return 0, fmt.Errorf("No ID found from %s using version %s", url, version)
 }
 
 func editRelease(id int64, body io.Reader, bodySize int64) (int, []byte, error) {
@@ -116,7 +122,11 @@ func publishDraftRelease() error {
 	id, err := getReleaseId()
 
 	if err != nil {
-		return fmt.Errorf("error getting releases on %s", getReleaseApiUrl())
+		return fmt.Errorf("error getting releases: %s", err)
+	}
+
+	if id == 0 {
+		return fmt.Errorf("error getting releases - no ID found")
 	}
 
 	release := Release{
@@ -197,7 +207,15 @@ func main() {
 		description = os.Args[5]
 	}
 
-	err := publishDraftRelease()
+	var err error
+
+	debugMessages, err = strconv.ParseBool(os.Getenv(debugMessagesVariable))
+
+	if err != nil {
+		debugMessages = false
+	}
+
+	err = publishDraftRelease()
 
 	if err != nil {
 		os.Stderr.WriteString(fmt.Sprintf("Failed to publish draft release - %s\n", err))
