@@ -1,3 +1,7 @@
+ansible/ansible-v2.5.2.tar.gz:
+  size: 10192927
+  object_id: a449d0df-70e7-4843-4bb5-00396cb58357
+  sha: 959523a9b1db5a34cb3c3f6d37137f5b8895a55d
 git/git-2.14.1.tar.gz:
   size: 6987933
   object_id: 4c11f3bb-d077-4a0d-6a81-2cb433fb2964
