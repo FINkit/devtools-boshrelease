@@ -6,6 +6,7 @@ packages:
 - swarm-client
 - apache-maven
 - git-client
+- cf-cli
 
 consumes:
 - name: jenkins_master
