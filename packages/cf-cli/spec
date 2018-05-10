@@ -1,4 +1,4 @@
 ---
 name: cf-cli
 files:
-- cf-cli/cf-6.36.1.tgz
+- cf-cli/cf-6.46.1.tgz
