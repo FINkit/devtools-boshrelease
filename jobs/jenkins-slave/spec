@@ -1,11 +1,12 @@
 ---
 name: jenkins-slave
 
-packages: 
+packages:
 - oraclejdk
 - swarm-client
 - apache-maven
 - git-client
+- ansible
 - cf-cli
 
 consumes:
