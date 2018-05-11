@@ -72,7 +72,14 @@ resources:
   source:
     bucket: ((dev-build-automate-release-tarballs.bucket))
     json_key: ((concourse_project_google_key))
-    versioned_file: devtools-boshrelease/dev-release.tgz
+    versioned_file: devtools-boshrelease/devtools-boshrelease-v(.*).tgz
+- name: final-release-tarball
+  type: google-cloud-storage
+  source:
+    bucket: ((dev-build-automate-release-tarballs.bucket))
+    json_key: ((concourse_project_google_key))
+    regexp: devtools-boshrelease/devtools-release.tgz
+- name: warden-stemcell
 - name: warden-stemcell
   type: bosh-io-stemcell
   source:
@@ -92,7 +99,7 @@ resources:
   type: github-release
   source:
     <<: *github-release-source
-    drafts: true  
+    #drafts: true 
 - name: set-pipeline
   type: concourse-pipeline
   source:
@@ -368,6 +375,8 @@ jobs:
         - test-sonarqube
     - task: create-release
       file: devtools-boshrelease/ci/tasks/create-final-release.yml
+    - put: final-release-tarball
+      params: { file: final-release-tarball/devtools-boshrelease-v*.tgz }
     - put: github-release
       params: &put-github-release-params
         name: version/version
