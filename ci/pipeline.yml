@@ -72,14 +72,13 @@ resources:
   source:
     bucket: ((dev-build-automate-release-tarballs.bucket))
     json_key: ((concourse_project_google_key))
-    versioned_file: devtools-boshrelease/devtools-boshrelease-v(.*).tgz
+    versioned_file: devtools-boshrelease/devtools-release.tgz
 - name: final-release-tarball
   type: google-cloud-storage
   source:
     bucket: ((dev-build-automate-release-tarballs.bucket))
     json_key: ((concourse_project_google_key))
-    regexp: devtools-boshrelease/devtools-release.tgz
-- name: warden-stemcell
+    regexp: devtools-boshrelease/devtools-boshrelease-v(.*).tgz
 - name: warden-stemcell
   type: bosh-io-stemcell
   source:
@@ -99,7 +98,7 @@ resources:
   type: github-release
   source:
     <<: *github-release-source
-    #drafts: true 
+    # drafts: true
 - name: set-pipeline
   type: concourse-pipeline
   source:
