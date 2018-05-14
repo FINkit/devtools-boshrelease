@@ -219,5 +219,6 @@ func main() {
 
 	if err != nil {
 		os.Stderr.WriteString(fmt.Sprintf("Failed to publish draft release - %s\n", err))
+		os.Exit(1)
 	}
 }
