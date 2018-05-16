@@ -5,6 +5,7 @@ image_resource:
     repository: engineerbetter/pcf-ops
 inputs:
 - name: devtools-boshrelease 
+- name: version
 run:
   path: /bin/bash
   args:
