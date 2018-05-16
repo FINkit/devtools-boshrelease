@@ -12,6 +12,7 @@ run:
   - -c
   - | 
     cp -R devtools-boshrelease/ci/tasks/publish-draft-release /go/src/
-    VERSION_NUMBER="$(<${VERSION})"
+    VERSION_TAG="${VERSION_TAG:-v}"
+    VERSION_NUMBER="${VERSION_TAG}$(<${VERSION})"
     cd /go/src/publish-draft-release
     go run publish-draft-release.go "${OWNER}" "${REPO}" "${VERSION_NUMBER}" "${BRANCH}"
