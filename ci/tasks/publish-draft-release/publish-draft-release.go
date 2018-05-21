@@ -76,11 +76,13 @@ func sendRequest(methodType string, url string, body io.Reader, bodySize int64) 
 
 	resp, err := http.DefaultClient.Do(req)
 
+	if resp != nil {
+		defer resp.Body.Close()
+	}
+
 	if err != nil {
 		return 0, nil, err
 	}
-
-	defer resp.Body.Close()
 
 	bodyBytes, err := ioutil.ReadAll(resp.Body)
 
